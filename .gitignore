@@ -1,0 +1,11 @@
+**/*/*.csproj.user
+**/*/v15/*
+**/*/bin
+**/*/obj
+**/*/node_modules
+**/*/packages
+**/*/v16
+**/*/.vs
+**/*/logs
+/**/*.dbmdl
+/**/*.jfm
