@@ -1,3 +1,4 @@
+using ADS.Aplication.StartUpConfigs;
 using ADS.Domain.Profiles;
 using ADS.Infrastructure;
 using AutoMapper;
@@ -30,13 +31,14 @@ namespace ADS.Aplication
             services.AddDbContext<ADCContext>(options =>
                 options.UseSqlServer(connection));
 
-            var mappingConfig = new MapperConfiguration(mc =>
-            {
-                mc.AddProfile(new MappingProfile());
-            });
+            //var mappingConfig = new MapperConfiguration(mc =>
+            //{
+            //    mc.AddProfile(new MappingProfile());
+            //});
 
-            IMapper mapper = mappingConfig.CreateMapper();
-            services.AddSingleton(mapper);
+            //IMapper mapper = mappingConfig.CreateMapper();
+            //services.AddSingleton(mapper);
+            services.ConfigurationAutoMapper();
 
             services.AddControllersWithViews();
             // In production, the Angular files will be served from this directory

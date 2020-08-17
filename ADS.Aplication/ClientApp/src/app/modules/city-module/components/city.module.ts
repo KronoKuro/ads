@@ -9,21 +9,23 @@ import { MatCardModule, MatTableModule, MatPaginatorModule, MatSortModule, MatIc
 import { CitiesStore } from '../state/city.store';
 import { CitiesQuery } from '../state/city.query';
 import { AddCityComponent } from './city-components/add-city/add-city.component';
+import { EditCityComponent } from './city-components/edit-city/edit-city.component';
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../shared/material-module';
 import { DeleteCityComponent } from './city-components/delete-city/delete-city.component';
+import { PaginationService } from '../../shared/services/pagination.service';
+import { SortService } from '../../shared/services/sort.service';
 
 const router = [
   { path: 'city', component: CityComponent }
-  // { path: 'counter', component: CounterComponent },
-  // { path: 'fetch-data', component: FetchDataComponent },
 ]
 
 @NgModule({
   declarations: [
     CityComponent,
     AddCityComponent,
-    DeleteCityComponent
+    DeleteCityComponent,
+    EditCityComponent
   ],
   imports: [
     CommonModule,
@@ -36,11 +38,14 @@ const router = [
   ],
   providers: [
     CityService,
+    PaginationService,
+    SortService,
     CitiesStore,
     CitiesQuery
   ],entryComponents: [
     AddCityComponent,
-    DeleteCityComponent
+    DeleteCityComponent,
+    EditCityComponent
   ],
 })
 export class CityModule { }

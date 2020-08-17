@@ -1,4 +1,5 @@
-﻿using ADS.Models;
+﻿using ADS.Domain.Core;
+using ADS.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;

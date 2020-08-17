@@ -1,0 +1,16 @@
+<div class="container city-container">
+  <form class="formCity" (ngSubmit)="submit" [formGroup]="cityForm">
+    <div class="form_header">
+      <h4>Редактировать город</h4>
+    </div>
+    <div>
+      <mat-form-field class="full-width">
+        <input class="user_input" matInput placeholder="Название" name="City" formControlName="name">
+      </mat-form-field>
+    </div>
+    <div class='actions'>
+    <button mat-raised-button (click)="cancel()">Отмена</button>
+    <button mat-raised-button [type]="submit" (click)="editCity()">Сохранить</button>
+    </div>
+  </form>
+  </div>

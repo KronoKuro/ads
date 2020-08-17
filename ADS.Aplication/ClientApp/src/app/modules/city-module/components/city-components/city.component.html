@@ -11,7 +11,7 @@
         </mat-list-item>
       </mat-list>-->
 
-<table mat-table [dataSource]="dataSource" matSort class="mat-table-city">
+<table mat-table [dataSource]="dataSource" matSort  (matSortChange)="sortData($event)" class="mat-table-city">
 
   <!-- Id Column
   <ng-container matColumnDef="id">
@@ -45,7 +45,11 @@
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
   </table>
-
+<mat-paginator [length]="paginationService.totalCount"
+    [pageSize]="paginationService.pageSize"
+    [pageSizeOptions]="paginationService.selectItemsPerPage"
+    (page)="switchPage($event)">
+  </mat-paginator>
     </mat-card>
   </div>
 </body>
