@@ -1,5 +1,5 @@
 <div class="container city-container">
-<!--  <form class="formCity" (ngSubmit)="submit" [formGroup]="cityForm">
+  <!--  <form class="formCity" (ngSubmit)="submit" [formGroup]="cityForm">
     <div class="form_header">
       <h4>Удалить город</h4>
     </div>
@@ -8,8 +8,10 @@
     </div>
   </form>-->
   <div class="form_header">
-      <h4>Удалить город</h4>
-    </div>
-  <button mat-raised-button (click)="cancel()">Отмена</button>
-    <button mat-raised-button [type]="submit" (click)="deleteCity()">Удалить</button>
+    <h4>Удалить город</h4>
   </div>
+  <mat-dialog-actions align="end">
+    <button mat-raised-button (click)="cancel()">Отмена</button>
+    <button mat-raised-button [type]="submit" (click)="deleteCity()">  Удалить </button>
+  </mat-dialog-actions>
+</div>

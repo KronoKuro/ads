@@ -11,6 +11,7 @@ import { SortPage } from '../../../../models/sortpage.model';  //app/models/sort
 import { PaginationService } from '../../../../modules/shared/services/pagination.service';
 import { SortService } from '../../../../modules/shared/services/sort.service';
 import { EditCityComponent } from './edit-city/edit-city.component';
+import { BaseComponent } from 'src/app/modules/shared/components/base.component';
 
 
 @Component({
@@ -18,7 +19,7 @@ import { EditCityComponent } from './edit-city/edit-city.component';
   templateUrl: './city.component.html',
   styleUrls: ['./city.component.css']
 })
-export class CityComponent implements OnInit, OnDestroy {
+export class CityComponent extends BaseComponent implements OnInit {
   cities: CityModel[];
   displayedColumns: string[] = ['name', 'actions'];
   dataSource: any;
@@ -27,9 +28,10 @@ export class CityComponent implements OnInit, OnDestroy {
 
   constructor(private cityService: CityService,
     private cityQuery: CitiesQuery,
-    private dialog: MatDialog,
+    dialog: MatDialog,
     private paginationService: PaginationService,
     private sortService: SortService) {
+      super(null, dialog);
 
   }
 
@@ -46,7 +48,10 @@ export class CityComponent implements OnInit, OnDestroy {
   }
 
   addCity() {
-    const dialogRef = this.dialog.open(AddCityComponent, {});
+    const dialogRef = this.dialog.open(AddCityComponent, {
+      height: '200px',
+      width: '500px',
+    });
     this.subscription = dialogRef.afterClosed().subscribe(response => {
       this.load();
     });
@@ -62,8 +67,10 @@ export class CityComponent implements OnInit, OnDestroy {
     this.load();
   }
 
-  editCity(elem) {
+  editCity(elem: CityModel) {
     const dialogRef = this.dialog.open(EditCityComponent, {
+      height: '200px',
+      width: '500px',
       data: { city: elem }
     });
     this.subscription = dialogRef.afterClosed().subscribe(response => {
@@ -78,12 +85,6 @@ export class CityComponent implements OnInit, OnDestroy {
     this.subscription = dialogRef.afterClosed().subscribe(response => {
       this.load();
     });
-  }
-
-  ngOnDestroy() {
-    if (this.subscription) {
-      this.subscription.unsubscribe();
-    }
   }
 
 }

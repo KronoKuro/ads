@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ADS.Aplication.Extensions;
 using ADS.Domain.Core;
 using ADS.Domain.Helpers;
 using ADS.Domain.ViewModels;
@@ -54,6 +55,11 @@ namespace ADS.Aplication.Controllers
         {
             try
             {
+                IsValidModel(model);
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState.GetFullErrorMessage());
+                }
                 var city = new City();
                 city = _mapper.Map(model, city);
                 context.Cities.Add(city);
@@ -70,11 +76,17 @@ namespace ADS.Aplication.Controllers
         [HttpPut]
         public async Task<IActionResult> EditCity([FromBody] CityViewModel model)
         {
+            IsValidModel(model);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState.GetFullErrorMessage());
+            }
             var city = context.Cities.FirstOrDefault(x => x.Id == model.Id);
             if (city == null)
                 return NotFound();
             
             _mapper.Map(model, city);
+            
             context.Cities.Update(city);
             await context.SaveChangesAsync();
             return Ok();
@@ -98,6 +110,14 @@ namespace ADS.Aplication.Controllers
                 return BadRequest(ex.Message);
             }
 
+        }
+
+        private void IsValidModel(CityViewModel model)
+        {
+            if (!model.IsValidateName(model.Name))
+            {
+                ModelState.AddModelError(nameof(model), $"Названия полей должны быть больше 100 или меньше 5");
+            }
         }
     }
 }
