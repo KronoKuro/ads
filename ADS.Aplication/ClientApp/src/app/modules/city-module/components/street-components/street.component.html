@@ -1,6 +1,6 @@
 <body>
   <div class="container">
-  <h4>Города</h4>
+  <h4>{{city.name}}\Улицы</h4>
     <mat-card>
       <span mat-icon-button color="primary" (click)="addCity()">
             <mat-icon class="span_button" aria-label="add">add</mat-icon>
@@ -13,11 +13,11 @@
 
 <table mat-table [dataSource]="dataSource" matSort  (matSortChange)="sortData($event)" class="mat-table-city">
 
-  <!-- Id Column-->
+  <!-- Id Column
   <ng-container matColumnDef="id">
     <th [hidden]="hide" mat-header-cell *matHeaderCellDef mat-sort-header> No. </th>
     <td mat-cell *matCellDef="let element"> {{element.id}} </td>
-  </ng-container>
+  </ng-container>-->
 
   <!-- Name Column -->
   <ng-container matColumnDef="name">

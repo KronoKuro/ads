@@ -15,14 +15,20 @@ import { MaterialModule } from '../../shared/material-module';
 import { DeleteCityComponent } from './city-components/delete-city/delete-city.component';
 import { PaginationService } from '../../shared/services/pagination.service';
 import { SortService } from '../../shared/services/sort.service';
+import { StreetService } from '../services/street.services';
+import { StreetsStore } from '../state/street/street.store';
+import { StreetsQuery } from '../state/street/street.query';
+import { StreetComponent } from './street-components/street.component';
 
 const router = [
-  { path: 'city', component: CityComponent }
+  { path: 'city', component: CityComponent },
+  { path: 'streets/:id', component: StreetComponent }
 ]
 
 @NgModule({
   declarations: [
     CityComponent,
+    StreetComponent,
     AddCityComponent,
     DeleteCityComponent,
     EditCityComponent
@@ -38,10 +44,13 @@ const router = [
   ],
   providers: [
     CityService,
+    StreetService,
     PaginationService,
     SortService,
     CitiesStore,
-    CitiesQuery
+    StreetsStore,
+    CitiesQuery,
+    StreetsQuery
   ],entryComponents: [
     AddCityComponent,
     DeleteCityComponent,

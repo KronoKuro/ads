@@ -18,22 +18,27 @@ namespace ADS.Aplication.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class CityController : Controller
+    public class StreetController : Controller
     {
         private ADCContext context;
         private readonly IMapper _mapper;
 
-        public CityController(ADCContext _context, IMapper mapper)
+        public StreetController(ADCContext _context, IMapper mapper)
         {
             context = _context;
             _mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<IActionResult> getCity([FromQuery] QueryParameters queryParameters)
+        public async Task<IActionResult> getStreets([FromQuery] Guid id, [FromQuery] QueryParameters queryParameters)
         {
+            var city = await context.Cities
+                .ProjectTo<CityViewModel>(_mapper.ConfigurationProvider)
+                .FirstOrDefaultAsync(c => c.Id == id);
 
-            var query = context.Cities.ProjectTo<CityViewModel>(_mapper.ConfigurationProvider);
+            var query = context.Streets
+                .Include(x => x.Houses).Where(s => s.CityId == id)
+                .ProjectTo<StreetViewModel>(_mapper.ConfigurationProvider);
 
             if (!String.IsNullOrEmpty(queryParameters.Active))
             {
@@ -41,28 +46,29 @@ namespace ADS.Aplication.Controllers
             }
 
             var paginationMetadata = query.GetPaginationViewModel(queryParameters);
-            var cities = new CityViewModelsWithPaginationModels
+            var streets = new StreetViewModelsWithPaginationModels
             {
-                Cities = query.Skip(paginationMetadata.Skip).Take(queryParameters.PageCount),
+                City = city,
+                Streets = query.Skip(paginationMetadata.Skip).Take(queryParameters.PageCount),
                 Pagination = paginationMetadata
             };
 
-            return Ok(cities);
+            return Ok(streets);
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateCity([FromBody] CityViewModel model)
+        public async Task<IActionResult> CreateStreet([FromBody] StreetViewModel model)
         {
             try
             {
-                IsValidModel(model);
+               // IsValidModel(model);
                 if (!ModelState.IsValid)
                 {
                     return BadRequest(ModelState.GetFullErrorMessage());
                 }
-                var city = new City();
-                city = _mapper.Map(model, city);
-                context.Cities.Add(city);
+                var street = new Street();
+                street = _mapper.Map(model, street);
+                context.Streets.Add(street);
                 await context.SaveChangesAsync();
                 return Ok();
             }
@@ -74,34 +80,34 @@ namespace ADS.Aplication.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> EditCity([FromBody] CityViewModel model)
+        public async Task<IActionResult> EditStreet([FromBody] StreetViewModel model)
         {
-            IsValidModel(model);
+           // IsValidModel(model);
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState.GetFullErrorMessage());
             }
-            var city = context.Cities.FirstOrDefault(x => x.Id == model.Id);
-            if (city == null)
+            var street = context.Cities.FirstOrDefault(x => x.Id == model.Id);
+            if (street == null)
                 return NotFound();
             
-            _mapper.Map(model, city);
+            _mapper.Map(model, street);
             
-            context.Cities.Update(city);
+            context.Cities.Update(street);
             await context.SaveChangesAsync();
             return Ok();
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> RemoveCity(string id)
+        public async Task<IActionResult> RemoveStreet(string id)
         {
             try
             {
                 var guid = Guid.Parse(id);
-                var city = await context.Cities.FirstOrDefaultAsync(x => x.Id == guid);
-                if (city == null)
+                var street = await context.Cities.FirstOrDefaultAsync(x => x.Id == guid);
+                if (street == null)
                     return NotFound();
-                context.Cities.Remove(city);
+                context.Cities.Remove(street);
                 await context.SaveChangesAsync();
                 return Ok();
             }
@@ -112,12 +118,12 @@ namespace ADS.Aplication.Controllers
 
         }
 
-        private void IsValidModel(CityViewModel model)
-        {
-            if (!model.IsValidateName(model.Name))
-            {
-                ModelState.AddModelError(nameof(model), $"Названия полей должны быть больше 100 или меньше 5");
-            }
-        }
+        //private void IsValidModel(StreetViewModel model)
+        //{
+        //    if (!model.IsValidateName(model.Name))
+        //    {
+        //        ModelState.AddModelError(nameof(model), $"Названия полей должны быть больше 100 или меньше 5");
+        //    }
+        //}
     }
 }

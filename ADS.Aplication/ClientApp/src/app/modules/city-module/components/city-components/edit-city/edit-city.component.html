@@ -6,6 +6,7 @@
         <input matInput placeholder="Название" name="City" formControlName="name" />
           <mat-error *ngIf="hasError" class="form__error">{{ errorMessage }} </mat-error>
       </mat-form-field>
+      <a mat-raised-button [routerLink]="['/streets', data.city.id]"  (click)="closeDialog()">Добавить Улицы</a>
   <!--  </div>-->
     </mat-dialog-content>
     <mat-dialog-actions align="end">

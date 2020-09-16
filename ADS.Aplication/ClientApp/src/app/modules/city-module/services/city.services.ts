@@ -1,6 +1,6 @@
 import { Injectable, Inject } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { CityWithPaginationModel } from "../../../models/cityWithPaginationView.model";
+import { CityWithPaginationModel } from "../../../models/citywithpagination.model";
 import { CityModel } from "../../../models/city.model";
 import { SortPage } from "../../../models/sortpage.model";
 import { CitiesStore } from "../state/city.store";

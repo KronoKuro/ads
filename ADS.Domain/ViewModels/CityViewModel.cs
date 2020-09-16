@@ -9,6 +9,8 @@ namespace ADS.Domain.ViewModels
 {
     public class CityViewModel : EntityBase
     {
+        public virtual IEnumerable<Street> Streets { get; set; }
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             if(Name.Length > 100 || Name.Length < 5)

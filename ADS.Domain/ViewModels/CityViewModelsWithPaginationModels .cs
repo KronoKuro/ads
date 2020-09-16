@@ -8,7 +8,7 @@ namespace ADS.Domain.ViewModels
 {
     public class CityViewModelsWithPaginationModels
     {
-        public IQueryable<CityViewModel> cities { get; set; }
-        public PaginationViewModel pagination { get; set; }
+        public IQueryable<CityViewModel> Cities { get; set; }
+        public PaginationViewModel Pagination { get; set; }
     }
 }

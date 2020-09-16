@@ -21,7 +21,7 @@ import { BaseComponent } from 'src/app/modules/shared/components/base.component'
 })
 export class CityComponent extends BaseComponent implements OnInit {
   cities: CityModel[];
-  displayedColumns: string[] = ['name', 'actions'];
+  displayedColumns: string[] = ['id', 'name', 'actions'];
   dataSource: any;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   subscription: Subscription;
@@ -49,7 +49,7 @@ export class CityComponent extends BaseComponent implements OnInit {
 
   addCity() {
     const dialogRef = this.dialog.open(AddCityComponent, {
-      height: '200px',
+      height: '250px',
       width: '500px',
     });
     this.subscription = dialogRef.afterClosed().subscribe(response => {
@@ -69,7 +69,7 @@ export class CityComponent extends BaseComponent implements OnInit {
 
   editCity(elem: CityModel) {
     const dialogRef = this.dialog.open(EditCityComponent, {
-      height: '200px',
+      height: '350px',
       width: '500px',
       data: { city: elem }
     });

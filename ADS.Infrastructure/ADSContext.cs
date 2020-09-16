@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 
 namespace ADS.Infrastructure
@@ -25,5 +26,13 @@ namespace ADS.Infrastructure
         public DbSet<Street> Streets { get; set; }
         public DbSet<House> Houses { get; set; }
         public DbSet<Apartment> Apartments { get; set; }
+
+
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+            Assembly assemblyWithConfigurations = GetType().Assembly; //get whatever assembly you want
+            builder.ApplyConfigurationsFromAssembly(assemblyWithConfigurations);
+        }
     }
 }
