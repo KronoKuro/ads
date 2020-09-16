@@ -24,9 +24,6 @@ export class StreetService {
     return this.http.get<StreetWithPaginationModel>(`${this._url}?id=${id}&&active=${this.sortService.active}&direction=${this.sortService.direction}&page=${this.paginationService.page}&pageCount=${this.paginationService.pageCount}`).pipe(
       tap(entity => {
         this.streetsStore.set(entity.streets);
-        this.paginationService.page = entity.pagination.currentPage;
-        this.paginationService.pageCount = entity.pagination.pageSize;
-        this.paginationService.totalCount = entity.pagination.totalCount;
       }));
   }
 

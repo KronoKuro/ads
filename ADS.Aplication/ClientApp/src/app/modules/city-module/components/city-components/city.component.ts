@@ -69,7 +69,7 @@ export class CityComponent extends BaseComponent implements OnInit {
 
   editCity(elem: CityModel) {
     const dialogRef = this.dialog.open(EditCityComponent, {
-      height: '350px',
+      height: '250px',
       width: '500px',
       data: { city: elem }
     });

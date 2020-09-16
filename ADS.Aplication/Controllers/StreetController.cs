@@ -87,13 +87,13 @@ namespace ADS.Aplication.Controllers
             {
                 return BadRequest(ModelState.GetFullErrorMessage());
             }
-            var street = context.Cities.FirstOrDefault(x => x.Id == model.Id);
+            var street = context.Streets.FirstOrDefault(x => x.Id == model.Id);
             if (street == null)
                 return NotFound();
             
             _mapper.Map(model, street);
             
-            context.Cities.Update(street);
+            context.Streets.Update(street);
             await context.SaveChangesAsync();
             return Ok();
         }
@@ -104,10 +104,10 @@ namespace ADS.Aplication.Controllers
             try
             {
                 var guid = Guid.Parse(id);
-                var street = await context.Cities.FirstOrDefaultAsync(x => x.Id == guid);
+                var street = await context.Streets.FirstOrDefaultAsync(x => x.Id == guid);
                 if (street == null)
                     return NotFound();
-                context.Cities.Remove(street);
+                context.Streets.Remove(street);
                 await context.SaveChangesAsync();
                 return Ok();
             }

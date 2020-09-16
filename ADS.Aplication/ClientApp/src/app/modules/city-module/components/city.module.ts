@@ -19,6 +19,9 @@ import { StreetService } from '../services/street.services';
 import { StreetsStore } from '../state/street/street.store';
 import { StreetsQuery } from '../state/street/street.query';
 import { StreetComponent } from './street-components/street.component';
+import { AddStreetComponent } from './street-components/add-street/add-street.component';
+import { EditStreetComponent } from './street-components/edit-street/edit-street.component';
+import { DeleteStreetComponent } from './street-components/delete-street/delete-street.component';
 
 const router = [
   { path: 'city', component: CityComponent },
@@ -31,7 +34,10 @@ const router = [
     StreetComponent,
     AddCityComponent,
     DeleteCityComponent,
-    EditCityComponent
+    EditCityComponent,
+    AddStreetComponent,
+    EditStreetComponent,
+    DeleteStreetComponent
   ],
   imports: [
     CommonModule,
@@ -54,7 +60,10 @@ const router = [
   ],entryComponents: [
     AddCityComponent,
     DeleteCityComponent,
-    EditCityComponent
+    EditCityComponent,
+    AddStreetComponent,
+    EditStreetComponent,
+    DeleteStreetComponent
   ],
 })
 export class CityModule { }

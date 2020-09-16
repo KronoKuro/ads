@@ -1,20 +1,20 @@
-<form class="formCity" (ngSubmit)="(submit)" [formGroup]="cityForm">
-  <h4 mat-dialog-title>Редактировать город</h4>
+<form class="formCity" (ngSubmit)="(submit)" [formGroup]="streetForm">
+  <h4 mat-dialog-title>Редактировать улицу</h4>
   <mat-dialog-content class="mat-typography">
     <!--<div class="form_content">-->
 
-        <button mat-mini-fab color="primary"
+       <!-- <button mat-mini-fab color="primary"
           aria-label="add"
           class="button_streets"
           >
           <mat-icon  [routerLink]="['/streets', data.city.id]" (click)="closeDialog()">add</mat-icon>
-        </button> Добавить Улицы
+        </button> Добавить Улицы-->
 
     <mat-form-field>
       <input
         matInput
         placeholder="Название"
-        name="City"
+        name="street"
         formControlName="name"
       />
       <mat-error *ngIf="hasError" class="form__error"
@@ -25,7 +25,7 @@
   </mat-dialog-content>
   <mat-dialog-actions align="end">
     <button mat-raised-button (click)="cancel()">Отмена</button>
-    <button mat-raised-button [type]="submit" (click)="editCity()">
+    <button mat-raised-button [type]="submit" (click)="save()">
       Сохранить
     </button>
   </mat-dialog-actions>

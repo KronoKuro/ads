@@ -1,0 +1,25 @@
+<div class="container city-container">
+  <form class="formCity" (ngSubmit)="(submit)" [formGroup]="streetForm">
+    <div class="form_header">
+      <h4>Создать улицу</h4>
+    </div>
+    <mat-dialog-content class="mat-typography">
+      <mat-form-field class="full-width">
+        <input
+          class="user_input"
+          matInput
+          placeholder="Название"
+          name="City"
+          formControlName="name"
+        />
+         <mat-error *ngIf="hasError" class="form__error">{{ errorMessage }} </mat-error>
+      </mat-form-field>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button mat-raised-button (click)="cancel()">Отмена</button>
+      <button mat-raised-button [type]="submit" (click)="save()">
+        Создать
+      </button>
+    </mat-dialog-actions>
+  </form>
+</div>

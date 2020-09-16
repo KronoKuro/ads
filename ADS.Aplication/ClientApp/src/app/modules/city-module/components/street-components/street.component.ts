@@ -10,6 +10,9 @@ import { BaseComponent } from '../../../shared/components/base.component';
 import { StreetsQuery } from '../../state/street/street.query';
 import { ActivatedRoute } from '@angular/router';
 import { CityModel } from 'src/app/models/city.model';
+import { AddStreetComponent } from './add-street/add-street.component';
+import { EditStreetComponent } from './edit-street/edit-street.component';
+import { DeleteStreetComponent } from './delete-street/delete-street.component';
 
 
 @Component({
@@ -19,7 +22,7 @@ import { CityModel } from 'src/app/models/city.model';
 })
 export class StreetComponent extends BaseComponent implements OnInit {
   streets: StreetModel[];
-  city: CityModel;
+  city: CityModel = new CityModel();
   displayedColumns: string[] = ['name', 'actions'];
   dataSource: any;
   cityId: string;
@@ -45,19 +48,23 @@ export class StreetComponent extends BaseComponent implements OnInit {
     return this.streetService.getStreets(this.cityId).subscribe(res => {
       this.city = res.city;
       this.streets = this.streetQuery.getAll();
+      this.paginationService.page = res.pagination.currentPage;
+      this.paginationService.pageCount = res.pagination.pageSize;
+      this.paginationService.totalCount = res.pagination.totalCount;
       this.dataSource = new MatTableDataSource(this.streets);
     });
   }
 
-  // addStreet() {
-  //   const dialogRef = this.dialog.open(AddCityComponent, {
-  //     height: '200px',
-  //     width: '500px',
-  //   });
-  //   this.subscription = dialogRef.afterClosed().subscribe(response => {
-  //     this.load();
-  //   });
-  // }
+  addStreet(city: CityModel) {
+     const dialogRef = this.dialog.open(AddStreetComponent, {
+        data: { city: city },
+        height: '200px',
+        width: '500px',
+    });
+    this.subscription = dialogRef.afterClosed().subscribe(response => {
+      this.load();
+    });
+  }
 
   sortData(sort: Sort) {
     this.sortService.change(sort);
@@ -69,24 +76,24 @@ export class StreetComponent extends BaseComponent implements OnInit {
     this.load();
   }
 
-  // editCity(elem: CityModel) {
-  //   const dialogRef = this.dialog.open(EditCityComponent, {
-  //     height: '200px',
-  //     width: '500px',
-  //     data: { city: elem }
-  //   });
-  //   this.subscription = dialogRef.afterClosed().subscribe(response => {
-  //     this.load();
-  //   });
-  // }
+  editStreet(elem: StreetModel) {
+    const dialogRef = this.dialog.open(EditStreetComponent, {
+      height: '250px',
+      width: '500px',
+      data: { street: elem }
+    });
+    this.subscription = dialogRef.afterClosed().subscribe(response => {
+      this.load();
+    });
+  }
 
-  // deleteCity(elem) {
-  //   const dialogRef = this.dialog.open(DeleteCityComponent, {
-  //     data: { city: elem }
-  //   });
-  //   this.subscription = dialogRef.afterClosed().subscribe(response => {
-  //     this.load();
-  //   });
-  // }
+  deleteStreet(elem) {
+    const dialogRef = this.dialog.open(DeleteStreetComponent, {
+      data: { street: elem }
+    });
+    this.subscription = dialogRef.afterClosed().subscribe(response => {
+      this.load();
+    });
+  }
 
 }

@@ -1,8 +1,10 @@
 <body>
   <div class="container">
+
+   <button mat-raised-button routerLink='/city'  class="button_link">Назад</button>
   <h4>{{city.name}}\Улицы</h4>
     <mat-card>
-      <span mat-icon-button color="primary" (click)="addCity()">
+      <span mat-icon-button color="primary" (click)="addStreet(city)">
             <mat-icon class="span_button" aria-label="add">add</mat-icon>
           </span>
       <!--<mat-list #shoes>
@@ -31,11 +33,11 @@
         </mat-header-cell>
 
         <mat-cell *matCellDef="let row; let i=index;">
-          <span mat-icon color="indigo" (click)="editCity(row)">
+          <span mat-icon color="indigo" (click)="editStreet(row)">
             <mat-icon class="span_button" aria-label="Edit">edit</mat-icon>
           </span>
 
-          <span mat-icon color="black" (click)="deleteCity(row)">
+          <span mat-icon color="black" (click)="deleteStreet(row)">
             <mat-icon class="span_button" aria-label="Delete">delete</mat-icon>
           </span>
         </mat-cell>
