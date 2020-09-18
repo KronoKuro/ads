@@ -1,4 +1,5 @@
 import { StreetModel }  from './street.model';
+import { ManagmentCompanyModel } from './managmentCompany.model';
 
 export class HouseModel {
   id: string;
@@ -6,8 +7,8 @@ export class HouseModel {
   longitude: string;
   latitude: string;
   managmentCompanyId: string;
+  managmentCompanyName: string;
   streetId: string;
   street: StreetModel;
-  //public virtual ManagmentCompany ManagmentCompany { get; set; }
   //public virtual ICollection<Apartment> Apartments { get; set; }
 }

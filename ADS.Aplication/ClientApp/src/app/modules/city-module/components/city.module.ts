@@ -22,6 +22,13 @@ import { StreetComponent } from './street-components/street.component';
 import { AddStreetComponent } from './street-components/add-street/add-street.component';
 import { EditStreetComponent } from './street-components/edit-street/edit-street.component';
 import { DeleteStreetComponent } from './street-components/delete-street/delete-street.component';
+import { HouseComponent } from 'src/app/modules/city-module/components/house-component/house.component';
+import { HouseService } from '../services/house.service';
+import { HouseStore } from '../state/houses/house.store';
+import { HousesQuery } from '../state/houses/house.query';
+import { AddHouseComponent } from './house-component/add-house/add-house.component';
+import { EditHouseComponent } from './house-component/edit-house/edit-house.component';
+import { DeleteHouseComponent } from './house-component/delete-house/delete-house.component';
 
 const router = [
   { path: 'city', component: CityComponent },
@@ -37,7 +44,11 @@ const router = [
     EditCityComponent,
     AddStreetComponent,
     EditStreetComponent,
-    DeleteStreetComponent
+    DeleteStreetComponent,
+    HouseComponent,
+    AddHouseComponent,
+    EditHouseComponent,
+    DeleteHouseComponent
   ],
   imports: [
     CommonModule,
@@ -53,17 +64,24 @@ const router = [
     StreetService,
     PaginationService,
     SortService,
+    HouseService,
     CitiesStore,
     StreetsStore,
+    HouseStore,
     CitiesQuery,
-    StreetsQuery
+    StreetsQuery,
+    HousesQuery
   ],entryComponents: [
     AddCityComponent,
     DeleteCityComponent,
     EditCityComponent,
     AddStreetComponent,
     EditStreetComponent,
-    DeleteStreetComponent
+    DeleteStreetComponent,
+    HouseComponent,
+    AddHouseComponent,
+    EditHouseComponent,
+    DeleteHouseComponent
   ],
 })
 export class CityModule { }

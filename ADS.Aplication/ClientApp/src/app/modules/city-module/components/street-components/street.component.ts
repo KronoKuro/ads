@@ -28,19 +28,18 @@ export class StreetComponent extends BaseComponent implements OnInit {
   cityId: string;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   subscription: Subscription;
+  panelOpenState = false;
 
   constructor(private streetService: StreetService,
     private streetQuery: StreetsQuery,
     dialog: MatDialog,
     private route: ActivatedRoute,
-    private paginationService: PaginationService,
-    private sortService: SortService) {
+    private paginationService: PaginationService) {
       super(null, dialog);
       this.cityId = this.route.snapshot.params['id'];
   }
 
   ngOnInit() {
-    this.sortService.change(this.sort);
     this.subscription = this.load();
   }
 
@@ -66,11 +65,6 @@ export class StreetComponent extends BaseComponent implements OnInit {
     });
   }
 
-  sortData(sort: Sort) {
-    this.sortService.change(sort);
-    this.load();
-  }
-
   switchPage(event: PageEvent) {
     this.paginationService.change(event);
     this.load();
@@ -78,7 +72,7 @@ export class StreetComponent extends BaseComponent implements OnInit {
 
   editStreet(elem: StreetModel) {
     const dialogRef = this.dialog.open(EditStreetComponent, {
-      height: '250px',
+      height: '200px',
       width: '500px',
       data: { street: elem }
     });

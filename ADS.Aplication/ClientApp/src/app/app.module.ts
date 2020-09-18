@@ -16,6 +16,7 @@ import { NG_ENTITY_SERVICE_CONFIG } from '@datorama/akita-ng-entity-service';
 import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 import { AkitaNgRouterStoreModule } from '@datorama/akita-ng-router-store';
 import { environment } from '../environments/environment';
+import { ErrorStateMatcher, ShowOnDirtyErrorStateMatcher } from '@angular/material';
 
 
 @NgModule({
@@ -42,7 +43,10 @@ import { environment } from '../environments/environment';
     environment.production ? [] : AkitaNgDevtools,
     AkitaNgRouterStoreModule
   ],
-  providers: [{ provide: NG_ENTITY_SERVICE_CONFIG, useValue: { baseUrl: 'https://jsonplaceholder.typicode.com' }}],
+  providers: [
+    { provide: NG_ENTITY_SERVICE_CONFIG, useValue: { baseUrl: 'https://jsonplaceholder.typicode.com' }},
+    {provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher }
+],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

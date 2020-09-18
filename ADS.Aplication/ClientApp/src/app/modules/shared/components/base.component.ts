@@ -1,6 +1,14 @@
 import { OnDestroy } from "@angular/core";
 import { Subscription } from "rxjs";
-import { MatDialogRef, MatDialog } from "@angular/material";
+import { MatDialogRef, MatDialog, ErrorStateMatcher } from "@angular/material";
+import { NgForm, FormGroupDirective, FormControl } from "@angular/forms";
+
+export class MyErrorStateMatcher implements ErrorStateMatcher {
+  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+    const isSubmitted = form && form.submitted;
+    return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
+  }
+}
 
 export abstract class BaseComponent implements OnDestroy {
 
@@ -8,6 +16,8 @@ export abstract class BaseComponent implements OnDestroy {
   isSubscribe: boolean = false;
   hasError: boolean = false;
   errorMessage: string = null;
+  matcher = new MyErrorStateMatcher();
+
   constructor(protected dialogRef: MatDialogRef<any>, protected dialog: MatDialog){
 
   }

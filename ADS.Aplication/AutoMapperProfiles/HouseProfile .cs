@@ -13,6 +13,7 @@ namespace ADS.Aplication.AutoMapperProfiles
         public HouseProfile()
         {
             CreateMap<House, HouseViewModel>()
+                .ForMember(x => x.ManagmentCompanyName, opt => opt.MapFrom(x => x.ManagmentCompany.Name))
               .ReverseMap();
                 //.ForMember(x => x.Houses, opt => opt.Ignore());
         }

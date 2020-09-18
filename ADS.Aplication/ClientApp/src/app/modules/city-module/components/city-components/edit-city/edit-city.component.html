@@ -3,12 +3,8 @@
   <mat-dialog-content class="mat-typography">
     <!--<div class="form_content">-->
 
-        <button mat-mini-fab color="primary"
-          aria-label="add"
-          class="button_streets"
-          >
-          <mat-icon  [routerLink]="['/streets', data.city.id]" (click)="closeDialog()">add</mat-icon>
-        </button> Добавить Улицы
+    <mat-icon mat-mini-fab color="primary" class="button_icon" [routerLink]="['/streets', data.city.id]" (click)="closeDialog()">add</mat-icon>
+        Добавить Улицы
 
     <mat-form-field>
       <input

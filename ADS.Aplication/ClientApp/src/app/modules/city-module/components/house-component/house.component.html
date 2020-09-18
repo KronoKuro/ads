@@ -1,0 +1,70 @@
+<body>
+  <div class="container">
+  <h4>Дома</h4>
+    <mat-card>
+      <span mat-icon-button color="primary" (click)="addHouse()">
+            <mat-icon class="span_button" aria-label="add">add</mat-icon>
+          </span>
+      <!--<mat-list #shoes>
+        <mat-list-item *ngFor="let item of cities">
+          {{item.name}}
+        </mat-list-item>
+      </mat-list>-->
+
+<table mat-table [dataSource]="dataSource" matSort  (matSortChange)="sortData($event)" class="mat-table-city">
+
+  <!-- Id Column-->
+  <ng-container matColumnDef="id">
+    <th hidden="hide" mat-header-cell *matHeaderCellDef mat-sort-header> No. </th>
+    <td hidden="hide" mat-cell *matCellDef="let element"> {{element.id}} </td>
+  </ng-container>
+
+  <!-- Name Column -->
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header  width="20%"> Номер дома </th>
+    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+  </ng-container>
+
+   <ng-container matColumnDef="managmentCompany">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header  width="80%"> Управляющая компания </th>
+    <td mat-cell *matCellDef="let element"> {{element.managmentCompanyName}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="longitude">
+    <th hidden="hide" mat-header-cell *matHeaderCellDef mat-sort-header  width="20%"> Долгота </th>
+    <td hidden="hide" mat-cell *matCellDef="let element"> {{element.longitude}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="latitude">
+    <th hidden="hide" mat-header-cell *matHeaderCellDef mat-sort-header  width="20%"> Широта </th>
+    <td hidden="hide" mat-cell *matCellDef="let element"> {{element.latitude}} </td>
+  </ng-container>
+
+     <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef>
+          Действия
+        </mat-header-cell>
+
+        <mat-cell *matCellDef="let row; let i=index;">
+          <span mat-icon color="indigo" (click)="editHouse(row)">
+            <mat-icon class="span_button" aria-label="Edit">edit</mat-icon>
+          </span>
+
+          <span mat-icon color="black" (click)="deleteHouse(row)">
+            <mat-icon class="span_button" aria-label="Delete">delete</mat-icon>
+          </span>
+        </mat-cell>
+      </ng-container>
+
+   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+  </table>
+<mat-paginator [length]="paginationService.totalCount"
+    [pageSize]="paginationService.pageSize"
+    [pageSizeOptions]="paginationService.selectItemsPerPage"
+    (page)="switchPage($event)">
+  </mat-paginator>
+    </mat-card>
+  </div>
+</body>

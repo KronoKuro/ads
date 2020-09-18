@@ -1,0 +1,93 @@
+<div class="container">
+  <form class="formCity" (ngSubmit)="(submit)" [formGroup]="houseForm">
+    <div class="form_header">
+      <h4>Добавить дом</h4>
+    </div>
+    <mat-dialog-content class="mat-typography">
+
+      <mat-form-field class="full-width">
+        <input
+          class="user_input"
+          matInput
+          placeholder="Номер дома"
+          name="name"
+          required
+          formControlName="name"
+          [errorStateMatcher]="matcher"
+        />
+         <mat-error *ngIf="hasError" class="form__error">{{ errorMessage }} </mat-error>
+         <mat-error *ngIf="houseForm.get('name').hasError('required')">
+            Номер дома обязательное плоле
+         </mat-error>
+         <mat-error *ngIf="houseForm.get('name').hasError('minLength')">
+            значение должно быть не меньше 1
+         </mat-error>
+         <mat-error *ngIf="houseForm.get('name').hasError('maxLength')">
+            Занчение не должно быть больше 10
+         </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
+        <input
+          class="user_input"
+          matInput
+          required
+          type="number"
+          placeholder="Широта"
+          name="latitude"
+          formControlName="latitude"
+        />
+         <mat-error *ngIf="hasError" class="form__error">{{ errorMessage }} </mat-error>
+         <mat-error *ngIf="houseForm.get('latitude').hasError('required')">
+            Широта обязательное плоле
+         </mat-error>
+         <mat-error *ngIf="houseForm.get('latitude').hasError('minLength')">
+            значение должно быть не меньше 1
+         </mat-error>
+         <mat-error *ngIf="houseForm.get('latitude').hasError('maxLength')">
+            Занчение не должно быть больше 10
+         </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
+        <input
+          class="user_input"
+          matInput
+          required
+          type="number"
+          placeholder="Долгота"
+          name="longitude"
+          formControlName="longitude"
+        />
+         <mat-error *ngIf="hasError" class="form__error">{{ errorMessage }} </mat-error>
+         <mat-error *ngIf="houseForm.get('longitude').hasError('required')">
+            Долгота обязательное плоле
+         </mat-error>
+         <mat-error *ngIf="houseForm.get('longitude').hasError('minLength')">
+            значение должно быть не меньше 1
+         </mat-error>
+         <mat-error *ngIf="houseForm.get('longitude').hasError('maxLength')">
+            Занчение не должно быть больше 10
+         </mat-error>
+      </mat-form-field>
+
+      <div *ngIf="(streets$ | async) as streets">
+        <mat-form-field>
+          <mat-select [disabled]="true" placeholder="Улица" formControlName="streetId">
+            <mat-option *ngFor="let street of streets" [value]="street.id">
+              {{ street.name }}
+            </mat-option>
+        </mat-select>
+         <mat-error *ngIf="hasError" class="form__error">{{ errorMessage }} </mat-error>
+         <mat-error *ngIf="houseForm.get('streetId').hasError('required')"> </mat-error>
+      </mat-form-field>
+      </div>
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button mat-raised-button (click)="cancel()">Отмена</button>
+      <button mat-raised-button [type]="submit" (click)="save()">
+        Сохранить
+      </button>
+    </mat-dialog-actions>
+  </form>
+</div>
