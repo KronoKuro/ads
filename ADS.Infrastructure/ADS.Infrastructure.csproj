@@ -17,8 +17,4 @@
     <ProjectReference Include="..\ADS.Models\ADS.Models.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Abstract\" />
-  </ItemGroup>
-
 </Project>

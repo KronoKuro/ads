@@ -1,6 +1,7 @@
 using ADS.Aplication.StartUpConfigs;
 using ADS.Domain.Profiles;
 using ADS.Infrastructure;
+using ADS.Infrastructure.Abstract;
 using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -30,7 +31,7 @@ namespace ADS.Aplication
             // добавляем контекст MobileContext в качестве сервиса в приложение
             services.AddDbContext<ADCContext>(options =>
                 options.UseSqlServer(connection));
-
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             //var mappingConfig = new MapperConfiguration(mc =>
             //{
             //    mc.AddProfile(new MappingProfile());

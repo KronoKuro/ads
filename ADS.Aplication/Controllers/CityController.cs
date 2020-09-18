@@ -7,6 +7,7 @@ using ADS.Domain.Core;
 using ADS.Domain.Helpers;
 using ADS.Domain.ViewModels;
 using ADS.Infrastructure;
+using ADS.Infrastructure.Abstract;
 using ADS.Infrastructure.Extensions;
 using ADS.Models;
 using AutoMapper;
@@ -22,18 +23,24 @@ namespace ADS.Aplication.Controllers
     {
         private ADCContext context;
         private readonly IMapper _mapper;
+        protected readonly IUnitOfWork _unitOfWork;
 
-        public CityController(ADCContext _context, IMapper mapper)
+        public CityController(ADCContext _context, IMapper mapper, IUnitOfWork _unitOfWork)
         {
             context = _context;
             _mapper = mapper;
+            _unitOfWork = _unitOfWork;
         }
 
         [HttpGet]
         public async Task<IActionResult> getCity([FromQuery] QueryParameters queryParameters)
         {
 
-            var query = context.Cities.ProjectTo<CityViewModel>(_mapper.ConfigurationProvider);
+            var repos = _unitOfWork
+                .GetRepository<City>();
+
+                var query = repos.GetQuery()
+                .ProjectTo<CityViewModel>(_mapper.ConfigurationProvider);
 
             if (!String.IsNullOrEmpty(queryParameters.Active))
             {
