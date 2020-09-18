@@ -23,20 +23,20 @@ namespace ADS.Aplication.Controllers
     {
         private ADCContext context;
         private readonly IMapper _mapper;
-        protected readonly IUnitOfWork _unitOfWork;
+        protected readonly IUnitOfWork unitOfWork;
 
         public CityController(ADCContext _context, IMapper mapper, IUnitOfWork _unitOfWork)
         {
             context = _context;
             _mapper = mapper;
-            _unitOfWork = _unitOfWork;
+            unitOfWork = _unitOfWork;
         }
 
         [HttpGet]
         public async Task<IActionResult> getCity([FromQuery] QueryParameters queryParameters)
         {
 
-            var repos = _unitOfWork
+            var repos = unitOfWork
                 .GetRepository<City>();
 
                 var query = repos.GetQuery()
