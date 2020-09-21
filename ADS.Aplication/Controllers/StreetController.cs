@@ -7,6 +7,7 @@ using ADS.Domain.Core;
 using ADS.Domain.Helpers;
 using ADS.Domain.ViewModels;
 using ADS.Infrastructure;
+using ADS.Infrastructure.Abstract;
 using ADS.Infrastructure.Extensions;
 using ADS.Models;
 using AutoMapper;
@@ -22,21 +23,25 @@ namespace ADS.Aplication.Controllers
     {
         private ADCContext context;
         private readonly IMapper _mapper;
+        protected readonly IUnitOfWork unitOfWork;
 
-        public StreetController(ADCContext _context, IMapper mapper)
+        public StreetController(ADCContext _context, IMapper mapper, IUnitOfWork _unitOfWork)
         {
             context = _context;
             _mapper = mapper;
+            unitOfWork = _unitOfWork;
         }
 
         [HttpGet]
         public async Task<IActionResult> getStreets([FromQuery] Guid id, [FromQuery] QueryParameters queryParameters)
         {
-            var city = await context.Cities
+            var city = await unitOfWork.GetRepository<City>()
+                .GetQuery()
                 .ProjectTo<CityViewModel>(_mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync(c => c.Id == id);
 
-            var query = context.Streets
+            var query = unitOfWork.GetRepository<Street>()
+                .GetQuery()
                 .Include(x => x.Houses).Where(s => s.CityId == id)
                 .ProjectTo<StreetViewModel>(_mapper.ConfigurationProvider);
 
@@ -68,8 +73,8 @@ namespace ADS.Aplication.Controllers
                 }
                 var street = new Street();
                 street = _mapper.Map(model, street);
-                context.Streets.Add(street);
-                await context.SaveChangesAsync();
+                unitOfWork.GetRepository<Street>().Add(street);
+                await unitOfWork.SaveChangesAsync();
                 return Ok();
             }
             catch (Exception ex)
@@ -82,19 +87,20 @@ namespace ADS.Aplication.Controllers
         [HttpPut]
         public async Task<IActionResult> EditStreet([FromBody] StreetViewModel model)
         {
-           // IsValidModel(model);
+            // IsValidModel(model);
+            var repos = unitOfWork.GetRepository<Street>();
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState.GetFullErrorMessage());
             }
-            var street = context.Streets.FirstOrDefault(x => x.Id == model.Id);
+            var street = await repos.GetFirstOrDefaultAsync(x => x.Id == model.Id);
             if (street == null)
                 return NotFound();
             
             _mapper.Map(model, street);
-            
-            context.Streets.Update(street);
-            await context.SaveChangesAsync();
+
+            repos.Update(street);
+            await unitOfWork.SaveChangesAsync();
             return Ok();
         }
 
@@ -104,11 +110,12 @@ namespace ADS.Aplication.Controllers
             try
             {
                 var guid = Guid.Parse(id);
-                var street = await context.Streets.FirstOrDefaultAsync(x => x.Id == guid);
+                var streets = unitOfWork.GetRepository<Street>();
+                var street = await unitOfWork.GetRepository<Street>().GetFirstOrDefaultAsync(x => x.Id == guid);
                 if (street == null)
                     return NotFound();
-                context.Streets.Remove(street);
-                await context.SaveChangesAsync();
+                streets.Remove(street);
+                await unitOfWork.SaveChangesAsync();
                 return Ok();
             }
             catch (Exception ex)

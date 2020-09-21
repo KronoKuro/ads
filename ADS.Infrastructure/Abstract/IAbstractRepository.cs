@@ -27,6 +27,9 @@ namespace ADS.Infrastructure.Abstract
 
         IQueryable<TEntity> GetQuery();
 
+        TEntity GetFirstOrDefault(Expression<Func<TEntity, bool>> predicate);
+        Task<TEntity> GetFirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate);
+
         TEntity GetSingleOrDefault(Expression<Func<TEntity, bool>> predicate);
         Task<TEntity> GetSingleOrDefaultAsync(Expression<Func<TEntity, bool>> predicate);
 

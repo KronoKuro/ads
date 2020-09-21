@@ -85,6 +85,16 @@ namespace ADS.Infrastructure.Abstract
             return _entities.SingleOrDefaultAsync(predicate);
         }
 
+        public virtual TEntity GetFirstOrDefault(Expression<Func<TEntity, bool>> predicate)
+        {
+            return _entities.FirstOrDefault(predicate);
+        }
+
+        public virtual Task<TEntity> GetFirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate)
+        {
+            return _entities.FirstOrDefaultAsync(predicate);
+        }
+
         public virtual TEntity Find(Guid id)
         {
             return _entities.Find(id);

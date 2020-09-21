@@ -7,6 +7,7 @@ using ADS.Domain.Core;
 using ADS.Domain.Helpers;
 using ADS.Domain.ViewModels;
 using ADS.Infrastructure;
+using ADS.Infrastructure.Abstract;
 using ADS.Infrastructure.Extensions;
 using ADS.Models;
 using AutoMapper;
@@ -22,21 +23,26 @@ namespace ADS.Aplication.Controllers
     {
         private ADCContext context;
         private readonly IMapper _mapper;
+        protected readonly IUnitOfWork unitOfWork;
 
-        public HouseController(ADCContext _context, IMapper mapper)
+        public HouseController(ADCContext _context, IMapper mapper, IUnitOfWork _unitOfWork)
         {
             context = _context;
             _mapper = mapper;
+            unitOfWork = _unitOfWork;
         }
 
         [HttpGet]
         public async Task<IActionResult> getHouses([FromQuery] Guid streetId, [FromQuery] QueryParameters queryParameters)
         {
-            var street = await context.Streets
+            var street = await unitOfWork
+                .GetRepository<Street>()
+                .GetQuery()
                 .ProjectTo<StreetViewModel>(_mapper.ConfigurationProvider)
                 .FirstOrDefaultAsync(c => c.Id == streetId);
 
-            var query = context.Houses
+            var query = unitOfWork.GetRepository<House>()
+                .GetQuery()
                 .Include(x => x.Street)
                 .Include(x => x.ManagmentCompany)
                 .Where(s => s.StreetId == streetId)
@@ -71,8 +77,8 @@ namespace ADS.Aplication.Controllers
                 }
                 var house = new House();
                 house = _mapper.Map(model, house);
-                context.Houses.Add(house);
-                await context.SaveChangesAsync();
+                unitOfWork.GetRepository<House>().Add(house);
+                await unitOfWork.SaveChangesAsync();
                 return Ok();
             }
             catch (Exception ex)
@@ -90,14 +96,15 @@ namespace ADS.Aplication.Controllers
             {
                 return BadRequest(ModelState.GetFullErrorMessage());
             }
-            var houses = context.Houses.FirstOrDefault(x => x.Id == model.Id);
-            if (houses == null)
+            var repos = unitOfWork.GetRepository<House>();
+            var house = await repos.GetFirstOrDefaultAsync(x => x.Id == model.Id);
+            if (house == null)
                 return NotFound();
             
-            _mapper.Map(model, houses);
-            
-            context.Houses.Update(houses);
-            await context.SaveChangesAsync();
+            _mapper.Map(model, house);
+
+            repos.Update(house);
+            await unitOfWork.SaveChangesAsync();
             return Ok();
         }
 
@@ -107,11 +114,12 @@ namespace ADS.Aplication.Controllers
             try
             {
                 var guid = Guid.Parse(id);
-                var house = await context.Houses.FirstOrDefaultAsync(x => x.Id == guid);
+                var repos =  unitOfWork.GetRepository<House>();
+                var house = await repos.GetFirstOrDefaultAsync(x => x.Id == guid);
                 if (house == null)
                     return NotFound();
-                context.Houses.Remove(house);
-                await context.SaveChangesAsync();
+                repos.Remove(house);
+                await unitOfWork.SaveChangesAsync();
                 return Ok();
             }
             catch (Exception ex)
