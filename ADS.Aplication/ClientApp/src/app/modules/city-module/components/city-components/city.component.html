@@ -45,9 +45,9 @@
   <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
 
   </table>
-<mat-paginator [length]="paginationService.totalCount"
-    [pageSize]="paginationService.pageSize"
-    [pageSizeOptions]="paginationService.selectItemsPerPage"
+<mat-paginator [length]="pagination.totalCount"
+    [pageSize]="pagination.pageSize"
+    [pageSizeOptions]="pagination.selectItemsPerPage"
     (page)="switchPage($event)">
   </mat-paginator>
     </mat-card>

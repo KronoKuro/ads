@@ -22,11 +22,11 @@ export class SortService {
   }
 
   get active(): string {
-    return this.sortModel.active? this.sortModel.active : 'Name';
+    return this.sortModel.active ? this.sortModel.active : 'Name';
   }
 
   get direction() {
-    return this.sortModel.direction? this.sortModel.direction : 'asc';
+    return this.sortModel.direction ? this.sortModel.direction : 'asc';
   }
 
   change(sort: Sort) {

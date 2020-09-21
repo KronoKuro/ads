@@ -6,29 +6,33 @@ import { SortPage } from "../../../models/sortpage.model";
 import { CitiesStore } from "../state/city.store";
 import { tap } from 'rxjs/operators';
 import { Sort } from "@angular/material";
-import { PaginationService } from "../../shared/services/pagination.service";
 import { SortService } from "../../shared/services/sort.service";
+import { CitiesQuery } from "../state/city.query";
 
 @Injectable()
 export class CityService {
   private _url: string;
   constructor(private http: HttpClient, @Inject('BASE_URL') baseUrl: string, private cityStore: CitiesStore,
-  private paginationService: PaginationService,
+  private cityQuery: CitiesQuery,
   private sortService: SortService
   ) {
     this._url = `${baseUrl}api/city`;
   }
 
   getCity() {
-    //
-    return this.http.get<CityWithPaginationModel>(`${this._url}?active=${this.sortService.active}&direction=${this.sortService.direction}&page=${this.paginationService.page}&pageCount=${this.paginationService.pageCount}`).pipe(
+    let page =  this.cityQuery.getValue().currentPage;
+    let pageSize = this.cityQuery.getValue().pageSize;
+    return this.http.get<CityWithPaginationModel>(`${this._url}?active=${this.sortService.active}&direction=${this.sortService.direction}&page=${page}&pageCount=${pageSize}`).pipe(
       tap(entity => {
         this.cityStore.set(entity.cities);
-        this.paginationService.page = entity.pagination.currentPage;
-        this.paginationService.pageCount = entity.pagination.pageSize;
-        this.paginationService.totalCount = entity.pagination.totalCount;
+        this.setPage(entity.pagination);
       }));
   }
+
+  setPage(page){
+    this.cityStore.update(({ pagination }) => page);
+  }
+
 
   addCity(city: CityModel) {
     return this.http.post(`${this._url}`, city);

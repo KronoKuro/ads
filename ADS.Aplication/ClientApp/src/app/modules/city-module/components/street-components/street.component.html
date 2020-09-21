@@ -8,7 +8,7 @@
       <mat-icon class="span_button" aria-label="add">add</mat-icon>
     </span>
 
-    <mat-accordion>
+    <mat-accordion (matSortChange)="sortData($event)">
       <mat-expansion-panel *ngFor="let street of streets">
         <mat-expansion-panel-header>
           <mat-panel-title>
@@ -30,9 +30,9 @@
       </mat-expansion-panel>
     </mat-accordion>
     <mat-paginator
-      [length]="paginationService.totalCount"
-      [pageSize]="paginationService.pageSize"
-      [pageSizeOptions]="paginationService.selectItemsPerPage"
+      [length]="pagination.totalCount"
+      [pageSize]="pagination.pageSize"
+      [pageSizeOptions]="pagination.selectItemsPerPage"
       (page)="switchPage($event)"
     >
     </mat-paginator>
