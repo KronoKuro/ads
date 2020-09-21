@@ -29,7 +29,12 @@ export class HouseService {
     return this.http.get<EntitiesWithPagination<StreetModel, HouseModel>>(`${this._url}?streetId=${streetId}&&active=${this.sortService.active}&direction=${this.sortService.direction}&page=${this.paginationService.page}&pageCount=${this.paginationService.pageCount}`).pipe(
       tap(entity => {
         this.houseStore.set(entity.relationEntities);
+        this.setPage(entity.pagination);
       }));
+  }
+
+  setPage(page) {
+    this.houseStore.update(({ pagination }) => page);
   }
 
   addHouse(house: HouseModel) {

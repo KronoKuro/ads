@@ -13,6 +13,8 @@ import { CityModel } from 'src/app/models/city.model';
 import { AddStreetComponent } from './add-street/add-street.component';
 import { EditStreetComponent } from './edit-street/edit-street.component';
 import { DeleteStreetComponent } from './delete-street/delete-street.component';
+import { PaginationModel } from 'src/app/models/page.model';
+import { StreetsStore } from '../../state/street/street.store';
 
 
 @Component({
@@ -24,17 +26,17 @@ export class StreetComponent extends BaseComponent implements OnInit {
   streets: StreetModel[];
   city: CityModel = new CityModel();
   displayedColumns: string[] = ['name', 'actions'];
+  pagination: PaginationModel = new PaginationModel();
   dataSource: any;
   cityId: string;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
-  subscription: Subscription;
   panelOpenState = false;
 
   constructor(private streetService: StreetService,
     private streetQuery: StreetsQuery,
     dialog: MatDialog,
     private route: ActivatedRoute,
-    private paginationService: PaginationService) {
+    private sortService: SortService) {
       super(null, dialog);
       this.cityId = this.route.snapshot.params['id'];
   }
@@ -47,11 +49,17 @@ export class StreetComponent extends BaseComponent implements OnInit {
     return this.streetService.getStreets(this.cityId).subscribe(res => {
       this.city = res.city;
       this.streets = this.streetQuery.getAll();
-      this.paginationService.page = res.pagination.currentPage;
-      this.paginationService.pageCount = res.pagination.pageSize;
-      this.paginationService.totalCount = res.pagination.totalCount;
+      this.pagination.currentPage =  this.streetQuery.getValue().currentPage;
+      this.pagination.pageSize = this.streetQuery.getValue().pageSize;
+      this.pagination.totalCount = this.streetQuery.getValue().totalCount;
+      this.pagination.selectItemsPerPage = this.streetQuery.getValue().selectItemsPerPage;
       this.dataSource = new MatTableDataSource(this.streets);
     });
+  }
+
+  sortData(sort: Sort) {
+    this.sortService.change(sort);
+    this.load();
   }
 
   addStreet(city: CityModel) {
@@ -66,7 +74,10 @@ export class StreetComponent extends BaseComponent implements OnInit {
   }
 
   switchPage(event: PageEvent) {
-    this.paginationService.change(event);
+    this.pagination.currentPage = event.pageIndex + 1;
+    this.pagination.pageSize = event.pageSize;
+    this.pagination.totalCount = event.length;
+    this.streetService.setPage(this.pagination);
     this.load();
   }
 

@@ -12,6 +12,8 @@ import { PaginationService } from '../../../../modules/shared/services/paginatio
 import { SortService } from '../../../../modules/shared/services/sort.service';
 import { EditCityComponent } from './edit-city/edit-city.component';
 import { BaseComponent } from 'src/app/modules/shared/components/base.component';
+import { PaginationModel } from 'src/app/models/page.model';
+import { StreetsQuery } from '../../state/street/street.query';
 
 
 @Component({
@@ -23,13 +25,14 @@ export class CityComponent extends BaseComponent implements OnInit {
   cities: CityModel[];
   displayedColumns: string[] = ['id', 'name', 'actions'];
   dataSource: any;
+  pagination: PaginationModel = new PaginationModel();
   @ViewChild(MatSort, { static: true }) sort: MatSort;
   subscription: Subscription;
 
   constructor(private cityService: CityService,
     private cityQuery: CitiesQuery,
     dialog: MatDialog,
-    private paginationService: PaginationService,
+    private citiesQuery: CitiesQuery,
     private sortService: SortService) {
       super(null, dialog);
 
@@ -43,6 +46,10 @@ export class CityComponent extends BaseComponent implements OnInit {
   load() {
     return this.cityService.getCity().subscribe(res => {
       this.cities = this.cityQuery.getAll();
+      this.pagination.currentPage =  this.citiesQuery.getValue().currentPage;
+      this.pagination.pageSize = this.citiesQuery.getValue().pageSize;
+      this.pagination.totalCount = this.citiesQuery.getValue().totalCount;
+      this.pagination.selectItemsPerPage = this.citiesQuery.getValue().selectItemsPerPage;
       this.dataSource = new MatTableDataSource(this.cities);
     });
   }
@@ -63,7 +70,10 @@ export class CityComponent extends BaseComponent implements OnInit {
   }
 
   switchPage(event: PageEvent) {
-    this.paginationService.change(event);
+    this.pagination.currentPage = event.pageIndex + 1;
+    this.pagination.pageSize = event.pageSize;
+    this.pagination.totalCount = event.length;
+    this.cityService.setPage(this.pagination);
     this.load();
   }
 

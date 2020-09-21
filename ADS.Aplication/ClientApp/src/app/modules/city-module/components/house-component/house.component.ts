@@ -17,6 +17,7 @@ import { HouseService } from '../../services/house.service';
 import { AddHouseComponent } from './add-house/add-house.component';
 import { EditHouseComponent } from './edit-house/edit-house.component';
 import { DeleteHouseComponent } from './delete-house/delete-house.component';
+import { PaginationModel } from 'src/app/models/page.model';
 
 
 @Component({
@@ -27,6 +28,7 @@ import { DeleteHouseComponent } from './delete-house/delete-house.component';
 export class HouseComponent extends BaseComponent implements OnInit {
   streetModel: StreetModel;
   houses: HouseModel[];
+  pagination: PaginationModel = new PaginationModel();
   displayedColumns: string[] = ['id', 'name', 'managmentCompany', 'latitude', 'longitude', 'actions'];
   dataSource: any;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -39,18 +41,21 @@ export class HouseComponent extends BaseComponent implements OnInit {
   constructor(private houseService: HouseService,
     private houseQuery: HousesQuery,
     dialog: MatDialog,
-    private paginationService: PaginationService,
     private sortService: SortService) {
       super(null, dialog);
   }
 
   ngOnInit() {
-
+    this.sortService.change(this.sort);
   }
 
   load(id: string) {
     return this.houseService.getHouses(id).subscribe(res => {
       this.houses = this.houseQuery.getAll();
+      this.pagination.currentPage =  this.houseQuery.getValue().currentPage;
+      this.pagination.pageSize = this.houseQuery.getValue().pageSize;
+      this.pagination.totalCount = this.houseQuery.getValue().totalCount;
+      this.pagination.selectItemsPerPage = this.houseQuery.getValue().selectItemsPerPage;
       this.dataSource = new MatTableDataSource(this.houses);
     });
   }
@@ -72,7 +77,10 @@ export class HouseComponent extends BaseComponent implements OnInit {
   }
 
   switchPage(event: PageEvent) {
-    this.paginationService.change(event);
+    this.pagination.currentPage = event.pageIndex + 1;
+    this.pagination.pageSize = event.pageSize;
+    this.pagination.totalCount = event.length;
+    this.houseService.setPage(this.pagination);
     this.load(this.streetModel.id);
   }
 
