@@ -7,6 +7,7 @@ using ADS.Domain.Core;
 using ADS.Domain.Helpers;
 using ADS.Domain.ViewModels;
 using ADS.Infrastructure;
+using ADS.Infrastructure.Abstract;
 using ADS.Infrastructure.Extensions;
 using ADS.Models;
 using AutoMapper;
@@ -22,18 +23,24 @@ namespace ADS.Aplication.Controllers
     {
         private ADCContext context;
         private readonly IMapper _mapper;
+        protected readonly IUnitOfWork unitOfWork;
 
-        public CityController(ADCContext _context, IMapper mapper)
+        public CityController(ADCContext _context, IMapper mapper, IUnitOfWork _unitOfWork)
         {
             context = _context;
             _mapper = mapper;
+            unitOfWork = _unitOfWork;
         }
 
         [HttpGet]
         public async Task<IActionResult> getCity([FromQuery] QueryParameters queryParameters)
         {
 
-            var query = context.Cities.ProjectTo<CityViewModel>(_mapper.ConfigurationProvider);
+            var repos = unitOfWork
+                .GetRepository<City>();
+
+            var query = repos.GetQuery()
+                 .ProjectTo<CityViewModel>(_mapper.ConfigurationProvider);
 
             if (!String.IsNullOrEmpty(queryParameters.Active))
             {
@@ -62,8 +69,9 @@ namespace ADS.Aplication.Controllers
                 }
                 var city = new City();
                 city = _mapper.Map(model, city);
-                context.Cities.Add(city);
-                await context.SaveChangesAsync();
+                var repos = unitOfWork.GetRepository<City>();
+                repos.Add(city);
+                await unitOfWork.SaveChangesAsync();
                 return Ok();
             }
             catch (Exception ex)
@@ -81,12 +89,13 @@ namespace ADS.Aplication.Controllers
             {
                 return BadRequest(ModelState.GetFullErrorMessage());
             }
-            var city = context.Cities.FirstOrDefault(x => x.Id == model.Id);
+            var cities = unitOfWork.GetRepository<City>();
+            var city = cities.GetFirstOrDefault(x => x.Id == model.Id);
             if (city == null)
                 return NotFound();
-            
+
             _mapper.Map(model, city);
-            
+
             context.Cities.Update(city);
             await context.SaveChangesAsync();
             return Ok();
@@ -98,11 +107,12 @@ namespace ADS.Aplication.Controllers
             try
             {
                 var guid = Guid.Parse(id);
-                var city = await context.Cities.FirstOrDefaultAsync(x => x.Id == guid);
+                var cities = unitOfWork.GetRepository<City>();
+                var city = await cities.GetFirstOrDefaultAsync(x => x.Id == guid);
                 if (city == null)
                     return NotFound();
-                context.Cities.Remove(city);
-                await context.SaveChangesAsync();
+                cities.Remove(city);
+                await unitOfWork.SaveChangesAsync();
                 return Ok();
             }
             catch (Exception ex)
