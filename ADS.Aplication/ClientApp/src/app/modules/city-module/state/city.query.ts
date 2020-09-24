@@ -6,6 +6,8 @@ import { CityModel } from '../../../models/city.model';
 @Injectable()
 export class CitiesQuery extends QueryEntity<CitiesState, CityModel> {
   citiesForLookup$ = this.select(state => state.lookupCity);
+  sortPage$ = this.select(state => state.sortPage);
+
   constructor(protected store: CitiesStore) {
     super(store);
   }

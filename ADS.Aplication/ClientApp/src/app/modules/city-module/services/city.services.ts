@@ -6,7 +6,6 @@ import { SortPage } from "../../../models/sortpage.model";
 import { CitiesStore } from "../state/city.store";
 import { tap } from 'rxjs/operators';
 import { Sort } from "@angular/material";
-import { SortService } from "../../shared/services/sort.service";
 import { CitiesQuery } from "../state/city.query";
 
 @Injectable()
@@ -14,16 +13,17 @@ export class CityService {
   private _url: string;
   constructor(private http: HttpClient, @Inject('BASE_URL') baseUrl: string,
   private cityStore: CitiesStore,
-  private cityQuery: CitiesQuery,
-  private sortService: SortService
+  private cityQuery: CitiesQuery
   ) {
     this._url = `${baseUrl}api/city`;
   }
 
   getCity() {
-    let page =  this.cityQuery.getValue().currentPage;
-    let pageSize = this.cityQuery.getValue().pageSize;
-    return this.http.get<CityWithPaginationModel>(`${this._url}?active=${this.sortService.active}&direction=${this.sortService.direction}&page=${page}&pageCount=${pageSize}`).pipe(
+    const page =  this.cityQuery.getValue().currentPage;
+    const pageSize = this.cityQuery.getValue().pageSize;
+    const sort = this.cityQuery.getValue().sortPage;
+
+    return this.http.get<CityWithPaginationModel>(`${this._url}?active=${sort.active}&direction=${sort.direction}&page=${page}&pageCount=${pageSize}`).pipe(
       tap(entity => {
         this.cityStore.set(entity.cities);
         this.setPage(entity.pagination);
@@ -36,18 +36,17 @@ export class CityService {
                 lookupCity: res
         }));
       });
-      //.pipe(
-    //   tap(entity => {
-    //     this.cityStore.update(state => ({
-    //       lookupCity: entity
-    //     }));
-    //   }));
   }
 
   setPage(page) {
     this.cityStore.update(({ pagination }) => page);
   }
 
+  setSort(sort) {
+    this.cityStore.update(state => ({
+      sortPage: sort
+    }));
+  }
 
   addCity(city: CityModel) {
     return this.http.post(`${this._url}`, city);

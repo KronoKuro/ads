@@ -6,9 +6,7 @@ import { CitiesQuery } from '../../state/city.query';
 import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-import { SortPage } from '../../../../models/sortpage.model';  //app/models/sortpage.model;
-import { PaginationService } from '../../../../modules/shared/services/pagination.service';
-import { SortService } from '../../../../modules/shared/services/sort.service';
+import { SortPage } from '../../../../models/sortpage.model';
 import { BaseComponent } from 'src/app/modules/shared/components/base.component';
 import { StreetModel } from 'src/app/models/street.model';
 import { HousesQuery } from '../../state/houses/house.query';
@@ -17,7 +15,6 @@ import { HouseService } from '../../services/house.service';
 import { AddHouseComponent } from './add-house/add-house.component';
 import { EditHouseComponent } from './edit-house/edit-house.component';
 import { DeleteHouseComponent } from './delete-house/delete-house.component';
-import { PaginationModel } from 'src/app/models/page.model';
 
 
 @Component({
@@ -28,26 +25,22 @@ import { PaginationModel } from 'src/app/models/page.model';
 export class HouseComponent extends BaseComponent implements OnInit {
   streetModel: StreetModel;
   houses: HouseModel[];
-  pagination: PaginationModel = new PaginationModel();
-  displayedColumns: string[] = ['id', 'name', 'managmentCompany', 'latitude', 'longitude', 'actions'];
+  displayedColumns: string[] = ['id', 'name', 'managmentCompany', 'managmentCompanyId', 'latitude', 'longitude', 'actions'];
   dataSource: any;
   sort: SortPage;
 
   @Input() set street(street: StreetModel) {
     this.streetModel = street;
-    //this.sortService.change(this.sort);
     this.subscription = this.load(street.id);
   }
 
   constructor(private houseService: HouseService,
     private houseQuery: HousesQuery,
-    dialog: MatDialog,
-    private sortService: SortService) {
+    dialog: MatDialog) {
       super(null, dialog);
   }
 
   ngOnInit() {
-    //this.sortService.change(this.sort);
   }
 
   load(id: string) {
@@ -59,7 +52,6 @@ export class HouseComponent extends BaseComponent implements OnInit {
       this.pagination.selectItemsPerPage = this.houseQuery.getValue().selectItemsPerPage;
       this.dataSource = new MatTableDataSource(this.houses);
       this.enumearableIsNotNull = this.houses.length !== 0;
-      this.sort = { active: this.houseQuery.getValue().sortBy, direction: this.houseQuery.getValue().sortByOrder};
     });
   }
 
@@ -75,14 +67,12 @@ export class HouseComponent extends BaseComponent implements OnInit {
   }
 
   sortData(sort: Sort) {
-    this.sortService.change(sort);
+    this.houseService.setSort(sort);
     this.load(this.streetModel.id);
   }
 
   switchPage(event: PageEvent) {
-    this.pagination.currentPage = event.pageIndex + 1;
-    this.pagination.pageSize = event.pageSize;
-    this.pagination.totalCount = event.length;
+    this.changePage(event);
     this.houseService.setPage(this.pagination);
     this.load(this.streetModel.id);
   }

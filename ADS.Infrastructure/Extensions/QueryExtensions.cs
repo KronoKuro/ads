@@ -28,9 +28,9 @@ namespace ADS.Infrastructure.Extensions
         public static IQueryable<TEntity> Sort<TEntity>(this IQueryable<TEntity> source, string active, string direction)
         {
             if (direction == Ask)
-                return source.QueryOrderBy(active, true);
-            if (direction == Desc)
                 return source.QueryOrderBy(active, false);
+            if (direction == Desc)
+                return source.QueryOrderBy(active, true);
 
             return source;
         }

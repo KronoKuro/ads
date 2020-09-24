@@ -1,28 +1,27 @@
 import { Injectable, Inject } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { tap } from 'rxjs/operators';
-import { PaginationService } from "../../shared/services/pagination.service";
-import { SortService } from "../../shared/services/sort.service";
-import { EntitiesWithPagination } from "src/app/models/EntitiesWithPagination.model";
-import { HouseModel } from "src/app/models/house.model";
-import { StreetModel } from "src/app/models/street.model";
-import { HouseStore } from "../state/houses/house.store";
+import { EntitiesWithPagination } from '../../../models/EntitiesWithPagination.model';
+import { HouseModel } from '../../../models/house.model';
+import { StreetModel } from '../../../models/street.model';
+import { HouseStore } from '../state/houses/house.store';
 
 @Injectable()
 export class HouseService {
   private _url: string;
   constructor(private http: HttpClient,
   @Inject('BASE_URL') baseUrl: string,
-  private houseStore: HouseStore,
-  private paginationService: PaginationService,
-  private sortService: SortService
+  private houseStore: HouseStore
   ) {
     this._url = `${baseUrl}api/house`;
   }
 
   getHouses(streetId: string) {
-    //
-    return this.http.get<EntitiesWithPagination<StreetModel, HouseModel>>(`${this._url}?streetId=${streetId}&&active=${this.sortService.active}&direction=${this.sortService.direction}&page=${this.paginationService.page}&pageCount=${this.paginationService.pageCount}`).pipe(
+    const page =  this.houseStore.getValue().currentPage;
+    const pageSize = this.houseStore.getValue().pageSize;
+    const sort = this.houseStore.getValue().sortPage;
+
+    return this.http.get<EntitiesWithPagination<StreetModel, HouseModel>>(`${this._url}?streetId=${streetId}&active=${sort.active}&direction=${sort.direction}&page=${page}&pageCount=${pageSize}`).pipe(
       tap(entity => {
         this.houseStore.set(entity.relationEntities);
         this.setPage(entity.pagination);
@@ -31,6 +30,12 @@ export class HouseService {
 
   setPage(page) {
     this.houseStore.update(({ pagination }) => page);
+  }
+
+  setSort(sort) {
+    this.houseStore.update(state => ({
+      sortPage: sort
+    }));
   }
 
   addHouse(house: HouseModel) {

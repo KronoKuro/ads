@@ -4,8 +4,6 @@ import { StreetModel } from '../../../../models/street.model';
 import { MatSort, MatTableDataSource, MatDialog, Sort, PageEvent } from '@angular/material';
 import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { PaginationService } from '../../../../modules/shared/services/pagination.service';
-import { SortService } from '../../../../modules/shared/services/sort.service';
 import { BaseComponent } from '../../../shared/components/base.component';
 import { StreetsQuery } from '../../state/street/street.query';
 import { ActivatedRoute } from '@angular/router';
@@ -26,7 +24,6 @@ export class StreetComponent extends BaseComponent implements OnInit {
   streets: StreetModel[];
   city: CityModel = new CityModel();
   displayedColumns: string[] = ['name', 'actions'];
-  pagination: PaginationModel = new PaginationModel();
   dataSource: any;
   cityId: string;
   @ViewChild(MatSort, { static: true }) sort: MatSort;
@@ -35,8 +32,7 @@ export class StreetComponent extends BaseComponent implements OnInit {
   constructor(private streetService: StreetService,
     private streetQuery: StreetsQuery,
     dialog: MatDialog,
-    private route: ActivatedRoute,
-    private sortService: SortService) {
+    private route: ActivatedRoute) {
       super(null, dialog);
       this.cityId = this.route.snapshot.params['id'];
   }
@@ -58,10 +54,6 @@ export class StreetComponent extends BaseComponent implements OnInit {
     });
   }
 
-  sortData(sort: Sort) {
-    this.sortService.change(sort);
-    this.load();
-  }
 
   addStreet(city: CityModel) {
      const dialogRef = this.dialog.open(AddStreetComponent, {
@@ -75,9 +67,7 @@ export class StreetComponent extends BaseComponent implements OnInit {
   }
 
   switchPage(event: PageEvent) {
-    this.pagination.currentPage = event.pageIndex + 1;
-    this.pagination.pageSize = event.pageSize;
-    this.pagination.totalCount = event.length;
+    this.changePage(event);
     this.streetService.setPage(this.pagination);
     this.load();
   }

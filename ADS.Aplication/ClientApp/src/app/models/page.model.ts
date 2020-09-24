@@ -1,8 +1,8 @@
 
 export class PaginationModel {
   totalCount: number;
-  pageSize: number = 5;
-  currentPage: number= 1;
+  pageSize: number;
+  currentPage: number;
   totalPages: number;
-  selectItemsPerPage: [5, 10, 25, 100];
+  selectItemsPerPage: number[];
 }

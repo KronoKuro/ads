@@ -7,12 +7,9 @@ import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { AddCityComponent } from './add-city/add-city.component';
 import { DeleteCityComponent } from './delete-city/delete-city.component';
-import { SortPage } from '../../../../models/sortpage.model';  //app/models/sortpage.model;
-import { PaginationService } from '../../../../modules/shared/services/pagination.service';
-import { SortService } from '../../../../modules/shared/services/sort.service';
 import { EditCityComponent } from './edit-city/edit-city.component';
-import { BaseComponent } from 'src/app/modules/shared/components/base.component';
-import { PaginationModel } from 'src/app/models/page.model';
+import { BaseComponent } from '../../../../modules/shared/components/base.component';
+import { PaginationModel } from '../../../../models/page.model';
 import { StreetsQuery } from '../../state/street/street.query';
 
 
@@ -31,14 +28,12 @@ export class CityComponent extends BaseComponent implements OnInit {
   constructor(private cityService: CityService,
     private cityQuery: CitiesQuery,
     dialog: MatDialog,
-    private citiesQuery: CitiesQuery,
-    private sortService: SortService) {
+    private citiesQuery: CitiesQuery) {
       super(null, dialog);
 
   }
 
   ngOnInit() {
-    this.sortService.change(this.sort);
     this.subscription = this.load();
   }
 
@@ -64,14 +59,12 @@ export class CityComponent extends BaseComponent implements OnInit {
   }
 
   sortData(sort: Sort) {
-    this.sortService.change(sort);
+    this.cityService.setSort(sort);
     this.load();
   }
 
   switchPage(event: PageEvent) {
-    this.pagination.currentPage = event.pageIndex + 1;
-    this.pagination.pageSize = event.pageSize;
-    this.pagination.totalCount = event.length;
+    this.changePage(event);
     this.cityService.setPage(this.pagination);
     this.load();
   }
