@@ -1,13 +1,9 @@
 import { Injectable, Inject } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { SortPage } from "../../../models/sortpage.model";
-import { StreetsStore } from '../state/street/street.store';
 import { tap } from 'rxjs/operators';
-import { Sort } from "@angular/material";
 import { PaginationService } from "../../shared/services/pagination.service";
 import { SortService } from "../../shared/services/sort.service";
-import { StreetWithPaginationModel } from "src/app/models/streetwithpagination.model copy";
-import { EntitiesWithPagination } from "src/app/models/EntitiesWithPagination.model copy 2";
+import { EntitiesWithPagination } from "src/app/models/EntitiesWithPagination.model";
 import { HouseModel } from "src/app/models/house.model";
 import { StreetModel } from "src/app/models/street.model";
 import { HouseStore } from "../state/houses/house.store";

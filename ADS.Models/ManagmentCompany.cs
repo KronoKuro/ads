@@ -8,6 +8,9 @@ namespace ADS.Models
     {
         public string Description { get; set; }
 
+        public Guid CityId { get; set; }
+        public virtual City City { get; set; }
+
         public ICollection<House> Houses { get; set; }
     }
 }

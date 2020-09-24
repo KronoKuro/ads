@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, APP_INITIALIZER } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterModule } from '@angular/router';
@@ -29,11 +29,37 @@ import { HousesQuery } from '../state/houses/house.query';
 import { AddHouseComponent } from './house-component/add-house/add-house.component';
 import { EditHouseComponent } from './house-component/edit-house/edit-house.component';
 import { DeleteHouseComponent } from './house-component/delete-house/delete-house.component';
+import { ManagmentCompanyComponent } from './managment-company-component/managment-company-component';
+import { MangmentCompanyService } from '../services/managmentcompany.services';
+import { ManagmentCompanyQuery } from '../state/managmentcompany/managmentcompany.query';
+import { ManagmentCompanyStore } from '../state/managmentcompany/managmentcompany.store';
+import { AddCompanyComponent } from './managment-company-component/add-company/add-company.component';
+import { EditCompanyComponent } from './managment-company-component/edit-company/edit-company.component';
+import { DeleteCompanyComponent } from './managment-company-component/delete-company/delete-company.component';
 
 const router = [
   { path: 'city', component: CityComponent },
-  { path: 'streets/:id', component: StreetComponent }
+  { path: 'streets/:id', component: StreetComponent },
+  { path: 'managmentcompany', component: ManagmentCompanyComponent }
 ]
+
+
+export function initAppFactory(
+  //houseService: HouseService,
+  //streetService: StreetService,
+  cityService: CityService
+  ) {
+  return async () => {
+    await Promise.all([cityService.getCityForLookup()])
+    // await Promise.all([
+    //   metadataService.refreshMetadata(),
+    //   versionService.getVersions(),
+    //   pivotTableService.loadPivotTables(),
+    //   scenarioService.RefreshScenarios(),
+    //   permissionsService.refreshMetadata()
+    // ]);
+  }
+}
 
 @NgModule({
   declarations: [
@@ -48,7 +74,11 @@ const router = [
     HouseComponent,
     AddHouseComponent,
     EditHouseComponent,
-    DeleteHouseComponent
+    DeleteHouseComponent,
+    ManagmentCompanyComponent,
+    AddCompanyComponent,
+    EditCompanyComponent,
+    DeleteCompanyComponent
   ],
   imports: [
     CommonModule,
@@ -65,12 +95,19 @@ const router = [
     PaginationService,
     SortService,
     HouseService,
+    MangmentCompanyService,
     CitiesStore,
     StreetsStore,
     HouseStore,
+    ManagmentCompanyStore,
     CitiesQuery,
     StreetsQuery,
-    HousesQuery
+    HousesQuery,
+    ManagmentCompanyQuery,
+    { provide: APP_INITIALIZER,
+      useFactory: initAppFactory,
+      deps: [CityService], multi: true
+    }
   ],entryComponents: [
     AddCityComponent,
     DeleteCityComponent,
@@ -81,7 +118,10 @@ const router = [
     HouseComponent,
     AddHouseComponent,
     EditHouseComponent,
-    DeleteHouseComponent
+    DeleteHouseComponent,
+    AddCompanyComponent,
+    EditCompanyComponent,
+    DeleteCompanyComponent
   ],
 })
 export class CityModule { }

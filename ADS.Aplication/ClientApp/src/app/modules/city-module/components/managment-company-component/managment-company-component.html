@@ -1,0 +1,66 @@
+<body>
+  <div class="container">
+  <h4>Управляющие компании</h4>
+    <mat-card>
+      <span mat-icon-button color="primary" (click)="addCompany()">
+            <mat-icon class="span_button" aria-label="add">add</mat-icon>
+          </span>
+      <!--<mat-list #shoes>
+        <mat-list-item *ngFor="let item of cities">
+          {{item.name}}
+        </mat-list-item>
+      </mat-list>-->
+
+<table mat-table [dataSource]="dataSource" matSort  (matSortChange)="sortData($event)" class="mat-table-city">
+
+  <!-- Id Column-->
+  <ng-container matColumnDef="id">
+    <th hidden="hide" mat-header-cell *matHeaderCellDef mat-sort-header> No. </th>
+    <td hidden="hide" mat-cell *matCellDef="let element"> {{element.id}} </td>
+  </ng-container>
+
+  <!-- Name Column -->
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header  width="30%"> Название </th>
+    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+  </ng-container>
+
+    <ng-container matColumnDef="description">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header  width="45%"> Описание </th>
+    <td mat-cell *matCellDef="let element"> {{element.description}} </td>
+  </ng-container>
+
+
+  <ng-container matColumnDef="cityName">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header  width="20%"> Город </th>
+    <td mat-cell *matCellDef="let element"> {{element.cityName}} </td>
+  </ng-container>
+
+     <ng-container matColumnDef="actions">
+        <mat-header-cell *matHeaderCellDef>
+          Действия
+        </mat-header-cell>
+
+        <mat-cell *matCellDef="let row; let i=index;">
+          <span mat-icon color="indigo" (click)="editCompany(row)">
+            <mat-icon class="span_button" aria-label="Edit">edit</mat-icon>
+          </span>
+
+          <span mat-icon color="black" (click)="deleteCompany(row)">
+            <mat-icon class="span_button" aria-label="Delete">delete</mat-icon>
+          </span>
+        </mat-cell>
+      </ng-container>
+
+   <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+  </table>
+<mat-paginator [length]="pagination.totalCount"
+    [pageSize]="pagination.pageSize"
+    [pageSizeOptions]="pagination.selectItemsPerPage"
+    (page)="switchPage($event)">
+  </mat-paginator>
+    </mat-card>
+  </div>
+</body>

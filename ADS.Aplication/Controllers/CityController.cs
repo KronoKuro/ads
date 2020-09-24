@@ -21,13 +21,11 @@ namespace ADS.Aplication.Controllers
     [Route("api/[controller]")]
     public class CityController : Controller
     {
-        private ADCContext context;
         private readonly IMapper _mapper;
         protected readonly IUnitOfWork unitOfWork;
 
-        public CityController(ADCContext _context, IMapper mapper, IUnitOfWork _unitOfWork)
+        public CityController(IMapper mapper, IUnitOfWork _unitOfWork)
         {
-            context = _context;
             _mapper = mapper;
             unitOfWork = _unitOfWork;
         }
@@ -56,6 +54,22 @@ namespace ADS.Aplication.Controllers
 
             return Ok(cities);
         }
+
+        [Route("lookup")]
+        [HttpGet]
+        public async Task<IActionResult> getCityState()
+        {
+            var repos = unitOfWork
+                .GetRepository<City>();
+
+            var query = repos.GetQuery()
+                .Include(x => x.Streets)
+                .Include(x => x.ManagmentCompanies)
+                 .ProjectTo<CityViewModel>(_mapper.ConfigurationProvider);
+
+            return Ok(query);
+        }
+
 
         [HttpPost]
         public async Task<IActionResult> CreateCity([FromBody] CityViewModel model)
@@ -96,8 +110,8 @@ namespace ADS.Aplication.Controllers
 
             _mapper.Map(model, city);
 
-            context.Cities.Update(city);
-            await context.SaveChangesAsync();
+            cities.Update(city);
+            await unitOfWork.SaveChangesAsync();
             return Ok();
         }
 

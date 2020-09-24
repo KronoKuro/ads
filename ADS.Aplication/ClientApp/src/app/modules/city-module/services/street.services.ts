@@ -29,7 +29,7 @@ export class StreetService {
     return this.http.get<StreetWithPaginationModel>(`${this._url}?id=${id}&active=${this.sortService.active}&direction=${this.sortService.direction}&page=${page}&pageCount=${pageSize}`).pipe(
       tap(entity => {
         this.streetsStore.set(entity.streets);
-        this.setPage(entity.pagination)
+        this.setPage(entity.pagination);
       }));
   }
 
