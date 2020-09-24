@@ -31,10 +31,11 @@ export class HouseComponent extends BaseComponent implements OnInit {
   pagination: PaginationModel = new PaginationModel();
   displayedColumns: string[] = ['id', 'name', 'managmentCompany', 'latitude', 'longitude', 'actions'];
   dataSource: any;
-  @ViewChild(MatSort, { static: true }) sort: MatSort;
+  sort: SortPage;
+
   @Input() set street(street: StreetModel) {
     this.streetModel = street;
-    this.sortService.change(this.sort);
+    //this.sortService.change(this.sort);
     this.subscription = this.load(street.id);
   }
 
@@ -46,7 +47,7 @@ export class HouseComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.sortService.change(this.sort);
+    //this.sortService.change(this.sort);
   }
 
   load(id: string) {
@@ -57,6 +58,8 @@ export class HouseComponent extends BaseComponent implements OnInit {
       this.pagination.totalCount = this.houseQuery.getValue().totalCount;
       this.pagination.selectItemsPerPage = this.houseQuery.getValue().selectItemsPerPage;
       this.dataSource = new MatTableDataSource(this.houses);
+      this.enumearableIsNotNull = this.houses.length !== 0;
+      this.sort = { active: this.houseQuery.getValue().sortBy, direction: this.houseQuery.getValue().sortByOrder};
     });
   }
 

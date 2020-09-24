@@ -17,6 +17,7 @@ export abstract class BaseComponent implements OnDestroy {
   hasError: boolean = false;
   errorMessage: string = null;
   matcher = new MyErrorStateMatcher();
+  enumearableIsNotNull: boolean = true;
 
   constructor(protected dialogRef: MatDialogRef<any>, protected dialog: MatDialog){
 

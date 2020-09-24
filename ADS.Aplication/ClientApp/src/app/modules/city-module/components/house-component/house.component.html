@@ -10,7 +10,7 @@
           {{item.name}}
         </mat-list-item>
       </mat-list>-->
-
+<ng-container *ngIf="enumearableIsNotNull">
 <table mat-table [dataSource]="dataSource" matSort  (matSortChange)="sortData($event)" class="mat-table-city">
 
   <!-- Id Column-->
@@ -65,6 +65,10 @@
     [pageSizeOptions]="pagination.selectItemsPerPage"
     (page)="switchPage($event)">
   </mat-paginator>
+  </ng-container>
+  <ng-container *ngIf="!enumearableIsNotNull">
+    <h4 class="null_enumerable">Пока нет домов</h4>
+  </ng-container>
     </mat-card>
   </div>
 </body>

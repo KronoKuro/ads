@@ -54,6 +54,7 @@ export class StreetComponent extends BaseComponent implements OnInit {
       this.pagination.totalCount = this.streetQuery.getValue().totalCount;
       this.pagination.selectItemsPerPage = this.streetQuery.getValue().selectItemsPerPage;
       this.dataSource = new MatTableDataSource(this.streets);
+      this.enumearableIsNotNull = this.streets.length !== 0;
     });
   }
 
