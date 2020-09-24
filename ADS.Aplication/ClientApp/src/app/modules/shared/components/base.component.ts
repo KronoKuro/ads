@@ -1,8 +1,8 @@
 import { OnDestroy } from "@angular/core";
 import { Subscription } from "rxjs";
-import { MatDialogRef, MatDialog, ErrorStateMatcher } from "@angular/material";
+import { MatDialogRef, MatDialog, ErrorStateMatcher, PageEvent } from "@angular/material";
 import { NgForm, FormGroupDirective, FormControl } from "@angular/forms";
-
+import { PaginationModel } from '../../../models/page.model';
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
     const isSubmitted = form && form.submitted;
@@ -18,6 +18,7 @@ export abstract class BaseComponent implements OnDestroy {
   errorMessage: string = null;
   matcher = new MyErrorStateMatcher();
   enumearableIsNotNull: boolean = true;
+  pagination: PaginationModel = new PaginationModel();
 
   constructor(protected dialogRef: MatDialogRef<any>, protected dialog: MatDialog){
 
@@ -25,6 +26,12 @@ export abstract class BaseComponent implements OnDestroy {
 
   cancel() {
     this.dialogRef.close();
+  }
+
+  changePage(event: PageEvent) {
+    this.pagination.currentPage = event.pageIndex + 1;
+    this.pagination.pageSize = event.pageSize;
+    this.pagination.totalCount = event.length;
   }
 
 

@@ -2,8 +2,6 @@ import { Component, OnInit, ViewChild, OnDestroy, Input } from '@angular/core';
 import { MatSort, MatTableDataSource, MatDialog, Sort, PageEvent } from '@angular/material';
 import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { SortPage } from '../../../../models/sortpage.model';  //app/models/sortpage.model;
-import { SortService } from '../../../../modules/shared/services/sort.service';
 import { BaseComponent } from 'src/app/modules/shared/components/base.component';
 import { ManagmentCompanyModel } from 'src/app/models/managmentcompany.model';
 import { PaginationModel } from 'src/app/models/page.model';
@@ -31,13 +29,11 @@ export class ManagmentCompanyComponent extends BaseComponent implements OnInit {
   constructor(private managmentCompanyService: MangmentCompanyService,
     private managmentCompanyQuery: ManagmentCompanyQuery,
     cityQuery: CitiesQuery,
-    dialog: MatDialog,
-    private sortService: SortService) {
+    dialog: MatDialog) {
       super(null, dialog);
   }
 
   ngOnInit() {
-    this.sortService.change(this.sort);
     this.load();
   }
 
@@ -63,14 +59,12 @@ export class ManagmentCompanyComponent extends BaseComponent implements OnInit {
   }
 
   sortData(sort: Sort) {
-    this.sortService.change(sort);
+    this.managmentCompanyService.setSort(sort);
     this.load();
   }
 
   switchPage(event: PageEvent) {
-    this.pagination.currentPage = event.pageIndex + 1;
-    this.pagination.pageSize = event.pageSize;
-    this.pagination.totalCount = event.length;
+    this.changePage(event);
     this.managmentCompanyService.setPage(this.pagination);
     this.load();
   }

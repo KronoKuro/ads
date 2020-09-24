@@ -2,12 +2,11 @@
 import { EntityState, EntityStore, StoreConfig, Order } from '@datorama/akita';
 import { CityModel } from 'src/app/models/city.model';
 import { Injectable } from '@angular/core';
-
+import { SortPage } from '../../../models/sortpage.model';
 
 export interface CityState {
   lookupCity: CityModel[],
-  sortBy: string,
-  sortByOrder: Order,
+  sortPage: SortPage,
   currentPage: number,
   pageSize: number,
   selectItemsPerPage: number []
@@ -16,22 +15,13 @@ export interface CityState {
 export function createInitialState(): CityState {
   return {
     lookupCity: [],
-    sortBy: 'name',
-    sortByOrder: Order.ASC,
+    sortPage: { active: 'name', direction: Order.ASC },
     currentPage: 1,
     pageSize: 5,
     selectItemsPerPage: [5, 10, 25, 100]
   };
 }
 
-// const initConf = {
-//   lookupCity: [],
-//   sortBy: 'name',
-//   sortByOrder: Order.ASC,
-//   currentPage: 1,
-//   pageSize: 5,
-//   selectItemsPerPage: [5, 10, 25, 100]
-// };
 export interface CitiesState extends EntityState<CityModel> { }
 @Injectable()
 @StoreConfig({ name: 'cities' })

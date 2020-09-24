@@ -3,7 +3,6 @@ import { HttpClient } from "@angular/common/http";
 import { SortPage } from "../../../models/sortpage.model";
 import { tap } from 'rxjs/operators';
 import { Sort } from "@angular/material";
-import { SortService } from "../../shared/services/sort.service";
 import { ManagmentCompanyQuery } from "../state/managmentcompany/managmentcompany.query";
 import { EntityWithPaginationViewModel } from "../../../models/EntityWithPaginationViewModel";
 import { ManagmentCompanyModel } from "../../../models/managmentCompany.model";
@@ -16,15 +15,16 @@ export class MangmentCompanyService {
   constructor(private http: HttpClient, @Inject('BASE_URL') baseUrl: string,
   private managmentCompanyStore: ManagmentCompanyStore,
   private managmentCompanyQuery: ManagmentCompanyQuery,
-  private sortService: SortService
   ) {
     this._url = `${baseUrl}api/managmentCompany`;
   }
 
   getManagmentCompanies() {
-    let page =  this.managmentCompanyQuery.getValue().currentPage;
-    let pageSize = this.managmentCompanyQuery.getValue().pageSize;
-    return this.http.get<EntityWithPaginationViewModel<ManagmentCompanyModel>>(`${this._url}?active=${this.sortService.active}&direction=${this.sortService.direction}&page=${page}&pageCount=${pageSize}`).pipe(
+    const page =  this.managmentCompanyQuery.getValue().currentPage;
+    const pageSize = this.managmentCompanyQuery.getValue().pageSize;
+    const sort = this.managmentCompanyQuery.getValue().sortPage;
+
+    return this.http.get<EntityWithPaginationViewModel<ManagmentCompanyModel>>(`${this._url}?active=${sort.active}&direction=${sort.direction}&page=${page}&pageCount=${pageSize}`).pipe(
       tap(entity => {
         this.managmentCompanyStore.set(entity.entities);
         this.setPage(entity.pagination);
@@ -35,6 +35,11 @@ export class MangmentCompanyService {
     this.managmentCompanyStore.update(({ pagination }) => page);
   }
 
+  setSort(sort) {
+    this.managmentCompanyStore.update(state => ({
+      sortPage: sort
+    }));
+  }
 
   addCompany(company: ManagmentCompanyModel) {
     return this.http.post(`${this._url}`, company);

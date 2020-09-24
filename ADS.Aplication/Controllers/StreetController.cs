@@ -41,13 +41,10 @@ namespace ADS.Aplication.Controllers
             var query = unitOfWork.GetRepository<Street>()
                 .GetQuery()
                 .Include(x => x.Houses).Where(s => s.CityId == id)
-                .ProjectTo<StreetViewModel>(_mapper.ConfigurationProvider);
+                .ProjectTo<StreetViewModel>(_mapper.ConfigurationProvider)
+                .OrderBy(x => x.Name);
 
-            if (!String.IsNullOrEmpty(queryParameters.Active))
-            {
-                query = query.Sort(queryParameters.Active, queryParameters.Direction);
-            }
-
+            
             var paginationMetadata = query.GetPaginationViewModel(queryParameters);
             var streets = new StreetViewModelsWithPaginationModels
             {

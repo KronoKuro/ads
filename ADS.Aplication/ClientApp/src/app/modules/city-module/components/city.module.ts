@@ -13,8 +13,6 @@ import { EditCityComponent } from './city-components/edit-city/edit-city.compone
 import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../../shared/material-module';
 import { DeleteCityComponent } from './city-components/delete-city/delete-city.component';
-import { PaginationService } from '../../shared/services/pagination.service';
-import { SortService } from '../../shared/services/sort.service';
 import { StreetService } from '../services/street.services';
 import { StreetsStore } from '../state/street/street.store';
 import { StreetsQuery } from '../state/street/street.query';
@@ -92,8 +90,6 @@ export function initAppFactory(
   providers: [
     CityService,
     StreetService,
-    PaginationService,
-    SortService,
     HouseService,
     MangmentCompanyService,
     CitiesStore,
