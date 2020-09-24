@@ -12,7 +12,8 @@ import { CitiesQuery } from "../state/city.query";
 @Injectable()
 export class CityService {
   private _url: string;
-  constructor(private http: HttpClient, @Inject('BASE_URL') baseUrl: string, private cityStore: CitiesStore,
+  constructor(private http: HttpClient, @Inject('BASE_URL') baseUrl: string,
+  private cityStore: CitiesStore,
   private cityQuery: CitiesQuery,
   private sortService: SortService
   ) {
@@ -29,7 +30,21 @@ export class CityService {
       }));
   }
 
-  setPage(page){
+  getCityForLookup() {
+      return this.http.get<CityModel[]>(`${this._url}/lookup`).subscribe(res => {
+        this.cityStore.update(state => ({
+                lookupCity: res
+        }));
+      });
+      //.pipe(
+    //   tap(entity => {
+    //     this.cityStore.update(state => ({
+    //       lookupCity: entity
+    //     }));
+    //   }));
+  }
+
+  setPage(page) {
     this.cityStore.update(({ pagination }) => page);
   }
 

@@ -21,13 +21,11 @@ namespace ADS.Aplication.Controllers
     [Route("api/[controller]")]
     public class HouseController : Controller
     {
-        private ADCContext context;
         private readonly IMapper _mapper;
         protected readonly IUnitOfWork unitOfWork;
 
-        public HouseController(ADCContext _context, IMapper mapper, IUnitOfWork _unitOfWork)
+        public HouseController(IMapper mapper, IUnitOfWork _unitOfWork)
         {
-            context = _context;
             _mapper = mapper;
             unitOfWork = _unitOfWork;
         }

@@ -1,0 +1,75 @@
+<div class="container">
+  <form class="formCity" (ngSubmit)="(submit)" [formGroup]="comapnyForm">
+    <div class="form_header">
+      <h4>Создать управляющую компанию</h4>
+    </div>
+    <mat-dialog-content class="mat-typography">
+      <mat-form-field class="full-width">
+        <input
+          class="user_input"
+          matInput
+          placeholder="Название"
+          name="name"
+          required
+          formControlName="name"
+          [errorStateMatcher]="matcher"
+        />
+        <mat-error *ngIf="hasError" class="form__error"
+          >{{ errorMessage }}
+        </mat-error>
+        <mat-error *ngIf="comapnyForm.get('name').hasError('required')">
+          Номер дома обязательное плоле
+        </mat-error>
+        <mat-error *ngIf="comapnyForm.get('name').hasError('minLength')">
+          значение должно быть не меньше 1
+        </mat-error>
+        <mat-error *ngIf="comapnyForm.get('name').hasError('maxLength')">
+          Занчение не должно быть больше 255 символов
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
+        <input
+          class="user_input"
+          matInput
+          required
+          placeholder="Описание"
+          name="description"
+          formControlName="description"
+        />
+        <mat-error *ngIf="hasError" class="form__error"
+          >{{ errorMessage }}
+        </mat-error>
+        <mat-error *ngIf="comapnyForm.get('description').hasError('required')">
+          описание обязательное плоле
+        </mat-error>
+        <mat-error *ngIf="comapnyForm.get('description').hasError('minLength')">
+          значение должно быть не меньше 1
+        </mat-error>
+        <mat-error *ngIf="comapnyForm.get('description').hasError('maxLength')">
+          Занчение не должно быть больше 255
+        </mat-error>
+      </mat-form-field>
+
+      <div *ngIf="cities$ | async as cities">
+        <mat-form-field>
+          <mat-select placeholder="Город" formControlName="cityId">
+            <mat-option *ngFor="let city of cities" [value]="city.id">
+              {{ city.name }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="hasError" class="form__error">{{ errorMessage }}</mat-error>
+          <mat-error *ngIf="comapnyForm.get('cityId').hasError('required')">
+          </mat-error>
+        </mat-form-field>
+        </div>
+
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button mat-raised-button (click)="cancel()">Отмена</button>
+      <button mat-raised-button [type]="submit" (click)="save()">
+        Сохранить
+      </button>
+    </mat-dialog-actions>
+  </form>
+</div>

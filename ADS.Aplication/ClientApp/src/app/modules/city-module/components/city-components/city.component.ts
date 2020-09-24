@@ -27,7 +27,6 @@ export class CityComponent extends BaseComponent implements OnInit {
   dataSource: any;
   pagination: PaginationModel = new PaginationModel();
   @ViewChild(MatSort, { static: true }) sort: MatSort;
-  subscription: Subscription;
 
   constructor(private cityService: CityService,
     private cityQuery: CitiesQuery,
