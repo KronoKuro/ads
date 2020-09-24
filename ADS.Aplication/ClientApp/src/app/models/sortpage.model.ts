@@ -1,6 +1,6 @@
-import { MatSort, MatTableDataSource, MatDialog, Sort } from '@angular/material';
+import { MatSort, MatTableDataSource, MatDialog, Sort, SortDirection } from '@angular/material';
 
 export class SortPage {
-  sort: Sort;
-
+  active: string;
+  direction: SortDirection;
 }
