@@ -5,9 +5,10 @@ import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms'
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { BaseComponent } from '../../../../shared/components/base.component';
 import { HouseService } from '../../../services/house.service';
-import { StreetModel } from 'src/app/models/street.model';
+import { StreetModel } from '../../../../../models/street.model';
 import { StreetsQuery } from '../../../state/street/street.query';
 import { ManagmentCompanyQuery } from '../../../state/managmentcompany/managmentcompany.query';
+import { ManagmentCompanyModel } from '../../../../../models/managmentCompany.model';
 
 @Component({
   selector: 'app-edit-house',
