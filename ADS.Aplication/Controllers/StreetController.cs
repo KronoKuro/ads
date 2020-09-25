@@ -109,6 +109,9 @@ namespace ADS.Aplication.Controllers
                 var street = await unitOfWork.GetRepository<Street>().GetFirstOrDefaultAsync(x => x.Id == guid);
                 if (street == null)
                     return NotFound();
+                var housesRepos = unitOfWork.GetRepository<House>();
+                var houses = housesRepos.GetQuery().Where(x => x.StreetId == street.Id);
+                housesRepos.RemoveRange(houses);
                 streets.Remove(street);
                 await unitOfWork.SaveChangesAsync();
                 return Ok();
