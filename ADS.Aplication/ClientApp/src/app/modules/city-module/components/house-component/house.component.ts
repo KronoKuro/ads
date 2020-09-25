@@ -58,7 +58,7 @@ export class HouseComponent extends BaseComponent implements OnInit {
   addHouse() {
     const dialogRef = this.dialog.open(AddHouseComponent, {
       data: { street: this.streetModel },
-      height: '390px',
+      height: '430px',
       width: '500px',
     });
     this.subscription = dialogRef.afterClosed().subscribe(response => {
@@ -79,7 +79,7 @@ export class HouseComponent extends BaseComponent implements OnInit {
 
   editHouse(elem: HouseModel) {
     const dialogRef = this.dialog.open(EditHouseComponent, {
-      height: '390px',
+      height: '430px',
       width: '500px',
       data: { house: elem }
     });

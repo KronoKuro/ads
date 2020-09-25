@@ -7,6 +7,7 @@ import { BaseComponent } from '../../../../shared/components/base.component';
 import { HouseService } from '../../../services/house.service';
 import { StreetModel } from 'src/app/models/street.model';
 import { StreetsQuery } from '../../../state/street/street.query';
+import { ManagmentCompanyQuery } from '../../../state/managmentcompany/managmentcompany.query';
 
 @Component({
   selector: 'app-edit-house',
@@ -16,6 +17,7 @@ import { StreetsQuery } from '../../../state/street/street.query';
 export class EditHouseComponent extends BaseComponent implements OnInit {
   houseForm: FormGroup;
   streets$: Observable<StreetModel[]>;
+  managmnetCompanies$: Observable<ManagmentCompanyModel[]>;
 
   constructor(private houseServices: HouseService,
     private route: ActivatedRoute,
@@ -23,6 +25,7 @@ export class EditHouseComponent extends BaseComponent implements OnInit {
     dialogRef: MatDialogRef<EditHouseComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     streetQuery: StreetsQuery,
+    managmentCompanyQuery: ManagmentCompanyQuery,
     private formBuilder: FormBuilder) {
       super(dialogRef, null);
 
@@ -43,8 +46,10 @@ export class EditHouseComponent extends BaseComponent implements OnInit {
           Validators.maxLength(10),
           Validators.minLength(1)
         ]}),
-        streetId: new FormControl(data.house.streetId, { validators: [Validators.required]})
+        streetId: new FormControl(data.house.streetId, { validators: [Validators.required]}),
+        managmentCompanyId: new FormControl(data.house.managmentCompanyId, { validators: []})
       });
+      this.managmnetCompanies$ = managmentCompanyQuery.companiesForLookup$;
       this.streets$ = streetQuery.selectAll();
   }
 
