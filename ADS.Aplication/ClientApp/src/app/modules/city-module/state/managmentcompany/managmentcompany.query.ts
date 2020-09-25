@@ -5,6 +5,8 @@ import { ManagmentCompanyState, ManagmentCompanyStore } from './managmentcompany
 
 @Injectable()
 export class ManagmentCompanyQuery extends QueryEntity<ManagmentCompanyState, ManagmentCompanyModel> {
+  companiesForLookup$ = this.select(state => state.companiesForLookup);
+
   constructor(protected store: ManagmentCompanyStore) {
     super(store);
   }

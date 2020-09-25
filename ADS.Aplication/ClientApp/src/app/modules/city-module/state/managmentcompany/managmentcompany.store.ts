@@ -5,6 +5,7 @@ import { ManagmentCompanyModel } from 'src/app/models/managmentCompany.model';
 import { SortPage } from '../../../../models/sortpage.model';
 
 export interface ManagmentCompanyState {
+  companiesForLookup: ManagmentCompanyModel[],
   sortPage: SortPage,
   currentPage: number,
   pageSize: number,
@@ -13,6 +14,7 @@ export interface ManagmentCompanyState {
 
 export function createInitialState(): ManagmentCompanyState {
   return {
+    companiesForLookup: [],
     sortPage: { active: 'name', direction: Order.ASC },
     currentPage: 1,
     pageSize: 5,

@@ -9,6 +9,8 @@ import { HouseService } from '../../../services/house.service';
 import { StreetModel } from 'src/app/models/street.model';
 import { HousesQuery } from '../../../state/houses/house.query';
 import { StreetsQuery } from '../../../state/street/street.query';
+import { ManagmentCompanyQuery } from '../../../state/managmentcompany/managmentcompany.query';
+import { ManagmentCompanyModel } from 'src/app/models/managmentCompany.model';
 
 @Component({
   selector: 'app-add-house',
@@ -18,9 +20,11 @@ import { StreetsQuery } from '../../../state/street/street.query';
 export class AddHouseComponent extends BaseComponent implements OnInit {
   houseForm: FormGroup;
   streets$: Observable<StreetModel[]>;
+  managmnetCompanies$: Observable<ManagmentCompanyModel[]>;
 
   constructor(private houseServices: HouseService,
     private streetQuery : StreetsQuery,
+    private managmentCompanyQuery: ManagmentCompanyQuery,
     private route: ActivatedRoute,
     private router: Router,
     dialogRef: MatDialogRef<AddHouseComponent>,
@@ -43,8 +47,11 @@ export class AddHouseComponent extends BaseComponent implements OnInit {
             Validators.minLength(1)
           ]}],
       streetId: new FormControl(data.street.id, Validators.required),
+      managmentCompanyId: ['', {validators: []}]
     });
+    this.managmnetCompanies$ = managmentCompanyQuery.companiesForLookup$;
     this.streets$ = streetQuery.selectAll();
+
   }
 
   ngOnInit() {

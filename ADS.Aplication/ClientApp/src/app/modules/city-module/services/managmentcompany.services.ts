@@ -41,6 +41,14 @@ export class MangmentCompanyService {
     }));
   }
 
+  getCompaniesForLookup() {
+    return this.http.get<ManagmentCompanyModel[]>(`${this._url}/lookup`).subscribe(res => {
+      this.managmentCompanyStore.update(state => ({
+             companiesForLookup : res
+      }));
+    });
+}
+
   addCompany(company: ManagmentCompanyModel) {
     return this.http.post(`${this._url}`, company);
   }

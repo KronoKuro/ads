@@ -45,10 +45,13 @@ const router = [
 export function initAppFactory(
   //houseService: HouseService,
   //streetService: StreetService,
-  cityService: CityService
+  cityService: CityService,
+  managmentCompanyService: MangmentCompanyService
   ) {
   return async () => {
-    await Promise.all([cityService.getCityForLookup()])
+    await Promise.all([
+      cityService.getCityForLookup(),
+      managmentCompanyService.getCompaniesForLookup() ])
     // await Promise.all([
     //   metadataService.refreshMetadata(),
     //   versionService.getVersions(),
@@ -102,7 +105,7 @@ export function initAppFactory(
     ManagmentCompanyQuery,
     { provide: APP_INITIALIZER,
       useFactory: initAppFactory,
-      deps: [CityService], multi: true
+      deps: [CityService, MangmentCompanyService], multi: true
     }
   ],entryComponents: [
     AddCityComponent,

@@ -82,6 +82,18 @@
          <mat-error *ngIf="houseForm.get('streetId').hasError('required')"> </mat-error>
       </mat-form-field>
       </div>
+
+   <div *ngIf="managmnetCompanies$ | async as companies">
+        <mat-form-field>
+          <mat-select placeholder="Управляющие компании" formControlName="managmentCompanyId">
+          <mat-option [value]="null">Не управлении</mat-option>
+            <mat-option *ngFor="let company of companies" [value]="company.id">
+              {{ company.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
     </mat-dialog-content>
     <mat-dialog-actions align="end">
       <button mat-raised-button (click)="cancel()">Отмена</button>

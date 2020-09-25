@@ -53,6 +53,19 @@ namespace ADS.Aplication.Controllers
             return Ok(companies);
         }
 
+        [Route("lookup")]
+        [HttpGet]
+        public async Task<IActionResult> getCompaniesState()
+        {
+            var repos = unitOfWork
+                .GetRepository<ManagmentCompany>();
+
+            var query = repos.GetQuery()
+                 .ProjectTo<ManagmentCompanyViewModel>(_mapper.ConfigurationProvider);
+
+            return Ok(query);
+        }
+
 
         [HttpPost]
         public async Task<IActionResult> CreateCompany([FromBody] ManagmentCompanyViewModel model)
