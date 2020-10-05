@@ -31,9 +31,9 @@ export class StreetComponent extends BaseComponent implements OnInit {
 
   constructor(private streetService: StreetService,
     private streetQuery: StreetsQuery,
-    dialog: MatDialog,
+    private dialog: MatDialog,
     private route: ActivatedRoute) {
-      super(null, dialog);
+      super(null);
       this.cityId = this.route.snapshot.params['id'];
   }
 

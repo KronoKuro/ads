@@ -25,7 +25,7 @@ export class EditCompanyComponent extends BaseComponent implements OnInit {
     cityService: CityService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private formBuilder: FormBuilder) {
-      super(dialogRef, null);
+      super(dialogRef);
     this.comapnyForm = this.formBuilder.group({
       id: new FormControl(data.company.id),
       name: new FormControl(data.company.name, { validators: [

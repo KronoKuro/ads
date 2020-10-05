@@ -1,6 +1,6 @@
 import { OnDestroy, Directive, Component } from "@angular/core";
 import { Subscription } from "rxjs";
-import { MatDialogRef, MatDialog, ErrorStateMatcher, PageEvent } from "@angular/material";
+import { MatDialogRef, ErrorStateMatcher, PageEvent } from "@angular/material";
 import { NgForm, FormGroupDirective, FormControl } from "@angular/forms";
 import { PaginationModel } from '../../../models/page.model';
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -21,7 +21,7 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   enumearableIsNotNull: boolean = true;
   pagination: PaginationModel = new PaginationModel();
 
-  constructor(protected dialogRef: MatDialogRef<any>, protected dialog: MatDialog){
+  constructor(protected dialogRef: MatDialogRef<any>){
 
   }
 

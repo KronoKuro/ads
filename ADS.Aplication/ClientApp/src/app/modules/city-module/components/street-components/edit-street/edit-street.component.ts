@@ -20,7 +20,7 @@ export class EditStreetComponent extends BaseComponent implements OnInit {
     dialogRef: MatDialogRef<EditStreetComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private formBuilder: FormBuilder) {
-      super(dialogRef, null);
+      super(dialogRef);
       this.streetForm = this.formBuilder.group({
         id: new FormControl(data.street.id, Validators.required),
         name: new FormControl(data.street.name, Validators.required),

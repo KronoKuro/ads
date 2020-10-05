@@ -30,7 +30,7 @@ export class AddHouseComponent extends BaseComponent implements OnInit {
     dialogRef: MatDialogRef<AddHouseComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private formBuilder: FormBuilder) {
-      super(dialogRef, null);
+      super(dialogRef);
     this.houseForm = this.formBuilder.group({
       name: new FormControl('', { validators: [
         Validators.required,

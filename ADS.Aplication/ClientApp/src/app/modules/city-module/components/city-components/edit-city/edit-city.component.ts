@@ -20,7 +20,7 @@ export class EditCityComponent extends BaseComponent implements OnInit {
     dialogRef: MatDialogRef<EditCityComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private formBuilder: FormBuilder) {
-      super(dialogRef, null);
+      super(dialogRef);
       this.cityForm = this.formBuilder.group({
         id: new FormControl(data.city.id, Validators.required),
         name: new FormControl(data.city.name, Validators.required),

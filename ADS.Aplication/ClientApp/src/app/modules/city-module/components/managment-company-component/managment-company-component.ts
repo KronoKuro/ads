@@ -29,8 +29,8 @@ export class ManagmentCompanyComponent extends BaseComponent implements OnInit {
   constructor(private managmentCompanyService: MangmentCompanyService,
     private managmentCompanyQuery: ManagmentCompanyQuery,
     cityQuery: CitiesQuery,
-    dialog: MatDialog) {
-      super(null, dialog);
+    private dialog: MatDialog) {
+      super(null);
   }
 
   ngOnInit() {

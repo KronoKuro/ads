@@ -44,8 +44,8 @@ export class HouseComponent extends BaseComponent implements OnInit {
 
   constructor(private houseService: HouseService,
     private houseQuery: HousesQuery,
-    dialog: MatDialog) {
-      super(null, dialog);
+    private dialog: MatDialog) {
+      super(null);
   }
 
   ngOnInit() {

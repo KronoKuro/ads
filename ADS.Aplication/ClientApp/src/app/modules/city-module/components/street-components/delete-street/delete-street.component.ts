@@ -18,7 +18,7 @@ export class DeleteStreetComponent extends BaseComponent implements OnInit  {
     private router: Router,
     protected dialogRef: MatDialogRef<DeleteStreetComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any) {
-      super(dialogRef, null);
+      super(dialogRef);
 
   }
 

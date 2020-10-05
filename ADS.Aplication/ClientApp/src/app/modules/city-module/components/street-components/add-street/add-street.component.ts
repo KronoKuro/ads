@@ -22,7 +22,7 @@ export class AddStreetComponent extends BaseComponent implements OnInit {
     dialogRef: MatDialogRef<AddStreetComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private formBuilder: FormBuilder) {
-      super(dialogRef, null);
+      super(dialogRef);
     this.streetForm = this.formBuilder.group({
       name: ['', [Validators.required, Validators.maxLength(250), Validators.minLength(5)]],
       cityId: new FormControl(data.city.id, Validators.required),

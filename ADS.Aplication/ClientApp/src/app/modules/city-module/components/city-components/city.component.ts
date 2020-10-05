@@ -27,9 +27,9 @@ export class CityComponent extends BaseComponent implements OnInit {
 
   constructor(private cityService: CityService,
     private cityQuery: CitiesQuery,
-    dialog: MatDialog,
+    private dialog: MatDialog,
     private citiesQuery: CitiesQuery) {
-      super(null, dialog);
+      super(null);
 
   }
 

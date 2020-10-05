@@ -22,7 +22,7 @@ export class AddCityComponent extends BaseComponent implements OnInit {
     dialogRef: MatDialogRef<AddCityComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private formBuilder: FormBuilder) {
-      super(dialogRef, null);
+      super(dialogRef);
     this.cityForm = this.formBuilder.group({
       name: ['', [Validators.required, Validators.maxLength(250), Validators.minLength(5)]],
       longitude: ['', {validators :[
@@ -42,7 +42,7 @@ export class AddCityComponent extends BaseComponent implements OnInit {
   }
 
 
-  addCity() {
+  save() {
     this.subscription = this.cityServices.addCity(this.cityForm.getRawValue()).subscribe(() => {
       this.isSubscribe = true;
       this.closeDialog();

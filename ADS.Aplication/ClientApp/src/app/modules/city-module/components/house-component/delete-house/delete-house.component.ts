@@ -19,7 +19,7 @@ export class DeleteHouseComponent extends BaseComponent implements OnInit  {
     private router: Router,
     protected dialogRef: MatDialogRef<DeleteHouseComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any) {
-      super(dialogRef, null);
+      super(dialogRef);
 
   }
 

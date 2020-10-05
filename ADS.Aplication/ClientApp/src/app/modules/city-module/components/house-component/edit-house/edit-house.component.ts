@@ -36,7 +36,7 @@ export class EditHouseComponent extends BaseComponent implements OnInit {
     streetQuery: StreetsQuery,
     managmentCompanyQuery: ManagmentCompanyQuery,
     private formBuilder: FormBuilder) {
-      super(dialogRef, null);
+      super(dialogRef);
 
       this.houseForm = this.formBuilder.group({
         id: new FormControl(data.house.id, Validators.required),
