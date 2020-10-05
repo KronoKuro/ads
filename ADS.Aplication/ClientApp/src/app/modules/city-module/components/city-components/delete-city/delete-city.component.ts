@@ -26,7 +26,7 @@ export class DeleteCityComponent implements OnInit, OnDestroy {
   }
 
 
-  deleteCity() {
+  confirm() {
     this.subscription = this.cityServices.deleteCity(this.data.city.id).subscribe(resp => {
       this.isSubscribe = true;
       this.dialogRef.close();

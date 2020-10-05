@@ -26,3 +26,13 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 .null_enumerable{
    text-align: center;
 }
+
+.maps{
+  width: 100%;
+  margin: 10px auto;
+}
+
+
+.sebm-google-map-container {
+  height: 300px;
+}

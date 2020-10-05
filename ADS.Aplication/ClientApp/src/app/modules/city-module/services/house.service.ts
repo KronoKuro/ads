@@ -42,12 +42,12 @@ export class HouseService {
     return this.http.post(`${this._url}`, house);
   }
 
-  deleteStreet(id: string) {
+  deleteHouse(id: string) {
     return this.http.delete(`${this._url}` + '/' + id);
   }
 
-  editStreet(street: StreetModel) {
-    return this.http.put(`${this._url}`, street);
+  editHouse(house: HouseModel) {
+    return this.http.put(`${this._url}`, house);
   }
 
 

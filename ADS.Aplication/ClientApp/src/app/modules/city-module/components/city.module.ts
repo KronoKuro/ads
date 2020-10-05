@@ -34,6 +34,8 @@ import { ManagmentCompanyStore } from '../state/managmentcompany/managmentcompan
 import { AddCompanyComponent } from './managment-company-component/add-company/add-company.component';
 import { EditCompanyComponent } from './managment-company-component/edit-company/edit-company.component';
 import { DeleteCompanyComponent } from './managment-company-component/delete-company/delete-company.component';
+import { AgmCoreModule } from '@agm/core';
+import { GoogleMapsModule } from '@angular/google-maps';
 
 const router = [
   { path: 'city', component: CityComponent },
@@ -79,7 +81,7 @@ export function initAppFactory(
     ManagmentCompanyComponent,
     AddCompanyComponent,
     EditCompanyComponent,
-    DeleteCompanyComponent
+    DeleteCompanyComponent,
   ],
   imports: [
     CommonModule,
@@ -88,6 +90,9 @@ export function initAppFactory(
     FormsModule,
     ReactiveFormsModule,
     MaterialModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyC6II9wyLNtPE-Ap4XW0A86GSGolW9gy4A'
+    }),
     RouterModule.forRoot(router)
   ],
   providers: [

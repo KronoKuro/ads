@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, ViewChild } from '@angular/core';
 import { Observable, Subscription } from 'rxjs';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
@@ -9,6 +9,7 @@ import { StreetModel } from '../../../../../models/street.model';
 import { StreetsQuery } from '../../../state/street/street.query';
 import { ManagmentCompanyQuery } from '../../../state/managmentcompany/managmentcompany.query';
 import { ManagmentCompanyModel } from '../../../../../models/managmentCompany.model';
+import { AgmMap } from '@agm/core';
 
 @Component({
   selector: 'app-edit-house',
@@ -18,7 +19,14 @@ import { ManagmentCompanyModel } from '../../../../../models/managmentCompany.mo
 export class EditHouseComponent extends BaseComponent implements OnInit {
   houseForm: FormGroup;
   streets$: Observable<StreetModel[]>;
+  @ViewChild(AgmMap) public agmMap: AgmMap;
   managmnetCompanies$: Observable<ManagmentCompanyModel[]>;
+
+  houseLat = 0;
+  houseLon = 0;
+  cityLat = 0;
+  cityLon =  0;
+
 
   constructor(private houseServices: HouseService,
     private route: ActivatedRoute,
@@ -50,6 +58,10 @@ export class EditHouseComponent extends BaseComponent implements OnInit {
         streetId: new FormControl(data.house.streetId, { validators: [Validators.required]}),
         managmentCompanyId: new FormControl(data.house.managmentCompanyId, { validators: []})
       });
+      this.cityLat = Number(data.city.latitude);
+      this.cityLon = Number(data.city.longitude);
+      this.houseLat = Number(data.house.latitude);
+      this.houseLon = Number(data.house.longitude);
       this.managmnetCompanies$ = managmentCompanyQuery.companiesForLookup$;
       this.streets$ = streetQuery.selectAll();
   }
@@ -59,7 +71,7 @@ export class EditHouseComponent extends BaseComponent implements OnInit {
 
 
   save() {
-    this.subscription = this.houseServices.editStreet(this.houseForm.getRawValue()).subscribe(() => {
+    this.subscription = this.houseServices.editHouse(this.houseForm.getRawValue()).subscribe(() => {
       this.isSubscribe = true;
       this.closeDialog();
       this.hasError = false;

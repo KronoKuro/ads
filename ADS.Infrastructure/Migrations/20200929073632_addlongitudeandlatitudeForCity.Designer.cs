@@ -4,14 +4,16 @@ using ADS.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ADS.Infrastructure.Migrations
 {
     [DbContext(typeof(ADCContext))]
-    partial class ADCContextModelSnapshot : ModelSnapshot
+    [Migration("20200929073632_addlongitudeandlatitudeForCity")]
+    partial class addlongitudeandlatitudeForCity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -76,11 +78,11 @@ namespace ADS.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Latitude")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<decimal>("Latitude")
+                        .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("Longitude")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<decimal>("Longitude")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -97,11 +99,11 @@ namespace ADS.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("Latitude")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<decimal>("Latitude")
+                        .HasColumnType("decimal(18,2)");
 
-                    b.Property<string>("Longitude")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<decimal>("Longitude")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<Guid?>("ManagmentCompanyId")
                         .HasColumnType("uniqueidentifier");

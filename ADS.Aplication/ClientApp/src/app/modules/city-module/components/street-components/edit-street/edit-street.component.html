@@ -1,4 +1,4 @@
-<form class="formCity" (ngSubmit)="(submit)" [formGroup]="streetForm">
+<form class="formCity" [formGroup]="streetForm" (ngSubmit)="save()">
   <h4 mat-dialog-title>Редактировать улицу</h4>
   <mat-dialog-content class="mat-typography">
     <!--<div class="form_content">-->
@@ -25,7 +25,7 @@
   </mat-dialog-content>
   <mat-dialog-actions align="end">
     <button mat-raised-button (click)="cancel()">Отмена</button>
-    <button mat-raised-button [type]="submit" (click)="save()">
+    <button mat-raised-button type="submit">
       Сохранить
     </button>
   </mat-dialog-actions>

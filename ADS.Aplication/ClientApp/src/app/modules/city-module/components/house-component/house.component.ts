@@ -24,6 +24,7 @@ import { DeleteHouseComponent } from './delete-house/delete-house.component';
 })
 export class HouseComponent extends BaseComponent implements OnInit {
   streetModel: StreetModel;
+  cityModel: CityModel;
   houses: HouseModel[];
   displayedColumns: string[] = ['id', 'name', 'managmentCompany', 'managmentCompanyId', 'latitude', 'longitude', 'actions'];
   dataSource: any;
@@ -33,6 +34,13 @@ export class HouseComponent extends BaseComponent implements OnInit {
     this.streetModel = street;
     this.subscription = this.load(street.id);
   }
+
+
+  @Input() set city(city: CityModel) {
+    this.cityModel = city;
+  }
+
+
 
   constructor(private houseService: HouseService,
     private houseQuery: HousesQuery,
@@ -79,9 +87,9 @@ export class HouseComponent extends BaseComponent implements OnInit {
 
   editHouse(elem: HouseModel) {
     const dialogRef = this.dialog.open(EditHouseComponent, {
-      height: '430px',
-      width: '500px',
-      data: { house: elem }
+      height: '630px',
+      width: '600px',
+      data: { house: elem, city: this.cityModel }
     });
     this.subscription = dialogRef.afterClosed().subscribe(response => {
       this.load(this.streetModel.id);
@@ -90,7 +98,7 @@ export class HouseComponent extends BaseComponent implements OnInit {
 
   deleteHouse(elem) {
     const dialogRef = this.dialog.open(DeleteHouseComponent, {
-      data: { city: elem }
+      data: { house: elem }
     });
     this.subscription = dialogRef.afterClosed().subscribe(response => {
       this.load(this.streetModel.id);

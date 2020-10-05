@@ -4,8 +4,8 @@ import { ManagmentCompanyModel } from './managmentCompany.model';
 export class HouseModel {
   id: string;
   name: string;
-  longitude: number;
-  latitude: number;
+  longitude: string;
+  latitude: string;
   managmentCompanyId: string;
   managmentCompanyName: string;
   streetId: string;

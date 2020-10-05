@@ -11,6 +11,9 @@ namespace ADS.Domain.ViewModels
     {
         public virtual IEnumerable<Street> Streets { get; set; }
 
+        public string Longitude { get; set; }
+        public string Latitude { get; set; }
+
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             if(Name.Length > 100 || Name.Length < 5)

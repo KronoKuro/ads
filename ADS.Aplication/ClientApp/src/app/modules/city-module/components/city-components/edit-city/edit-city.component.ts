@@ -24,6 +24,17 @@ export class EditCityComponent extends BaseComponent implements OnInit {
       this.cityForm = this.formBuilder.group({
         id: new FormControl(data.city.id, Validators.required),
         name: new FormControl(data.city.name, Validators.required),
+        longitude: new FormControl(data.city.longitude, { validators: [
+          Validators.required,
+          Validators.maxLength(10),
+          Validators.minLength(1)
+        ]}),
+        latitude: new FormControl(data.city.latitude, { validators: [
+          Validators.required,
+          Validators.maxLength(10),
+          Validators.minLength(1)
+        ]}),
+
       });
   }
 

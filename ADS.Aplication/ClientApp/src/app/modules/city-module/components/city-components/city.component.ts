@@ -50,7 +50,7 @@ export class CityComponent extends BaseComponent implements OnInit {
 
   addCity() {
     const dialogRef = this.dialog.open(AddCityComponent, {
-      height: '250px',
+      height: '350px',
       width: '500px',
     });
     this.subscription = dialogRef.afterClosed().subscribe(response => {
@@ -71,7 +71,7 @@ export class CityComponent extends BaseComponent implements OnInit {
 
   editCity(elem: CityModel) {
     const dialogRef = this.dialog.open(EditCityComponent, {
-      height: '250px',
+      height: '350px',
       width: '500px',
       data: { city: elem }
     });

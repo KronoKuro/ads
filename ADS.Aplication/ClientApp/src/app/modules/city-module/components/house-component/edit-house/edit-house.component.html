@@ -1,5 +1,5 @@
-<form class="formCity" (ngSubmit)="(submit)" [formGroup]="houseForm">
-  <h4 mat-dialog-title>Редактировать улицу</h4>
+<form class="formCity"  (ngSubmit)="save()" [formGroup]="houseForm">
+  <h4 mat-dialog-title>Редактировать дом</h4>
   <mat-dialog-content class="mat-typography">
     <!--<div class="form_content">-->
 
@@ -37,7 +37,6 @@
           class="user_input"
           matInput
           required
-          type="number"
           placeholder="Широта"
           name="latitude"
           formControlName="latitude"
@@ -59,7 +58,6 @@
           class="user_input"
           matInput
           required
-          type="number"
           placeholder="Долгота"
           name="longitude"
           formControlName="longitude"
@@ -99,12 +97,24 @@
         </mat-form-field>
       </div>
 
+
+    <ng-container class="maps">
+      <agm-map [latitude]="cityLat" [longitude]="cityLon">
+         <agm-marker [latitude]="houseLat" [longitude]="houseLon"></agm-marker>
+      </agm-map>
+    </ng-container>
+
+
+
+
+
     <!--  </div>-->
   </mat-dialog-content>
   <mat-dialog-actions align="end">
-    <button mat-raised-button (click)="cancel()">Отмена</button>
-    <button mat-raised-button [type]="submit" (click)="save()">
+
+    <button mat-raised-button type="submit">
       Сохранить
     </button>
+    <button mat-raised-button (click)="cancel()">Отмена</button>
   </mat-dialog-actions>
 </form>

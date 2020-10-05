@@ -47,7 +47,7 @@ export class AddHouseComponent extends BaseComponent implements OnInit {
             Validators.minLength(1)
           ]}],
       streetId: new FormControl(data.street.id, Validators.required),
-      managmentCompanyId: ['', {validators: []}]
+      managmentCompanyId: [null, {validators: []}]
     });
     this.managmnetCompanies$ = managmentCompanyQuery.companiesForLookup$;
     this.streets$ = streetQuery.selectAll();

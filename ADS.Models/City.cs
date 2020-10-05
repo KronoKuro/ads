@@ -13,6 +13,9 @@ namespace ADS.Models
             ManagmentCompanies = new List<ManagmentCompany>();
         }
 
+        public string Longitude { get; set; }
+        public string Latitude { get; set; }
+
         public virtual ICollection<Street> Streets { get; set; } 
         public virtual ICollection<ManagmentCompany> ManagmentCompanies { get; set; }
     }

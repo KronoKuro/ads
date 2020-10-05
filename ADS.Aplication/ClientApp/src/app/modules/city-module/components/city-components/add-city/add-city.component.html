@@ -1,5 +1,5 @@
 <div class="container city-container">
-  <form class="formCity" (ngSubmit)="(submit)" [formGroup]="cityForm">
+  <form class="formCity" (ngSubmit)="addCity()" [formGroup]="cityForm">
     <div class="form_header">
       <h4>Создать город</h4>
     </div>
@@ -12,12 +12,56 @@
           name="City"
           formControlName="name"
         />
+         <mat-error *ngIf="cityForm.get('name').hasError('required')">обязательное плоле</mat-error>
          <mat-error *ngIf="hasError" class="form__error">{{ errorMessage }} </mat-error>
       </mat-form-field>
+
+  <mat-form-field class="full-width">
+        <input
+          class="user_input"
+          matInput
+          required
+          placeholder="Широта"
+          name="latitude"
+          formControlName="latitude"
+        />
+         <mat-error *ngIf="hasError" class="form__error">{{ errorMessage }} </mat-error>
+         <mat-error *ngIf="cityForm.get('latitude').hasError('required')">
+            Широта обязательное плоле
+         </mat-error>
+         <mat-error *ngIf="cityForm.get('latitude').hasError('minLength')">
+            значение должно быть не меньше 1
+         </mat-error>
+         <mat-error *ngIf="cityForm.get('latitude').hasError('maxLength')">
+            Занчение не должно быть больше 10
+         </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
+        <input
+          class="user_input"
+          matInput
+          required
+          placeholder="Долгота"
+          name="longitude"
+          formControlName="longitude"
+        />
+         <mat-error *ngIf="hasError" class="form__error">{{ errorMessage }} </mat-error>
+         <mat-error *ngIf="cityForm.get('longitude').hasError('required')">
+            Долгота обязательное плоле
+         </mat-error>
+         <mat-error *ngIf="cityForm.get('longitude').hasError('minLength')">
+            значение должно быть не меньше 1
+         </mat-error>
+         <mat-error *ngIf="cityForm.get('longitude').hasError('maxLength')">
+            Занчение не должно быть больше 10
+         </mat-error>
+      </mat-form-field>
+
     </mat-dialog-content>
     <mat-dialog-actions align="end">
       <button mat-raised-button (click)="cancel()">Отмена</button>
-      <button mat-raised-button [type]="submit" (click)="addCity()">
+      <button mat-raised-button type="submit">
         Создать
       </button>
     </mat-dialog-actions>

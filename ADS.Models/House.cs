@@ -6,8 +6,8 @@ namespace ADS.Models
 {
     public class House : EntityBase
     {
-        public decimal Longitude { get; set; }
-        public decimal Latitude { get; set; }
+        public string Longitude { get; set; }
+        public string Latitude { get; set; }
         public Guid? ManagmentCompanyId { get; set; }
         public virtual ManagmentCompany ManagmentCompany { get; set; }
         public Guid StreetId { get; set; }

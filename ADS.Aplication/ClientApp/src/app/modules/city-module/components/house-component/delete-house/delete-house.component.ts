@@ -5,6 +5,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { StreetService } from '../../../services/street.services';
 import { BaseComponent } from '../../../../shared/components/base.component';
+import { HouseService } from '../../../services/house.service';
 
 @Component({
   selector: 'app-delete-house',
@@ -13,7 +14,7 @@ import { BaseComponent } from '../../../../shared/components/base.component';
 })
 export class DeleteHouseComponent extends BaseComponent implements OnInit  {
 
-  constructor(private streetServices: StreetService,
+  constructor(private houseServices: HouseService,
     private route: ActivatedRoute,
     private router: Router,
     protected dialogRef: MatDialogRef<DeleteHouseComponent>,
@@ -27,7 +28,7 @@ export class DeleteHouseComponent extends BaseComponent implements OnInit  {
 
 
   confirm() {
-    this.subscription = this.streetServices.deleteStreet(this.data.streetId).subscribe(resp => {
+    this.subscription = this.houseServices.deleteHouse(this.data.house.id).subscribe(resp => {
       this.isSubscribe = true;
       this.dialogRef.close();
     });

@@ -1,4 +1,4 @@
-import { OnDestroy } from "@angular/core";
+import { OnDestroy, Directive, Component } from "@angular/core";
 import { Subscription } from "rxjs";
 import { MatDialogRef, MatDialog, ErrorStateMatcher, PageEvent } from "@angular/material";
 import { NgForm, FormGroupDirective, FormControl } from "@angular/forms";
@@ -10,7 +10,8 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   }
 }
 
-export abstract class BaseComponent implements OnDestroy {
+// TODO: Add Angular decorator.
+@Directive() export abstract class BaseComponent implements OnDestroy {
 
   subscription: Subscription;
   isSubscribe: boolean = false;

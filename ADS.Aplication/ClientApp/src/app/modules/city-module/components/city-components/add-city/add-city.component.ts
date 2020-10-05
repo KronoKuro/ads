@@ -13,7 +13,8 @@ import { BaseComponent } from 'src/app/modules/shared/components/base.component'
 })
 export class AddCityComponent extends BaseComponent implements OnInit {
   cityForm: FormGroup;
-
+  //lat = 54.1877917;
+  //lng = 37.6000627;
 
   constructor(private cityServices: CityService,
     private route: ActivatedRoute,
@@ -23,7 +24,17 @@ export class AddCityComponent extends BaseComponent implements OnInit {
     private formBuilder: FormBuilder) {
       super(dialogRef, null);
     this.cityForm = this.formBuilder.group({
-      name: ['', [Validators.required, Validators.maxLength(250), Validators.minLength(5)]]
+      name: ['', [Validators.required, Validators.maxLength(250), Validators.minLength(5)]],
+      longitude: ['', {validators :[
+        Validators.required,
+        Validators.maxLength(250),
+        Validators.minLength(1)
+      ]}],
+      latitude: ['', {validators: [
+          Validators.required,
+          Validators.maxLength(10),
+          Validators.minLength(1)
+        ]}],
     });
   }
 

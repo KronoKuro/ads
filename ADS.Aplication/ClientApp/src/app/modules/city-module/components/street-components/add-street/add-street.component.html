@@ -1,5 +1,5 @@
 <div class="container city-container">
-  <form class="formCity" (ngSubmit)="(submit)" [formGroup]="streetForm">
+  <form class="formCity" [formGroup]="streetForm" (ngSubmit)="save()">
     <div class="form_header">
       <h4>Создать улицу</h4>
     </div>
@@ -17,7 +17,7 @@
     </mat-dialog-content>
     <mat-dialog-actions align="end">
       <button mat-raised-button (click)="cancel()">Отмена</button>
-      <button mat-raised-button [type]="submit" (click)="save()">
+      <button mat-raised-button type="submit">
         Создать
       </button>
     </mat-dialog-actions>

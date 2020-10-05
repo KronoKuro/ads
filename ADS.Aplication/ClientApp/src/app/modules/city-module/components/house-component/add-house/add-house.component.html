@@ -1,5 +1,5 @@
 <div class="container">
-  <form class="formCity" (ngSubmit)="(submit)" [formGroup]="houseForm">
+  <form class="formCity"  (ngSubmit)="save()" [formGroup]="houseForm">
     <div class="form_header">
       <h4>Добавить дом</h4>
     </div>
@@ -32,7 +32,6 @@
           class="user_input"
           matInput
           required
-          type="number"
           placeholder="Широта"
           name="latitude"
           formControlName="latitude"
@@ -54,7 +53,6 @@
           class="user_input"
           matInput
           required
-          type="number"
           placeholder="Долгота"
           name="longitude"
           formControlName="longitude"
@@ -97,7 +95,7 @@
     </mat-dialog-content>
     <mat-dialog-actions align="end">
       <button mat-raised-button (click)="cancel()">Отмена</button>
-      <button mat-raised-button [type]="submit" (click)="save()">
+      <button mat-raised-button type="submit">
         Сохранить
       </button>
     </mat-dialog-actions>
