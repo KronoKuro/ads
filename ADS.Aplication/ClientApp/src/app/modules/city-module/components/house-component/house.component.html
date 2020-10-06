@@ -1,4 +1,3 @@
-<body>
   <div class="container">
   <h4>Дома</h4>
       <span mat-icon-button color="primary" (click)="addHouse()">
@@ -57,7 +56,13 @@
           <span mat-icon color="black" (click)="deleteHouse(row)">
             <mat-icon class="span_button" aria-label="Delete">delete</mat-icon>
           </span>
+
+
+          <span mat-icon color="black">
+           <mat-icon  class="span_button" [routerLink]="['/house', row.id]">apartment</mat-icon>
+          </span>
         </mat-cell>
+
       </ng-container>
 
    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
@@ -74,4 +79,4 @@
     <h4 class="null_enumerable">Пока нет домов</h4>
   </ng-container>
   </div>
-</body>
+

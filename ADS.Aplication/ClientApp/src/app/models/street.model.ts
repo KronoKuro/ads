@@ -4,6 +4,7 @@ import { CityModel } from './city.model';
 export class StreetModel {
   id: string;
   name: string;
-  cityId: CityModel;
+  cityId: string;
+  city: CityModel;
   houses: HouseModel[];
 }

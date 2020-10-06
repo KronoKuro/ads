@@ -20,7 +20,7 @@ import { StreetComponent } from './street-components/street.component';
 import { AddStreetComponent } from './street-components/add-street/add-street.component';
 import { EditStreetComponent } from './street-components/edit-street/edit-street.component';
 import { DeleteStreetComponent } from './street-components/delete-street/delete-street.component';
-import { HouseComponent } from 'src/app/modules/city-module/components/house-component/house.component';
+import { HouseComponent } from '../../city-module/components/house-component/house.component';
 import { HouseService } from '../services/house.service';
 import { HouseStore } from '../state/houses/house.store';
 import { HousesQuery } from '../state/houses/house.query';
@@ -36,11 +36,17 @@ import { EditCompanyComponent } from './managment-company-component/edit-company
 import { DeleteCompanyComponent } from './managment-company-component/delete-company/delete-company.component';
 import { AgmCoreModule } from '@agm/core';
 import { GoogleMapsModule } from '@angular/google-maps';
+import { ApartmentService } from '../services/apartment.service';
+import { ApartmentQuery } from '../state/apartment/apartment.query';
+import { ApartmentStore } from '../state/apartment/apartment.store';
+import { ApartamentComponent } from './apartament-component/apartament.component';
+import { AddApartmnetComponent } from './apartament-component/add-apartament/add-apartmnet.component';
 
 const router = [
   { path: 'city', component: CityComponent },
   { path: 'streets/:id', component: StreetComponent },
-  { path: 'managmentcompany', component: ManagmentCompanyComponent }
+  { path: 'managmentcompany', component: ManagmentCompanyComponent },
+  { path: 'house/:id', component: ApartamentComponent },
 ]
 
 
@@ -82,6 +88,8 @@ export function initAppFactory(
     AddCompanyComponent,
     EditCompanyComponent,
     DeleteCompanyComponent,
+    ApartamentComponent,
+    AddApartmnetComponent
   ],
   imports: [
     CommonModule,
@@ -100,6 +108,7 @@ export function initAppFactory(
     StreetService,
     HouseService,
     MangmentCompanyService,
+    ApartmentService,
     CitiesStore,
     StreetsStore,
     HouseStore,
@@ -107,6 +116,8 @@ export function initAppFactory(
     CitiesQuery,
     StreetsQuery,
     HousesQuery,
+    ApartmentQuery,
+    ApartmentStore,
     ManagmentCompanyQuery,
     { provide: APP_INITIALIZER,
       useFactory: initAppFactory,
@@ -125,7 +136,8 @@ export function initAppFactory(
     DeleteHouseComponent,
     AddCompanyComponent,
     EditCompanyComponent,
-    DeleteCompanyComponent
+    DeleteCompanyComponent,
+    AddApartmnetComponent
   ],
 })
 export class CityModule { }

@@ -1,0 +1,120 @@
+<form class="formCity"  (ngSubmit)="save()" [formGroup]="houseForm">
+  <h4 mat-dialog-title>Редактировать дом</h4>
+  <mat-dialog-content class="mat-typography">
+    <!--<div class="form_content">-->
+
+       <!-- <button mat-mini-fab color="primary"
+          aria-label="add"
+          class="button_streets"
+          >
+          <mat-icon  [routerLink]="['/streets', data.city.id]" (click)="closeDialog()">add</mat-icon>
+        </button> Добавить Улицы-->
+
+     <mat-form-field class="full-width">
+        <input
+          class="user_input"
+          matInput
+          placeholder="Номер дома"
+          name="name"
+          required
+          formControlName="name"
+          [errorStateMatcher]="matcher"
+        />
+         <mat-error *ngIf="hasError" class="form__error">{{ errorMessage }} </mat-error>
+         <mat-error *ngIf="houseForm.get('name').hasError('required')">
+            Номер дома обязательное плоле
+         </mat-error>
+         <mat-error *ngIf="houseForm.get('name').hasError('minLength')">
+            значение должно быть не меньше 1
+         </mat-error>
+         <mat-error *ngIf="houseForm.get('name').hasError('maxLength')">
+            Занчение не должно быть больше 10
+         </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
+        <input
+          class="user_input"
+          matInput
+          required
+          placeholder="Широта"
+          name="latitude"
+          formControlName="latitude"
+        />
+         <mat-error *ngIf="hasError" class="form__error">{{ errorMessage }} </mat-error>
+         <mat-error *ngIf="houseForm.get('latitude').hasError('required')">
+            Широта обязательное плоле
+         </mat-error>
+         <mat-error *ngIf="houseForm.get('latitude').hasError('minLength')">
+            значение должно быть не меньше 1
+         </mat-error>
+         <mat-error *ngIf="houseForm.get('latitude').hasError('maxLength')">
+            Занчение не должно быть больше 10
+         </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
+        <input
+          class="user_input"
+          matInput
+          required
+          placeholder="Долгота"
+          name="longitude"
+          formControlName="longitude"
+        />
+         <mat-error *ngIf="hasError" class="form__error">{{ errorMessage }} </mat-error>
+         <mat-error *ngIf="houseForm.get('longitude').hasError('required')">
+            Долгота обязательное плоле
+         </mat-error>
+         <mat-error *ngIf="houseForm.get('longitude').hasError('minLength')">
+            значение должно быть не меньше 1
+         </mat-error>
+         <mat-error *ngIf="houseForm.get('longitude').hasError('maxLength')">
+            Занчение не должно быть больше 10
+         </mat-error>
+      </mat-form-field>
+
+      <div *ngIf="(streets$ | async) as streets">
+        <mat-form-field>
+          <mat-select placeholder="Улица" formControlName="streetId">
+            <mat-option *ngFor="let street of streets" [value]="street.id">
+              {{ street.name }}
+            </mat-option>
+        </mat-select>
+         <mat-error *ngIf="hasError" class="form__error">{{ errorMessage }} </mat-error>
+         <mat-error *ngIf="houseForm.get('streetId').hasError('required')"> </mat-error>
+      </mat-form-field>
+      </div>
+
+       <div *ngIf="managmnetCompanies$ | async as companies">
+        <mat-form-field>
+          <mat-select placeholder="Управляющие компании" formControlName="managmentCompanyId">
+          <mat-option [value]="null">Не управлении</mat-option>
+            <mat-option *ngFor="let company of companies" [value]="company.id">
+              {{ company.name }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+
+    <ng-container class="maps">
+      <agm-map [latitude]="cityLat" [longitude]="cityLon">
+         <agm-marker [latitude]="houseLat" [longitude]="houseLon"></agm-marker>
+      </agm-map>
+    </ng-container>
+
+
+
+
+
+    <!--  </div>-->
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+
+    <button mat-raised-button type="submit">
+      Сохранить
+    </button>
+    <button mat-raised-button [mat-dialog-close]="true" (click)="cancel()">Отмена</button>
+  </mat-dialog-actions>
+</form>

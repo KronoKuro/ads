@@ -12,5 +12,6 @@ namespace ADS.Domain.ViewModels
         public Guid? ManagmentCompanyId { get; set; }
         public string ManagmentCompanyName { get; set; }
         public Guid StreetId { get; set; }
+        public StreetViewModel Street { get; set; }
     }
 }

@@ -8,9 +8,9 @@ import { map } from 'rxjs/operators';
 
 import { SortPage } from '../../../../models/sortpage.model';
 import { BaseComponent } from 'src/app/modules/shared/components/base.component';
-import { StreetModel } from 'src/app/models/street.model';
+import { StreetModel } from '../../../../models/street.model';
 import { HousesQuery } from '../../state/houses/house.query';
-import { HouseModel } from 'src/app/models/house.model';
+import { HouseModel } from '../../../../models/house.model';
 import { HouseService } from '../../services/house.service';
 import { AddHouseComponent } from './add-house/add-house.component';
 import { EditHouseComponent } from './edit-house/edit-house.component';
@@ -73,6 +73,11 @@ export class HouseComponent extends BaseComponent implements OnInit {
       this.load(this.streetModel.id);
     });
   }
+
+  listApartments(model: HouseModel) {
+
+  }
+
 
   sortData(sort: Sort) {
     this.houseService.setSort(sort);

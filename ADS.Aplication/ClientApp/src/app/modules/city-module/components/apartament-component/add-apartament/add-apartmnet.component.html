@@ -1,0 +1,39 @@
+<div class="container">
+  <form class="formCity"  (ngSubmit)="save()" [formGroup]="apartmentForm">
+    <div class="form_header">
+      <h4>Добавить квартиру</h4>
+    </div>
+    <mat-dialog-content class="mat-typography">
+
+      <mat-form-field class="full-width">
+        <input
+          class="user_input"
+          matInput
+          placeholder="Номер квартиры"
+          name="name"
+          required
+          formControlName="name"
+          [errorStateMatcher]="matcher"
+        />
+         <mat-error *ngIf="hasError" class="form__error">{{ errorMessage }} </mat-error>
+         <mat-error *ngIf="apartmentForm.get('name').hasError('required')">
+            Номер дома обязательное плоле
+         </mat-error>
+         <mat-error *ngIf="apartmentForm.get('name').hasError('minLength')">
+            значение должно быть не меньше 1
+         </mat-error>
+         <mat-error *ngIf="apartmentForm.get('name').hasError('maxLength')">
+            Занчение не должно быть больше 10
+         </mat-error>
+      </mat-form-field>
+
+
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button mat-raised-button [mat-dialog-close]="true" (click)="cancel()">Отмена</button>
+      <button mat-raised-button type="submit">
+        Сохранить
+      </button>
+    </mat-dialog-actions>
+  </form>
+</div>

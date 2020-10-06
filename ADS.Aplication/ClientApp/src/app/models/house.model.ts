@@ -9,6 +9,6 @@ export class HouseModel {
   managmentCompanyId: string;
   managmentCompanyName: string;
   streetId: string;
-//  street: StreetModel;
+  street: StreetModel;
   //public virtual ICollection<Apartment> Apartments { get; set; }
 }

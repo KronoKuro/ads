@@ -1,0 +1,25 @@
+body {
+}
+
+.actions {
+  text-align: center;
+}
+
+.mat-form-field{
+  width: 100%;
+}
+
+.form_content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.button_streets{
+  margin-bottom: 10px;
+}
+
+agm-map {
+  height: 200px;
+}

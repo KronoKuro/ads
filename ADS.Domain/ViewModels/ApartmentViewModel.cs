@@ -1,19 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace ADS.Models
+namespace ADS.Domain.ViewModels
 {
-    public class Apartment
+    public class ApartmentViewModel
     {
         public Guid Id { get; set; }
 
         public int? Number { get; set; }
 
         public Guid HouseId { get; set; }
-        public virtual House House { get; set; }
-
-        public ICollection<Appeal> Appeals { get; set; }
+        public virtual HouseViewModel House { get; set; }
     }
 }

@@ -15,8 +15,9 @@ namespace ADS.Aplication.AutoMapperProfiles
             CreateMap<House, HouseViewModel>()
                 .ForMember(x => x.ManagmentCompanyName, opt => opt.MapFrom(x => x.ManagmentCompany.Name))
               .ReverseMap()
-                .ForMember(x => x.ManagmentCompany, opt => opt.Ignore()); 
-                //.ForMember(x => x.Houses, opt => opt.Ignore());
+                .ForMember(x => x.ManagmentCompany, opt => opt.Ignore())
+                .ForMember(x => x.Street, opt => opt.Ignore());
+            //.ForMember(x => x.Houses, opt => opt.Ignore());
         }
     }
 }
