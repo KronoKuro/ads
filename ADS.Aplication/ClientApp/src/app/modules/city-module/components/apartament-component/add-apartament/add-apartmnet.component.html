@@ -10,20 +10,15 @@
           class="user_input"
           matInput
           placeholder="Номер квартиры"
-          name="name"
+          name="number"
+          type="number"
           required
-          formControlName="name"
+          formControlName="number"
           [errorStateMatcher]="matcher"
         />
          <mat-error *ngIf="hasError" class="form__error">{{ errorMessage }} </mat-error>
-         <mat-error *ngIf="apartmentForm.get('name').hasError('required')">
-            Номер дома обязательное плоле
-         </mat-error>
-         <mat-error *ngIf="apartmentForm.get('name').hasError('minLength')">
-            значение должно быть не меньше 1
-         </mat-error>
-         <mat-error *ngIf="apartmentForm.get('name').hasError('maxLength')">
-            Занчение не должно быть больше 10
+         <mat-error *ngIf="apartmentForm.get('number').hasError('required')">
+            Номер квартиры обязательное плоле
          </mat-error>
       </mat-form-field>
 

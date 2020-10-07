@@ -41,6 +41,8 @@ import { ApartmentQuery } from '../state/apartment/apartment.query';
 import { ApartmentStore } from '../state/apartment/apartment.store';
 import { ApartamentComponent } from './apartament-component/apartament.component';
 import { AddApartmnetComponent } from './apartament-component/add-apartament/add-apartmnet.component';
+import { EditApartmentComponent } from './apartament-component/edit-apartment/edit-apartment.component';
+import { DeleteApartmentComponent } from './apartament-component/delete-apartament/delete-apartament.component';
 
 const router = [
   { path: 'city', component: CityComponent },
@@ -89,7 +91,9 @@ export function initAppFactory(
     EditCompanyComponent,
     DeleteCompanyComponent,
     ApartamentComponent,
-    AddApartmnetComponent
+    AddApartmnetComponent,
+    EditApartmentComponent,
+    DeleteApartmentComponent
   ],
   imports: [
     CommonModule,
@@ -137,7 +141,9 @@ export function initAppFactory(
     AddCompanyComponent,
     EditCompanyComponent,
     DeleteCompanyComponent,
-    AddApartmnetComponent
+    AddApartmnetComponent,
+    EditApartmentComponent,
+    DeleteApartmentComponent
   ],
 })
 export class CityModule { }

@@ -9,8 +9,8 @@ import { ApartmentQuery } from '../../state/apartment/apartment.query';
 import { ApartmentModel } from 'src/app/models/apartment.model';
 import { ActivatedRoute } from '@angular/router';
 import { AddApartmnetComponent } from './add-apartament/add-apartmnet.component';
-//import { EditHouseComponent } from './edit-house/edit-house.component';
-//import { DeleteHouseComponent } from './delete-house/delete-house.component';
+import { EditApartmentComponent } from './edit-apartment/edit-apartment.component';
+import { DeleteApartmentComponent } from './delete-apartament/delete-apartament.component';
 
 
 @Component({
@@ -56,8 +56,9 @@ export class ApartamentComponent extends BaseComponent implements OnInit {
 
   addApartmnet() {
     const dialogRef = this.dialog.open(AddApartmnetComponent, {
-      height: '430px',
-      width: '500px',
+      data: { house: this.house },
+      height: '230px',
+      width: '300px',
     });
     this.subscription = dialogRef.afterClosed().subscribe(response => {
       this.load(this.house.id);
@@ -75,24 +76,24 @@ export class ApartamentComponent extends BaseComponent implements OnInit {
     this.load(this.house.id);
   }
 
-  // editHouse(elem: HouseModel) {
-  //   const dialogRef = this.dialog.open(EditHouseComponent, {
-  //     height: '630px',
-  //     width: '600px',
-  //     data: { house: elem, city: this.cityModel }
-  //   });
-  //   this.subscription = dialogRef.afterClosed().subscribe(response => {
-  //     this.load(this.streetModel.id);
-  //   });
-  // }
+  editApartment(elem: HouseModel) {
+    const dialogRef = this.dialog.open(EditApartmentComponent, {
+      height: '200px',
+      width: '300px',
+      data: { apartment: elem, house: this.house }
+    });
+    this.subscription = dialogRef.afterClosed().subscribe(response => {
+      this.load(this.house.id);
+    });
+  }
 
-  // deleteHouse(elem) {
-  //   const dialogRef = this.dialog.open(DeleteHouseComponent, {
-  //     data: { house: elem }
-  //   });
-  //   this.subscription = dialogRef.afterClosed().subscribe(response => {
-  //     this.load(this.streetModel.id);
-  //   });
-  // }
+  deleteApartment(elem) {
+    const dialogRef = this.dialog.open(DeleteApartmentComponent, {
+      data: { apartment: elem }
+    });
+    this.subscription = dialogRef.afterClosed().subscribe(response => {
+      this.load(this.house.id);
+    });
+  }
 
 }

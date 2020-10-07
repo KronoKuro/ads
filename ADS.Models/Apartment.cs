@@ -9,7 +9,7 @@ namespace ADS.Models
     {
         public Guid Id { get; set; }
 
-        public int? Number { get; set; }
+        public int Number { get; set; }
 
         public Guid HouseId { get; set; }
         public virtual House House { get; set; }

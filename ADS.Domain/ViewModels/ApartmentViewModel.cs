@@ -8,7 +8,7 @@ namespace ADS.Domain.ViewModels
     {
         public Guid Id { get; set; }
 
-        public int? Number { get; set; }
+        public int Number { get; set; }
 
         public Guid HouseId { get; set; }
         public virtual HouseViewModel House { get; set; }

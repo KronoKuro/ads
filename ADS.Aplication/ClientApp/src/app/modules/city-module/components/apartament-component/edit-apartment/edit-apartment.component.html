@@ -1,0 +1,37 @@
+<form class="formCity"  (ngSubmit)="save()" [formGroup]="apartmentForm">
+  <h4 mat-dialog-title>Редактировать квартиру </h4>
+  <mat-dialog-content class="mat-typography">
+    <!--<div class="form_content">-->
+
+       <!-- <button mat-mini-fab color="primary"
+          aria-label="add"
+          class="button_streets"
+          >
+          <mat-icon  [routerLink]="['/streets', data.city.id]" (click)="closeDialog()">add</mat-icon>
+        </button> Добавить Улицы-->
+
+     <mat-form-field class="full-width">
+        <input
+          class="user_input"
+          matInput
+          placeholder="Номер квартиры"
+          name="number"
+          type="number"
+          required
+          formControlName="number"
+          [errorStateMatcher]="matcher"
+        />
+         <mat-error *ngIf="apartmentForm.get('number').hasError('required')">
+            Номер дома обязательное плоле
+         </mat-error>
+      </mat-form-field>
+    <!--  </div>-->
+  </mat-dialog-content>
+  <mat-dialog-actions align="end">
+
+    <button mat-raised-button type="submit">
+      Сохранить
+    </button>
+    <button mat-raised-button [mat-dialog-close]="true" (click)="cancel()">Отмена</button>
+  </mat-dialog-actions>
+</form>

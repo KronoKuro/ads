@@ -23,9 +23,8 @@ export class AddApartmnetComponent extends BaseComponent implements OnInit {
       super(dialogRef);
     this.apartmentForm = this.formBuilder.group({
       number: new FormControl('', { validators: [
-        Validators.required,
-        Validators.maxLength(10),
-        Validators.minLength(1)] })
+        Validators.required] }),
+      houseId: data.house.id
     });
 
   }
