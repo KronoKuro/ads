@@ -1,8 +1,7 @@
 import { Component, OnInit, Inject, ViewChild } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { BaseComponent } from '../../../../shared/components/base.component';
 import { HouseService } from '../../../services/house.service';
 import { StreetModel } from '../../../../../models/street.model';
@@ -29,14 +28,13 @@ export class EditHouseComponent extends BaseComponent implements OnInit {
 
 
   constructor(private houseServices: HouseService,
-    private route: ActivatedRoute,
-    private router: Router,
     dialogRef: MatDialogRef<EditHouseComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
     streetQuery: StreetsQuery,
+    _snackBar: MatSnackBar,
     managmentCompanyQuery: ManagmentCompanyQuery,
     private formBuilder: FormBuilder) {
-      super(dialogRef);
+      super(dialogRef, _snackBar);
 
       this.houseForm = this.formBuilder.group({
         id: new FormControl(data.house.id, Validators.required),
@@ -75,12 +73,13 @@ export class EditHouseComponent extends BaseComponent implements OnInit {
       this.isSubscribe = true;
       this.closeDialog();
       this.hasError = false;
+      this.openSnackBar(false, "Обновлено");
     },
     error => {
       this.hasError = true;
       this.errorMessage = error.error;
       this.closeDialog();
-
+      this.openSnackBar(true, "Ошибка " + this.errorMessage);
     });
   }
 

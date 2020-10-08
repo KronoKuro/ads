@@ -1,15 +1,8 @@
-import { Component, OnInit, Inject, ViewChild } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Component, OnInit, Inject } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { BaseComponent } from '../../../../shared/components/base.component';
 import { ApartmentService } from '../../../services/apartment.service';
-import { StreetModel } from '../../../../../models/street.model';
-import { StreetsQuery } from '../../../state/street/street.query';
-import { ManagmentCompanyQuery } from '../../../state/managmentcompany/managmentcompany.query';
-import { ManagmentCompanyModel } from '../../../../../models/managmentCompany.model';
-import { AgmMap } from '@agm/core';
 
 @Component({
   selector: 'app-edit-apartment',
@@ -21,9 +14,10 @@ export class EditApartmentComponent extends BaseComponent implements OnInit {
 
   constructor(private apartmentServices: ApartmentService,
     dialogRef: MatDialogRef<EditApartmentComponent>,
+    _snackBar: MatSnackBar,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private formBuilder: FormBuilder) {
-      super(dialogRef);
+      super(dialogRef, _snackBar);
 
       this.apartmentForm = this.formBuilder.group({
         id: new FormControl(data.apartment.id, Validators.required),
@@ -43,12 +37,13 @@ export class EditApartmentComponent extends BaseComponent implements OnInit {
       this.isSubscribe = true;
       this.closeDialog();
       this.hasError = false;
+      this.openSnackBar(false, "Обновлено");
     },
     error => {
       this.hasError = true;
       this.errorMessage = error.error;
       this.closeDialog();
-
+      this.openSnackBar(true, "Ошибка " + this.errorMessage);
     });
   }
 

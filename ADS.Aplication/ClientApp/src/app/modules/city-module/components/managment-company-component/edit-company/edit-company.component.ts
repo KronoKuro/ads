@@ -1,12 +1,9 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { MangmentCompanyService } from '../../../services/managmentcompany.services';
 import { BaseComponent } from 'src/app/modules/shared/components/base.component';
-import { CityService } from '../../../services/city.services';
-import { StreetModel } from 'src/app/models/street.model';
 import { CityModel } from 'src/app/models/city.model';
 import { CitiesQuery } from '../../../state/city.query';
 
@@ -22,10 +19,10 @@ export class EditCompanyComponent extends BaseComponent implements OnInit {
   constructor(private comapnyServices: MangmentCompanyService,
     dialogRef: MatDialogRef<EditCompanyComponent>,
     cityQuery: CitiesQuery,
-    cityService: CityService,
     @Inject(MAT_DIALOG_DATA) public data: any,
+    _snackBar: MatSnackBar,
     private formBuilder: FormBuilder) {
-      super(dialogRef);
+      super(dialogRef, _snackBar);
     this.comapnyForm = this.formBuilder.group({
       id: new FormControl(data.company.id),
       name: new FormControl(data.company.name, { validators: [
@@ -54,10 +51,12 @@ export class EditCompanyComponent extends BaseComponent implements OnInit {
       this.isSubscribe = true;
       this.closeDialog();
       this.hasError = false;
+      this.openSnackBar(false, "Обновлено");
     }, error => {
       this.hasError = true;
       this.errorMessage = error.error;
       this.closeDialog();
+      this.openSnackBar(true, "Ошибка " + this.errorMessage);
     });
   }
 }

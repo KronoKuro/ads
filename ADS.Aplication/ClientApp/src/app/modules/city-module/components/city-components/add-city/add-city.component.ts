@@ -1,8 +1,6 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
-import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { CityService } from '../../../services/city.services';
 import { BaseComponent } from 'src/app/modules/shared/components/base.component';
 
@@ -13,28 +11,29 @@ import { BaseComponent } from 'src/app/modules/shared/components/base.component'
 })
 export class AddCityComponent extends BaseComponent implements OnInit {
   cityForm: FormGroup;
-  //lat = 54.1877917;
-  //lng = 37.6000627;
 
   constructor(private cityServices: CityService,
-    private route: ActivatedRoute,
-    private router: Router,
     dialogRef: MatDialogRef<AddCityComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
+    _snackBar: MatSnackBar,
     private formBuilder: FormBuilder) {
-      super(dialogRef);
+    super(dialogRef, _snackBar);
     this.cityForm = this.formBuilder.group({
       name: ['', [Validators.required, Validators.maxLength(250), Validators.minLength(5)]],
-      longitude: ['', {validators :[
-        Validators.required,
-        Validators.maxLength(250),
-        Validators.minLength(1)
-      ]}],
-      latitude: ['', {validators: [
+      longitude: ['', {
+        validators: [
+          Validators.required,
+          Validators.maxLength(250),
+          Validators.minLength(1)
+        ]
+      }],
+      latitude: ['', {
+        validators: [
           Validators.required,
           Validators.maxLength(10),
           Validators.minLength(1)
-        ]}],
+        ]
+      }],
     });
   }
 
@@ -47,10 +46,12 @@ export class AddCityComponent extends BaseComponent implements OnInit {
       this.isSubscribe = true;
       this.closeDialog();
       this.hasError = false;
+      this.openSnackBar(false, "Город создан");
     }, error => {
       this.hasError = true;
       this.errorMessage = error.error;
       this.closeDialog();
+      this.openSnackBar(true, "Ошибка " + this.errorMessage);
     });
   }
 }

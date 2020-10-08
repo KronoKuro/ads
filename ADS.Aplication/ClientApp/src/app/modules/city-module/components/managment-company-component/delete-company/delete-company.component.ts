@@ -1,8 +1,5 @@
-import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
-import { Router, ActivatedRoute } from '@angular/router';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { Component, OnInit, Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { MangmentCompanyService } from '../../../services/managmentcompany.services';
 import { BaseComponent } from '../../../../shared/components/base.component';
 
@@ -14,22 +11,25 @@ import { BaseComponent } from '../../../../shared/components/base.component';
 export class DeleteCompanyComponent extends BaseComponent implements OnInit  {
 
   constructor(private companyServices: MangmentCompanyService,
-    private route: ActivatedRoute,
-    private router: Router,
     protected dialogRef: MatDialogRef<DeleteCompanyComponent>,
+    _snackBar: MatSnackBar,
     @Inject(MAT_DIALOG_DATA) public data: any) {
-      super(dialogRef);
-
+      super(dialogRef, _snackBar);
   }
 
   ngOnInit() {
   }
 
-
   confirm() {
     this.subscription = this.companyServices.deleteCompany(this.data.company.id).subscribe(resp => {
       this.isSubscribe = true;
-      this.dialogRef.close();
+      this.closeDialog();
+      this.openSnackBar(false, "Удалено");
+    }, error=> {
+      this.hasError = true;
+      this.errorMessage = error.error;
+      this.closeDialog();
+      this.openSnackBar(true, "Ошибка " + this.errorMessage);
     });
   }
 

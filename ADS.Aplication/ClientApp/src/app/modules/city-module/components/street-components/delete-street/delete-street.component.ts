@@ -1,8 +1,5 @@
-import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
-import { Router, ActivatedRoute } from '@angular/router';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { Component, OnInit, Inject } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { StreetService } from '../../../services/street.services';
 import { BaseComponent } from '../../../../shared/components/base.component';
 
@@ -14,22 +11,26 @@ import { BaseComponent } from '../../../../shared/components/base.component';
 export class DeleteStreetComponent extends BaseComponent implements OnInit  {
 
   constructor(private streetServices: StreetService,
-    private route: ActivatedRoute,
-    private router: Router,
     protected dialogRef: MatDialogRef<DeleteStreetComponent>,
+    _snackBar: MatSnackBar,
     @Inject(MAT_DIALOG_DATA) public data: any) {
-      super(dialogRef);
+      super(dialogRef, _snackBar);
 
   }
 
   ngOnInit() {
   }
 
-
   confirm() {
     this.subscription = this.streetServices.deleteStreet(this.data.street.id).subscribe(resp => {
       this.isSubscribe = true;
-      this.dialogRef.close();
+      this.closeDialog();
+      this.openSnackBar(false, "Удалено");
+    }, error=> {
+      this.hasError = true;
+      this.errorMessage = error.error;
+      this.closeDialog();
+      this.openSnackBar(true, "Ошибка " + this.errorMessage);
     });
   }
 

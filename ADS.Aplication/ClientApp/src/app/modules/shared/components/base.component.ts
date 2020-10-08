@@ -1,6 +1,6 @@
 import { OnDestroy, Directive, Component } from "@angular/core";
 import { Subscription } from "rxjs";
-import { MatDialogRef, ErrorStateMatcher, PageEvent } from "@angular/material";
+import { MatDialogRef, ErrorStateMatcher, PageEvent, MatSnackBar } from "@angular/material";
 import { NgForm, FormGroupDirective, FormControl } from "@angular/forms";
 import { PaginationModel } from '../../../models/page.model';
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -21,7 +21,7 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   enumearableIsNotNull: boolean = true;
   pagination: PaginationModel = new PaginationModel();
 
-  constructor(protected dialogRef: MatDialogRef<any>){
+  constructor(protected dialogRef: MatDialogRef<any>, protected _snackBar: MatSnackBar = null) {
 
   }
 
@@ -39,6 +39,20 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   closeDialog() {
     if(!this.hasError){
       this.dialogRef.close();
+    }
+  }
+
+  openSnackBar(isError: boolean, message: string) {
+    if (isError === true) {
+      this._snackBar.open(message, null, {
+        duration: 6000,
+        panelClass: ['mat-toolbar', 'mat-warn']
+      });
+    } else {
+      this._snackBar.open(message, null, {
+        duration: 6000,
+        panelClass: ['mat-toolbar', 'mat-primary']
+      });
     }
   }
 

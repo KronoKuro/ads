@@ -1,13 +1,10 @@
 import { Component, OnInit, Inject } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { CityService } from '../../../services/city.services';
+import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { BaseComponent } from 'src/app/modules/shared/components/base.component';
 import { HouseService } from '../../../services/house.service';
 import { StreetModel } from 'src/app/models/street.model';
-import { HousesQuery } from '../../../state/houses/house.query';
 import { StreetsQuery } from '../../../state/street/street.query';
 import { ManagmentCompanyQuery } from '../../../state/managmentcompany/managmentcompany.query';
 import { ManagmentCompanyModel } from 'src/app/models/managmentCompany.model';
@@ -25,12 +22,11 @@ export class AddHouseComponent extends BaseComponent implements OnInit {
   constructor(private houseServices: HouseService,
     private streetQuery : StreetsQuery,
     private managmentCompanyQuery: ManagmentCompanyQuery,
-    private route: ActivatedRoute,
-    private router: Router,
     dialogRef: MatDialogRef<AddHouseComponent>,
+    _snackBar: MatSnackBar,
     @Inject(MAT_DIALOG_DATA) public data: any,
     private formBuilder: FormBuilder) {
-      super(dialogRef);
+      super(dialogRef, _snackBar);
     this.houseForm = this.formBuilder.group({
       name: new FormControl('', { validators: [
         Validators.required,
@@ -65,10 +61,12 @@ export class AddHouseComponent extends BaseComponent implements OnInit {
       this.isSubscribe = true;
       this.closeDialog();
       this.hasError = false;
+      this.openSnackBar(false, "Дом создан");
     }, error => {
       this.hasError = true;
       this.errorMessage = error.error;
       this.closeDialog();
+      this.openSnackBar(true, "Ошибка " + this.errorMessage);
     });
   }
 }

@@ -1,35 +1,38 @@
-import { Component, OnInit, Inject, OnDestroy } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
-import { Router, ActivatedRoute } from '@angular/router';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { Component, Inject } from '@angular/core';
+import { FormGroup } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA, MatSnackBar } from '@angular/material';
 import { CityService } from '../../../services/city.services';
+import { BaseComponent } from '../../../../shared/components/base.component';
 
 @Component({
   selector: 'delete-add-city',
   templateUrl: './delete-city.component.html',
   styleUrls: ['./delete-city.component.css']
 })
-export class DeleteCityComponent implements OnInit, OnDestroy {
-  subscription: Subscription;
+export class DeleteCityComponent extends BaseComponent  {
   cityForm: FormGroup;
   isSubscribe: boolean = false;
 
   constructor(private cityServices: CityService,
-    private route: ActivatedRoute,
-    private router: Router,
-    private dialogRef: MatDialogRef<DeleteCityComponent>,
+    _snackBar: MatSnackBar,
+    protected dialogRef: MatDialogRef<DeleteCityComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any) {
+      super(dialogRef, _snackBar);
   }
 
-  ngOnInit() {
-  }
+
 
 
   confirm() {
     this.subscription = this.cityServices.deleteCity(this.data.city.id).subscribe(resp => {
       this.isSubscribe = true;
-      this.dialogRef.close();
+      this.closeDialog();
+      this.openSnackBar(false, "Удалено");
+    }, error=> {
+      this.hasError = true;
+      this.errorMessage = error.error;
+      this.closeDialog();
+      this.openSnackBar(true, "Ошибка " + this.errorMessage);
     });
   }
 
