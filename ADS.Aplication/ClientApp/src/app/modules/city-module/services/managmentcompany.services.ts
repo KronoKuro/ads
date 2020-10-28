@@ -47,7 +47,7 @@ export class MangmentCompanyService {
              companiesForLookup : res
       }));
     });
-}
+  }
 
   addCompany(company: ManagmentCompanyModel) {
     return this.http.post(`${this._url}`, company);

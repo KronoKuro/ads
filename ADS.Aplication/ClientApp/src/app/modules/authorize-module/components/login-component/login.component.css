@@ -1,0 +1,14 @@
+body {
+}
+
+.actions {
+  text-align: center;
+}
+
+.mat-form-field{
+  width: 100%;
+}
+
+.auth-container{
+  max-width:  500px;
+}

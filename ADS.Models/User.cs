@@ -5,5 +5,6 @@ namespace ADS.Models
 {
     public class User : IdentityUser<Guid>
     {
+        public bool IsArchived { get; set; }
     }
 }

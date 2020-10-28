@@ -1,0 +1,41 @@
+<div class="container auth-container">
+  <form class="formCity" (ngSubmit)="onSubmit()" [formGroup]="loginForm">
+    <div class="form_header">
+      <h4>Выполнить вход</h4>
+    </div>
+    <mat-dialog-content class="mat-typography">
+      <mat-form-field class="full-width">
+        <input
+          class="user_input"
+          matInput
+          required
+          placeholder="Логин"
+          name="userName"
+          formControlName="userName"
+        />
+         <mat-error *ngIf="loginForm.get('userName').hasError('required')">обязательное плоле</mat-error>
+      </mat-form-field>
+
+  <mat-form-field class="full-width">
+        <input
+          class="user_input"
+          matInput
+          required
+          placeholder="Пароль"
+          name="password"
+          formControlName="password"
+        />
+         <mat-error *ngIf="loginForm.get('password').hasError('required')">
+            обязательное плоле
+         </mat-error>
+      </mat-form-field>
+
+
+    </mat-dialog-content>
+    <mat-dialog-actions align="end">
+      <button mat-raised-button type="submit">
+        Выполнить вход
+      </button>
+    </mat-dialog-actions>
+  </form>
+</div>

@@ -17,6 +17,9 @@ import { AkitaNgDevtools } from '@datorama/akita-ngdevtools';
 import { AkitaNgRouterStoreModule } from '@datorama/akita-ng-router-store';
 import { environment } from '../environments/environment';
 import { ErrorStateMatcher, ShowOnDirtyErrorStateMatcher } from '@angular/material';
+import { AuthorizeModule } from './modules/authorize-module/authorize-module';
+import { AuthInterceptor } from './modules/authorize-module/interceptor/auth-interceptor';
+import { AuthGuard } from './modules/authorize-module/guard/auth.guard';
 
 
 @NgModule({
@@ -33,6 +36,7 @@ import { ErrorStateMatcher, ShowOnDirtyErrorStateMatcher } from '@angular/materi
     FormsModule,
     ReactiveFormsModule,
     CityModule,
+    AuthorizeModule,
     MaterialModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
@@ -45,6 +49,8 @@ import { ErrorStateMatcher, ShowOnDirtyErrorStateMatcher } from '@angular/materi
   ],
   providers: [
     { provide: NG_ENTITY_SERVICE_CONFIG, useValue: { baseUrl: 'https://jsonplaceholder.typicode.com' }},
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: AuthGuard},
     {provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher }
 ],
   bootstrap: [AppComponent]

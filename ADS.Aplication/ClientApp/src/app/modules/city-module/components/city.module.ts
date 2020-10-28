@@ -43,9 +43,10 @@ import { ApartamentComponent } from './apartament-component/apartament.component
 import { AddApartmnetComponent } from './apartament-component/add-apartament/add-apartmnet.component';
 import { EditApartmentComponent } from './apartament-component/edit-apartment/edit-apartment.component';
 import { DeleteApartmentComponent } from './apartament-component/delete-apartament/delete-apartament.component';
+import { AuthGuard } from '../../authorize-module/guard/auth.guard';
 
 const router = [
-  { path: 'city', component: CityComponent },
+  { path: 'city', component: CityComponent,  canActivate: [AuthGuard] },
   { path: 'streets/:id', component: StreetComponent },
   { path: 'managmentcompany', component: ManagmentCompanyComponent },
   { path: 'house/:id', component: ApartamentComponent },
