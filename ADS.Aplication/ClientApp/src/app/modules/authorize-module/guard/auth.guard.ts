@@ -2,11 +2,12 @@ import { Injectable } from '@angular/core';
 import { CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot, CanActivateChild, CanLoad, Route } from '@angular/router';
 
 import { AuthorizeQuery } from '../state/authorize/authorize.query';
+import {AuthorizeStore}from '../state/authorize/authorize.store';
 
 @Injectable()
 export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
-
-  constructor(private authQuery: AuthorizeQuery, private router: Router) { }
+  token: string;
+  constructor(private authQuery: AuthorizeQuery,private store: AuthorizeStore, private router: Router) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     const url: string = state.url;
@@ -23,7 +24,8 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
   }
 
   checkLogin(url: string): boolean {
-    if (this.authQuery.getValue().access_token$) {
+    this.token = this.authQuery.getValue().token;
+    if (this.token) {
       return true;
     }
 

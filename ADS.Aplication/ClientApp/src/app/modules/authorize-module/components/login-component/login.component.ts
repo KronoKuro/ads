@@ -34,7 +34,9 @@ export class LoginComponent extends BaseComponent implements OnInit {
 
 
   onSubmit() {
-    this.subscription = this.authServices.login(this.loginForm.getRawValue()).subscribe(() => {
+    this.subscription = this.authServices.login(this.loginForm.getRawValue())
+    .subscribe(res => {
+      console.log(res);
       this.isSubscribe = true;
       this.openSnackBar(false, "Вход выполнен");
     }, error => {

@@ -2,7 +2,9 @@ using ADS.Aplication.StartUpConfigs;
 using ADS.Domain.Profiles;
 using ADS.Infrastructure;
 using ADS.Infrastructure.Abstract;
+using AspNet.Security.OAuth.Validation;
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -12,6 +14,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
+using ADS.Models;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using ADS.Infrastructure.Settings;
 
 namespace ADS.Aplication
 {
@@ -33,14 +41,75 @@ namespace ADS.Aplication
             services.AddDbContext<ADCContext>(options =>
                 options.UseSqlServer(connection));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            //var mappingConfig = new MapperConfiguration(mc =>
+
+            //
+            
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>
+            {
+                opt.RequireHttpsMetadata = false;
+                opt.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuer = true,
+                    ValidIssuer = TokenSettings.ISSUER,
+                    ValidateAudience = true,
+                    ValidAudience = TokenSettings.AUDIENCE,
+                    ValidateLifetime = true,
+                    IssuerSigningKey = TokenSettings.GetSymmetricSecurityKey(),
+                    ValidateIssuerSigningKey = true
+                };
+            });
+
+            services.AddAuthorization();
+
+            //
+           
+
+            services.AddIdentity<User, Role>(options =>
+            {
+                options.User.RequireUniqueEmail = false;
+            })
+            .AddEntityFrameworkStores<ADCContext>()
+            .AddDefaultTokenProviders();
+
+            //services.AddOpenIddict(options =>
             //{
-            //    mc.AddProfile(new MappingProfile());
+            //    options.AddEntityFrameworkCoreStores<ADCContext>();
+            //    options.AddMvcBinders();
+            //    options.EnableTokenEndpoint("/authorize/token");
+            //    options.AllowPasswordFlow();
+            //    options.AllowRefreshTokenFlow();
+            //    options.DisableHttpsRequirement();
+            //    options.UseRollingTokens();
+            //    // options.UseJsonWebTokens(); //Use JWT if preferred
+            //    options.AddSigningKey(new SymmetricSecurityKey(Encoding.ASCII.GetBytes("Alcatraz")));
             //});
 
-            //IMapper mapper = mappingConfig.CreateMapper();
-            //services.AddSingleton(mapper);
-            services.ConfigurationAutoMapper();
+
+            services.AddControllers()
+                .AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
+
+
+                        //options.AddMvcBinders();
+                        //options.EnableTokenEndpoint("/connect/token");
+                        //options.AllowPasswordFlow();
+                        //options.AllowRefreshTokenFlow();
+                        //options.DisableHttpsRequirement();
+                        //options.UseRollingTokens();
+                        //// options.UseJsonWebTokens(); //Use JWT if preferred
+                        //options.AddSigningKey(new SymmetricSecurityKey(Encoding.ASCII.GetBytes(appSettings["STSKey"])));
+
+
+
+                        //var mappingConfig = new MapperConfiguration(mc =>
+                        //{
+                        //    mc.AddProfile(new MappingProfile());
+                        //});
+
+                        //IMapper mapper = mappingConfig.CreateMapper();
+                        //services.AddSingleton(mapper);
+                        services.ConfigurationAutoMapper();
 
             services.AddControllersWithViews();
             // In production, the Angular files will be served from this directory
@@ -80,12 +149,15 @@ namespace ADS.Aplication
                     pattern: "{controller}/{action=Index}/{id?}");
             });
 
+            app.UseAuthentication();
+
             app.UseSpa(spa =>
             {
                 // To learn more about options for serving an Angular SPA from ASP.NET Core,
                 // see https://go.microsoft.com/fwlink/?linkid=864501
 
                 spa.Options.SourcePath = "ClientApp";
+                spa.Options.StartupTimeout = TimeSpan.FromMinutes(2);
 
                 if (env.IsDevelopment())
                 {

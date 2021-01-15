@@ -10,7 +10,7 @@ import { map } from "rxjs/operators";
 import { LoginModel } from '../../../models/login.model';
 
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class AuthorizeService {
   private _url: string;
   private refreshToken: string;
@@ -26,14 +26,14 @@ export class AuthorizeService {
 
   logIn(username: string, password: string): Observable<Object> {
     const headers = new HttpHeaders()
-    .set('Content-Type', 'application/x-www-form-urlencoded');
+    .set('Content-Type', 'application/json');
 
-    const params = new HttpParams()
-        .set('username', username)
-        .set('password', password)
-        .set('grant_type', 'password');
+     const login = new LoginModel(username, password, 'password');
+    //.set('username', username)
+    //.set('password', password)
+    //.set('grant_type', 'password');
 
-    return this.http.post(this._url + '/token', params, { headers: headers });
+    return this.http.post(this._url + '/token', login, { headers: headers });
 }
 
 refreshLogin() {
@@ -57,31 +57,33 @@ login(model: LoginModel) {
 }
 
 private loginResponse(response: any) {
-  const accessToken = response.access_token;
+  const accessToken = response.token;
   if (accessToken == null) {
     throw new Error('Received accessToken was empty');
   }
 
-  const idToken: string = response.id_token;
-  const refreshToken: string = response.refresh_token;
-  const expiresIn: number = response.expires_in;
+  const refreshToken: string = response.newtoken;
+  //const decodedIdToken = jwt_decode(response.id_token, { header: true });
 
-  const tokenExpiryDate = new Date();
-  tokenExpiryDate.setSeconds(tokenExpiryDate.getSeconds() + expiresIn);
-
-  const accessTokenExpiry = tokenExpiryDate;
-
-  const decodedIdToken = jwt_decode(response.id_token, { header: true });
-
-  const roles = Array.isArray(decodedIdToken.role) ? decodedIdToken.role : [decodedIdToken.role];
+  //const roles = Array.isArray(decodedIdToken.role) ? decodedIdToken.role : [decodedIdToken.role];
 
   const user = <User>{};
-  user.id = decodedIdToken.sub;
-  user.userName = decodedIdToken.name;
-  user.role = decodedIdToken.role;
 
+  //user.userName = decodedIdToken.name;
+  //user.role = decodedIdToken.role;
+  this.store.update(state => ({
+    token: response.token,
+    newtoken: response.newtoken
+  }));
+  //this.store.set(response);
 
-  this.saveUserDetails(user, roles, accessToken, idToken, refreshToken, accessTokenExpiry);
+    //this.store.update(state=> { state.token = accessToken });
+    //this.store.update(state => { ...state, state.newtoken = refreshToken });
+    //this.store.update(({ idToken}) => idToken);
+
+    //this.store.update(({  expiresIn }) => expiresIn);
+    //this.store.update(({  role }) => role);
+    //this.store.update(({  user }) => user);
 
   return user;
 }
@@ -97,25 +99,12 @@ refresh(refreshToken: string): Observable<Object> {
     return this.http.post(this._url + '/token', params);
 }
 
-saveUserDetails(user: User, role: string,
-  accessToken: string, idToken: string, refreshToken: string,
-  expiresIn: Date) {
-
-    this.store.update(({ accessToken }) => accessToken);
-    this.store.update(({ idToken}) => idToken);
-    this.store.update(({  refreshToken }) => refreshToken);
-    this.store.update(({  expiresIn }) => expiresIn);
-    this.store.update(({  role }) => role);
-    this.store.update(({  user }) => user);
-}
 
 logout(): void {
-  this.store.update(({ accessToken }) => null);
-    this.store.update(({ idToken}) => null);
-    this.store.update(({  refreshToken }) => null);
-    this.store.update(({  expiresIn }) => null);
-    this.store.update(({  role }) => null);
-    this.store.update(({  user }) => null);
+  this.store.update(({ token }) => null);
+    this.store.update(({  newtoken }) => null);
+    //this.store.update(({  role }) => null);
+    //this.store.update(({  user }) => null);
 }
 
 
