@@ -22,7 +22,7 @@ export interface AuthorizeState extends EntityState<TokenModel> { }
 
 @Injectable({ providedIn: 'root' })
 @StoreConfig({ name: 'authorize' })
-export class AuthorizeStore extends EntityStore<AuthorizeState, TokenModel> {
+export class AuthorizeStore extends EntityStore<AuthorizeState> {
   constructor() {
     super(createInitialState());
   }

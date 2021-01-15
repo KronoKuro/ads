@@ -4,7 +4,7 @@ import { AuthorizeState, AuthorizeStore } from './authorize.store';
 import { TokenModel } from '../../../../models/token.model';
 
 @Injectable()
-export class AuthorizeQuery extends QueryEntity<AuthorizeState, TokenModel> {
+export class AuthorizeQuery extends QueryEntity<AuthorizeState> {
   //token$ = this.select(state => state.token);
   token$ = this.select(state => state.token);
   //idToken$ = this.select(state => state.idToken);

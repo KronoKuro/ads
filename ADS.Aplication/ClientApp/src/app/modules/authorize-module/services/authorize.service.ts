@@ -6,8 +6,9 @@ import { User } from "../../../models/user.model";
 import { AuthorizeStore } from "../state/authorize/authorize.store";
 import { AuthorizeQuery } from "../state/authorize/authorize.query";
 import {Router} from '@angular/router';
-import { map } from "rxjs/operators";
+import { map, tap } from "rxjs/operators";
 import { LoginModel } from '../../../models/login.model';
+import { TokenModel } from '../../../models/token.model';
 
 
 @Injectable({ providedIn: 'root' })
@@ -21,10 +22,10 @@ export class AuthorizeService {
     private route: Router,
     @Inject('BASE_URL') baseUrl: string) {
     this._url = `${baseUrl}api/authorize`;
-    this.refreshToken = this.query.getValue().refreshToken;
+    this.refreshToken = this.query.getValue().newtoken;
   }
 
-  logIn(username: string, password: string): Observable<Object> {
+  logIn(username: string, password: string) {
     const headers = new HttpHeaders()
     .set('Content-Type', 'application/json');
 
@@ -33,7 +34,7 @@ export class AuthorizeService {
     //.set('password', password)
     //.set('grant_type', 'password');
 
-    return this.http.post(this._url + '/token', login, { headers: headers });
+    return this.http.post<TokenModel>(this._url + '/token', login, { headers: headers });
 }
 
 refreshLogin() {
@@ -50,10 +51,25 @@ reLogin() {
 }
 
 login(model: LoginModel) {
-  //if (this.isAuthorized) {
-    //this.logout();
-  //}
-  return this.logIn(model.userName, model.password).pipe(map(response => this.loginResponse(response)));
+  const headers = new HttpHeaders()
+  .set('Content-Type', 'application/json');
+
+   const login = new LoginModel(model.userName, model.password, 'password');
+  //.set('username', username)
+  //.set('password', password)
+  //.set('grant_type', 'password');
+
+  return this.http.post<TokenModel>(this._url + '/token', login, { headers: headers })
+  .pipe(//return this.logIn(model.userName, model.password)
+    tap(response => {
+      try {
+
+        this.store.update(({  token }) => response.token);
+        this.store.update(({  newtoken }) => response.newtoken);
+            //this.loginResponse(response)
+      }catch(error) {
+        console.log(error);
+      }}));
 }
 
 private loginResponse(response: any) {
@@ -71,10 +87,7 @@ private loginResponse(response: any) {
 
   //user.userName = decodedIdToken.name;
   //user.role = decodedIdToken.role;
-  this.store.update(state => ({
-    token: response.token,
-    newtoken: response.newtoken
-  }));
+
   //this.store.set(response);
 
     //this.store.update(state=> { state.token = accessToken });

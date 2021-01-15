@@ -157,7 +157,7 @@ namespace ADS.Aplication
                 // see https://go.microsoft.com/fwlink/?linkid=864501
 
                 spa.Options.SourcePath = "ClientApp";
-                spa.Options.StartupTimeout = TimeSpan.FromMinutes(2);
+                spa.Options.StartupTimeout = TimeSpan.FromMinutes(5);
 
                 if (env.IsDevelopment())
                 {
