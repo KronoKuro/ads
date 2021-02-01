@@ -25,11 +25,11 @@ export class AuthorizeService {
     this.refreshToken = this.query.getValue().newtoken;
   }
 
-  logIn(username: string, password: string) {
+  logIn(model: LoginModel) {
     const headers = new HttpHeaders()
     .set('Content-Type', 'application/json');
 
-     const login = new LoginModel(username, password, 'password');
+     const login = new LoginModel(model.userName, model.password, 'password');
     //.set('username', username)
     //.set('password', password)
     //.set('grant_type', 'password');
@@ -51,21 +51,17 @@ reLogin() {
 }
 
 login(model: LoginModel) {
-  const headers = new HttpHeaders()
-  .set('Content-Type', 'application/json');
-
-   const login = new LoginModel(model.userName, model.password, 'password');
-  //.set('username', username)
-  //.set('password', password)
-  //.set('grant_type', 'password');
-
-  return this.http.post<TokenModel>(this._url + '/token', login, { headers: headers })
-  .pipe(//return this.logIn(model.userName, model.password)
+  return this.logIn(model).pipe(//return this.logIn(model.userName, model.password)
     tap(response => {
       try {
+        // this.store.update(state => ({
+        //   token: response.token,
+        //   newtoken: response.newtoken
+        // }));
 
-        this.store.update(({  token }) => response.token);
-        this.store.update(({  newtoken }) => response.newtoken);
+        this.store.update(({ token }) => response.token);
+        this.store.update(({ newtoken }) => response.newtoken);
+        //this.store.update(({  ...newtoken }) => response.newtoken);
             //this.loginResponse(response)
       }catch(error) {
         console.log(error);

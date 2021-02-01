@@ -6,8 +6,13 @@ import {AuthorizeStore}from '../state/authorize/authorize.store';
 
 @Injectable()
 export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
-  token: string;
-  constructor(private authQuery: AuthorizeQuery,private store: AuthorizeStore, private router: Router) { }
+
+  isLoggedIn = false;
+  constructor(private authQuery: AuthorizeQuery,private store: AuthorizeStore, private router: Router) {
+
+
+        //select(state => state.token).subscribe(res => this.token = res);
+   }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
     const url: string = state.url;
@@ -24,8 +29,9 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
   }
 
   checkLogin(url: string): boolean {
-    this.token = this.authQuery.getValue().token;
-    if (this.token) {
+
+    this.authQuery.isLoggedIn$.toPromise().then(res => { this.isLoggedIn = res;});
+    if (this.isLoggedIn)  {
       return true;
     }
 

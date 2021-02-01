@@ -51,7 +51,7 @@ import { AuthGuard } from './modules/authorize-module/guard/auth.guard';
     { provide: NG_ENTITY_SERVICE_CONFIG, useValue: { baseUrl: 'https://jsonplaceholder.typicode.com' }},
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     { provide: AuthGuard},
-    {provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher }
+    { provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher }
 ],
   bootstrap: [AppComponent]
 })

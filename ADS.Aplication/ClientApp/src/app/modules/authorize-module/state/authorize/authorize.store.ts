@@ -5,8 +5,11 @@ import { TokenModel } from '../../../../models/token.model';
 import { User } from 'src/app/models/user.model';
 import { Role } from 'src/app/models/role.model';
 
-
-export function createInitialState(): TokenModel {
+export interface AuthState {
+  token: null,
+  newtoken: null,
+}
+export function createInitialState() :AuthState {
   return {
     token: null,
     newtoken: null,
@@ -18,20 +21,11 @@ export function createInitialState(): TokenModel {
   };
 }
 
-export interface AuthorizeState extends EntityState<TokenModel> { }
-
 @Injectable({ providedIn: 'root' })
 @StoreConfig({ name: 'authorize' })
-export class AuthorizeStore extends EntityStore<AuthorizeState> {
+export class AuthorizeStore extends Store<AuthState> {
   constructor() {
     super(createInitialState());
-  }
-
-  setValue(setToken, refreshToken) {
-    this.update(state => ({
-      token: setToken,
-      newtoken: refreshToken
-    }));
   }
 
 }

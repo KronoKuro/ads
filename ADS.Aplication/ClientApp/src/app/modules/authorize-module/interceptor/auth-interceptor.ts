@@ -11,7 +11,7 @@ import { Subject, Observable, of, throwError } from 'rxjs';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-
+    private isLoggedIn = false;
     private refreshInProgress = false;
     private refreshSubject: Subject<boolean> = new Subject<boolean>();
 
@@ -39,11 +39,10 @@ export class AuthInterceptor implements HttpInterceptor {
 
     private Token(req: HttpRequest<any>): Observable<HttpRequest<any>> {
         let authQuery = this.injector.get(AuthorizeQuery);
-        var token = authQuery.getValue().access_token;
+         authQuery.isLoggedIn$.toPromise().then(res => this.isLoggedIn = res);
 
-
-        if (token) {
-            req = req.clone({ headers: req.headers.set('Authorization', 'Bearer ' + token) });
+        if (this.isLoggedIn) {
+            req = req.clone({ headers: req.headers.set('Authorization', 'Bearer ' + this.isLoggedIn) });
         }
         return of(req);
     }
