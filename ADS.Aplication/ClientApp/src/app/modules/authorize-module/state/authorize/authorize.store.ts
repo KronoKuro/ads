@@ -6,13 +6,13 @@ import { User } from 'src/app/models/user.model';
 import { Role } from 'src/app/models/role.model';
 
 export interface AuthState {
-  token: null,
-  newtoken: null,
+  token: string,
+  newtoken: string,
 }
 export function createInitialState() :AuthState {
   return {
-    token: null,
-    newtoken: null,
+    token: '',
+    newtoken: '',
     //idToken: null,
     //expiresIn: 0,
     //role: null,

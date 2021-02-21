@@ -11,11 +11,20 @@ import { Subject, Observable, of, throwError } from 'rxjs';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-    private isLoggedIn = false;
+    isLoggedIn = false;
     private refreshInProgress = false;
+    _accessToken = null;
+    private _loggedIn = false;
     private refreshSubject: Subject<boolean> = new Subject<boolean>();
 
-    constructor(private injector: Injector) { }
+    constructor(
+      private service: AuthorizeService,
+      private query: AuthorizeQuery,
+      private injector: Injector) {
+      console.log(query.getValue().token);
+      //query.token$.subscribe(token => this._accessToken = token);
+      //query.isLoggedIn$.subscribe(res => this._loggedIn = res);
+     }
 
     intercept(original: HttpRequest<any>, delegate: HttpHandler): Observable<HttpEvent<any>> {
         const clone: HttpRequest<any> = original.clone();
@@ -38,30 +47,33 @@ export class AuthInterceptor implements HttpInterceptor {
     }
 
     private Token(req: HttpRequest<any>): Observable<HttpRequest<any>> {
-        let authQuery = this.injector.get(AuthorizeQuery);
-         authQuery.isLoggedIn$.toPromise().then(res => this.isLoggedIn = res);
+        //let authQuery = this.injector.get(AuthorizeQuery);
+        //var token = null;
+        //authQuery $.subscribe(res => { token = res });
 
-        if (this.isLoggedIn) {
-            req = req.clone({ headers: req.headers.set('Authorization', 'Bearer ' + this.isLoggedIn) });
+
+         console.log(this._loggedIn);
+        if (this._loggedIn) {
+            req = req.clone({ headers: req.headers.set('Authorization', 'Bearer ' + this._accessToken ) });
         }
         return of(req);
     }
 
     private error(req: HttpRequest<any>, res: HttpErrorResponse): Observable<HttpEvent<any>> {
-      let authtionService = this.injector.get(AuthorizeService);
+
 
         if (res.status === 401) {
             if (!this.refreshInProgress) {
                 this.refreshInProgress = true;
 
-                authtionService.refreshLogin()
+                this.service.refreshLogin()
                     .subscribe(data => {
                         this.refreshInProgress = false;
                         this.refreshSubject.next(true);
                     },
                     refreshLoginError => {
-                      authtionService.logout();
-                      authtionService.reLogin();
+                      this.service.logout();
+                      this.service.reLogin();
                         this.refreshInProgress = false;
                         this.refreshSubject.next(false);
                     });

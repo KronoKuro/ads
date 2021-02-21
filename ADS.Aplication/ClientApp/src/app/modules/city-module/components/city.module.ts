@@ -53,9 +53,7 @@ const router = [
 ]
 
 
-export function initAppFactory(
-  //houseService: HouseService,
-  //streetService: StreetService,
+export function initAppLookupSetter(
   cityService: CityService,
   managmentCompanyService: MangmentCompanyService
   ) {
@@ -63,13 +61,6 @@ export function initAppFactory(
     await Promise.all([
       cityService.getCityForLookup(),
       managmentCompanyService.getCompaniesForLookup() ])
-    // await Promise.all([
-    //   metadataService.refreshMetadata(),
-    //   versionService.getVersions(),
-    //   pivotTableService.loadPivotTables(),
-    //   scenarioService.RefreshScenarios(),
-    //   permissionsService.refreshMetadata()
-    // ]);
   }
 }
 
@@ -125,7 +116,7 @@ export function initAppFactory(
     ApartmentStore,
     ManagmentCompanyQuery,
     { provide: APP_INITIALIZER,
-      useFactory: initAppFactory,
+      useFactory: initAppLookupSetter,
       deps: [CityService, MangmentCompanyService], multi: true
     }
   ],entryComponents: [

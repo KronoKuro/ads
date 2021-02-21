@@ -9,14 +9,14 @@ import { AuthorizeService } from '../../services/authorize.service';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent extends BaseComponent implements OnInit {
+export class LoginComponent implements OnInit {
   loginForm: FormGroup;
 
   constructor(
-    _snackBar: MatSnackBar,
+    protected _snackBar: MatSnackBar,
     private formBuilder: FormBuilder,
     private authServices: AuthorizeService) {
-    super(null, _snackBar);
+    //super(null, _snackBar);
     this.loginForm = this.formBuilder.group({
       userName: ['', [Validators.required, Validators.maxLength(250), Validators.minLength(5)]],
       password: ['', {
@@ -34,13 +34,27 @@ export class LoginComponent extends BaseComponent implements OnInit {
 
 
   onSubmit() {
-    this.subscription = this.authServices.login(this.loginForm.getRawValue()).subscribe(() => {
-      this.isSubscribe = true;
+    this.authServices.login(this.loginForm.getRawValue()).subscribe(res => {
       this.openSnackBar(false, "Вход выполнен");
     }, error => {
-      this.hasError = true;
-      this.errorMessage = error.error;
-      this.openSnackBar(true, "Ошибка " + this.errorMessage);
+      //this.hasError = true;
+      //this.errorMessage = error.error;
+      this.openSnackBar(true, "Ошибка " + error);
     });
+  }
+
+
+  openSnackBar(isError: boolean, message: string) {
+    if (isError === true) {
+      this._snackBar.open(message, null, {
+        duration: 6000,
+        panelClass: ['mat-toolbar', 'mat-warn']
+      });
+    } else {
+      this._snackBar.open(message, null, {
+        duration: 6000,
+        panelClass: ['mat-toolbar', 'mat-primary']
+      });
+    }
   }
 }

@@ -51,21 +51,43 @@ reLogin() {
 }
 
 login(model: LoginModel) {
-  return this.logIn(model).pipe(//return this.logIn(model.userName, model.password)
-    tap(response => {
-      try {
-        // this.store.update(state => ({
-        //   token: response.token,
-        //   newtoken: response.newtoken
-        // }));
+  // return this.logIn(model).pipe(//return this.logIn(model.userName, model.password)
+  //   tap(response => {
+  //     try {
 
-        this.store.update(({ token }) => response.token);
-        this.store.update(({ newtoken }) => response.newtoken);
-        //this.store.update(({  ...newtoken }) => response.newtoken);
-            //this.loginResponse(response)
-      }catch(error) {
-        console.log(error);
-      }}));
+  //       this.store.update(state => ({
+  //         token: response.token,
+  //         newtoken: response.newtoken
+  //       }));
+  //       //this.store.update(entity => { entity.token = response.token });
+  //       //this.store.update(entity => { entity.newtoken = response.newtoken });
+
+  //       //this.store.update(({ token }) => response.token);
+  //       //this.store.update(({ newtoken }) => response.newtoken);
+  //       //this.store.update(({  ...newtoken }) => response.newtoken);
+  //           //this.loginResponse(response)
+  //     }catch(error) {
+  //       console.log(error);
+  //     }}));
+      return this.logIn(model).pipe(
+        tap(resp => {
+          try {
+            //let decode = jwt_decode<ITokenModel>(resp.token);
+            var token = resp.token;
+            var newtoken = resp.newtoken;
+            this.store.update({ token: resp.token});
+            this.store.update({ newtoken: resp.newtoken});
+            //.store.update({token});
+            //this.store.update({newtoken});
+              //state => ({
+           //   token: resp.token,
+              //newtoken: resp.newtoken
+            //})
+            //);
+          } catch (error) {
+            console.log(error);
+          }
+        }));
 }
 
 private loginResponse(response: any) {

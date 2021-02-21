@@ -31,9 +31,9 @@ export class CityService {
   }
 
   getCityForLookup() {
-      return this.http.get<CityModel[]>(`${this._url}/lookup`).subscribe(res => {
+      return this.http.get<CityModel[]>(`${this._url}/lookup`).subscribe(list => {
         this.cityStore.update(state => ({
-                lookupCity: res
+                lookupCity: list
         }));
       });
   }

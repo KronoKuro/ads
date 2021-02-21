@@ -122,6 +122,8 @@ namespace ADS.Aplication
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseAuthentication();
+            
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -140,16 +142,17 @@ namespace ADS.Aplication
                 app.UseSpaStaticFiles();
             }
 
-            app.UseRouting();
 
+            app.UseRouting();
+            app.UseAuthorization();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller}/{action=Index}/{id?}");
             });
+            
 
-            app.UseAuthentication();
 
             app.UseSpa(spa =>
             {
@@ -157,10 +160,11 @@ namespace ADS.Aplication
                 // see https://go.microsoft.com/fwlink/?linkid=864501
 
                 spa.Options.SourcePath = "ClientApp";
-                spa.Options.StartupTimeout = TimeSpan.FromMinutes(5);
+                //spa.Options.StartupTimeout = TimeSpan.FromMinutes(5);
 
                 if (env.IsDevelopment())
                 {
+                    spa.Options.StartupTimeout = new TimeSpan(0, 5, 0);
                     spa.UseAngularCliServer(npmScript: "start");
                     //spa.Options.StartupTimeout = TimeSpan.FromMinutes(3);
                 }
