@@ -19,7 +19,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ADS.Aplication.Controllers
 {
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [ApiController]
     [Route("api/[controller]")]
     public class CityController : Controller
@@ -33,6 +32,7 @@ namespace ADS.Aplication.Controllers
             unitOfWork = _unitOfWork;
         }
 
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpGet]
         public async Task<IActionResult> getCity([FromQuery] QueryParameters queryParameters)
         {
@@ -73,7 +73,7 @@ namespace ADS.Aplication.Controllers
             return Ok(query);
         }
 
-
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpPost]
         public async Task<IActionResult> CreateCity([FromBody] CityViewModel model)
         {
@@ -98,6 +98,7 @@ namespace ADS.Aplication.Controllers
 
         }
 
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpPut]
         public async Task<IActionResult> EditCity([FromBody] CityViewModel model)
         {
@@ -118,6 +119,7 @@ namespace ADS.Aplication.Controllers
             return Ok();
         }
 
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [HttpDelete("{id}")]
         public async Task<IActionResult> RemoveCity(string id)
         {

@@ -30,9 +30,9 @@ const router = [
     RouterModule.forRoot(router)
   ],
   providers: [
-    AuthorizeService,
-    AuthorizeQuery,
-    AuthorizeStore
+    { provide: AuthorizeService},
+    { provide: AuthorizeQuery},
+    { provide: AuthorizeStore},
   ],
   entryComponents: [
 

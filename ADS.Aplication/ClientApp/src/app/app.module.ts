@@ -20,6 +20,9 @@ import { ErrorStateMatcher, ShowOnDirtyErrorStateMatcher } from '@angular/materi
 import { AuthorizeModule } from './modules/authorize-module/authorize-module';
 import { AuthInterceptor } from './modules/authorize-module/interceptor/auth-interceptor';
 import { AuthGuard } from './modules/authorize-module/guard/auth.guard';
+import { AuthorizeService } from './modules/authorize-module/services/authorize.service';
+import { AuthorizeQuery } from './modules/authorize-module/state/authorize/authorize.query';
+import { AuthorizeStore } from './modules/authorize-module/state/authorize/authorize.store';
 
 
 @NgModule({
@@ -31,15 +34,15 @@ import { AuthGuard } from './modules/authorize-module/guard/auth.guard';
     FetchDataComponent
   ],
   imports: [
+    AuthorizeModule,
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
     CityModule,
-    AuthorizeModule,
     MaterialModule,
     RouterModule.forRoot([
-      { path: '', component: HomeComponent, pathMatch: 'full' },
+      { path: '', component: HomeComponent, pathMatch: 'full',  canActivate: [AuthGuard] },
       { path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
     ]),
@@ -49,10 +52,10 @@ import { AuthGuard } from './modules/authorize-module/guard/auth.guard';
   ],
   providers: [
     { provide: NG_ENTITY_SERVICE_CONFIG, useValue: { baseUrl: 'https://jsonplaceholder.typicode.com' }},
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true, deps: [AuthorizeService] },
     { provide: AuthGuard},
     { provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher }
-],
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

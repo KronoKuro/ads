@@ -15,6 +15,8 @@ import { TokenModel } from '../../../models/token.model';
 export class AuthorizeService {
   private _url: string;
   private refreshToken: string;
+  private accessToken: string;
+  private isLogged: boolean;
 
   constructor(private http: HttpClient,
     private store: AuthorizeStore,
@@ -23,6 +25,16 @@ export class AuthorizeService {
     @Inject('BASE_URL') baseUrl: string) {
     this._url = `${baseUrl}api/authorize`;
     this.refreshToken = this.query.getValue().newtoken;
+    this.query.token$.subscribe(res => this.accessToken = res);
+    this.query.isLoggedIn$.subscribe(res => this.isLogged = res);
+  }
+
+  getToken() {
+    return this.accessToken;
+  }
+
+  isLogIn() {
+    return this.isLogged;
   }
 
   logIn(model: LoginModel) {

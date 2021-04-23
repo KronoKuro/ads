@@ -7,10 +7,8 @@ import { AuthorizeQuery } from '../state/authorize/authorize.query';
 export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
 
   isLoggedIn = false;
-  constructor(private authQuery: AuthorizeQuery, private router: Router) {
-
-
-        //select(state => state.token).subscribe(res => this.token = res);
+  constructor(protected authQuery: AuthorizeQuery, private router: Router) {
+    authQuery.isLoggedIn$.subscribe(res => this.isLoggedIn = res);
    }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
@@ -29,7 +27,6 @@ export class AuthGuard implements CanActivate, CanActivateChild, CanLoad {
 
   checkLogin(url: string): boolean {
 
-    this.authQuery.isLoggedIn$.toPromise().then(res => { this.isLoggedIn = res;});
     console.log(this.isLoggedIn + 'is logged');
     if (this.isLoggedIn)  {
       return true;

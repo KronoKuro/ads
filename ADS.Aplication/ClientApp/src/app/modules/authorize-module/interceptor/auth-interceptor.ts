@@ -18,12 +18,8 @@ export class AuthInterceptor implements HttpInterceptor {
     private refreshSubject: Subject<boolean> = new Subject<boolean>();
 
     constructor(
-      private service: AuthorizeService,
-      private query: AuthorizeQuery,
-      private injector: Injector) {
-      console.log(query.getValue().token);
-      //query.token$.subscribe(token => this._accessToken = token);
-      //query.isLoggedIn$.subscribe(res => this._loggedIn = res);
+      protected service: AuthorizeService,
+      protected injector: Injector) {
      }
 
     intercept(original: HttpRequest<any>, delegate: HttpHandler): Observable<HttpEvent<any>> {
@@ -50,11 +46,16 @@ export class AuthInterceptor implements HttpInterceptor {
         //let authQuery = this.injector.get(AuthorizeQuery);
         //var token = null;
         //authQuery $.subscribe(res => { token = res });
+        var token = this.service.getToken();
+        this._loggedIn = this.service.isLogIn();
+      //this.query.token$.subscribe(token => this._accessToken = token);
+         //this.query.isLoggedIn$.subscribe(res => this._loggedIn = res);
+         console.log(token + ' access');
 
 
          console.log(this._loggedIn);
         if (this._loggedIn) {
-            req = req.clone({ headers: req.headers.set('Authorization', 'Bearer ' + this._accessToken ) });
+            req = req.clone({ headers: req.headers.set('Authorization', 'Bearer ' + token ) });
         }
         return of(req);
     }

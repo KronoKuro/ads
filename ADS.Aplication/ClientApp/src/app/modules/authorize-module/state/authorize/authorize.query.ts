@@ -1,7 +1,12 @@
 import { QueryEntity ,Query } from '@datorama/akita';
 import { Injectable } from '@angular/core';
-import { AuthState, AuthorizeStore } from './authorize.store';
+import { AuthorizeStore } from './authorize.store';
 import { TokenModel } from '../../../../models/token.model';
+
+interface AuthState {
+  token: string,
+  newtoken: string,
+}
 
 @Injectable({providedIn: 'root'})
 export class AuthorizeQuery extends Query<AuthState> {
